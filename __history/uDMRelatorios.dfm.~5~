@@ -1,0 +1,78 @@
+object DMRelatorios: TDMRelatorios
+  Height = 496
+  Width = 685
+  object frxRepClientes: TfrxReport
+    Version = '2022.1.3'
+    DotMatrixReport = False
+    IniFile = '\Software\Fast Reports'
+    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick, pbCopy, pbSelection]
+    PreviewOptions.Zoom = 1.000000000000000000
+    PrintOptions.Printer = 'Padr'#227'o'
+    PrintOptions.PrintOnSheet = 0
+    ReportOptions.CreateDate = 46120.646361620400000000
+    ReportOptions.LastChange = 46120.709840289400000000
+    ScriptLanguage = 'PascalScript'
+    StoreInDFM = False
+    Left = 53
+    Top = 48
+  end
+  object frxDBClientes: TfrxDBDataset
+    UserName = 'Clientes'
+    CloseDataSource = False
+    FieldAliases.Strings = (
+      'ativo=ativo'
+      'nome_fantasia=nome_fantasia'
+      'razao_social=razao_social'
+      'cpf_cnpj=cpf_cnpj'
+      'data_cadastro=data_cadastro'
+      'data_alteracao=data_alteracao'
+      'endereco=endereco'
+      'numero_endereco=numero_endereco'
+      'complemento_endereco=complemento_endereco'
+      'nome_bairro=nome_bairro'
+      'nome_cidade=nome_cidade'
+      'uf=uf')
+    DataSet = DMMain.FDQRelClientes
+    BCDToCurrency = False
+    DataSetOptions = []
+    Left = 93
+    Top = 48
+  end
+  object frxRepProdutos: TfrxReport
+    Version = '2022.1.3'
+    DotMatrixReport = False
+    IniFile = '\Software\Fast Reports'
+    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick, pbCopy, pbSelection]
+    PreviewOptions.Zoom = 1.000000000000000000
+    PrintOptions.Printer = 'Padr'#227'o'
+    PrintOptions.PrintOnSheet = 0
+    ReportOptions.CreateDate = 46120.646361620400000000
+    ReportOptions.LastChange = 46120.709840289400000000
+    ScriptLanguage = 'PascalScript'
+    StoreInDFM = False
+    Left = 53
+    Top = 160
+  end
+  object frxDBDataset1: TfrxDBDataset
+    UserName = 'Produtos'
+    CloseDataSource = False
+    FieldAliases.Strings = (
+      'ativo=ativo'
+      'nome_fantasia=nome_fantasia'
+      'razao_social=razao_social'
+      'cpf_cnpj=cpf_cnpj'
+      'data_cadastro=data_cadastro'
+      'data_alteracao=data_alteracao'
+      'endereco=endereco'
+      'numero_endereco=numero_endereco'
+      'complemento_endereco=complemento_endereco'
+      'nome_bairro=nome_bairro'
+      'nome_cidade=nome_cidade'
+      'uf=uf')
+    DataSet = DMMain.FDQRelProdutos
+    BCDToCurrency = False
+    DataSetOptions = []
+    Left = 93
+    Top = 160
+  end
+end

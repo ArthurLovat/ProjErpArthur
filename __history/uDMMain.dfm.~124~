@@ -1,0 +1,607 @@
+object DMMain: TDMMain
+  Height = 532
+  Width = 661
+  object FDConnection: TFDConnection
+    Params.Strings = (
+      'Database=projeto_erp_arthur'
+      'User_Name=easycom'
+      'Password=easycom'
+      'DriverID=PG')
+    Connected = True
+    LoginPrompt = False
+    Left = 32
+    Top = 192
+  end
+  object FDTUnidadesMedida: TFDTable
+    IndexFieldNames = 'id'
+    Connection = FDConnection
+    ResourceOptions.AssignedValues = [rvEscapeExpand]
+    TableName = 'tunidades_medida'
+    Left = 192
+    Top = 8
+    object FDTUnidadesMedidaid: TIntegerField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object FDTUnidadesMedidaativo: TBooleanField
+      FieldName = 'ativo'
+      Origin = 'ativo'
+    end
+    object FDTUnidadesMedidadescricao: TWideStringField
+      FieldName = 'descricao'
+      Origin = 'descricao'
+      Size = 250
+    end
+    object FDTUnidadesMedidaunidade: TWideStringField
+      FieldName = 'unidade'
+      Origin = 'unidade'
+      Size = 3
+    end
+  end
+  object FDPhysPgDriverLink1: TFDPhysPgDriverLink
+    VendorLib = 'C:\Users\User\Documents\Embarcadero\Studio\Projects\libpq.dll'
+    Left = 32
+    Top = 296
+  end
+  object FDTProdutos: TFDTable
+    IndexFieldNames = 'id'
+    Connection = FDConnection
+    ResourceOptions.AssignedValues = [rvEscapeExpand]
+    TableName = 'tprodutos'
+    Left = 584
+    Top = 8
+  end
+  object FDTEstados: TFDTable
+    IndexFieldNames = 'id'
+    Connection = FDConnection
+    ResourceOptions.AssignedValues = [rvEscapeExpand]
+    TableName = 'testados'
+    Left = 232
+    Top = 8
+  end
+  object FDTCidades: TFDTable
+    IndexFieldNames = 'id'
+    Connection = FDConnection
+    ResourceOptions.AssignedValues = [rvEscapeExpand]
+    TableName = 'tcidades'
+    Left = 272
+    Top = 8
+  end
+  object FDTBairros: TFDTable
+    IndexFieldNames = 'id'
+    Connection = FDConnection
+    ResourceOptions.AssignedValues = [rvEscapeExpand]
+    TableName = 'tbairros'
+    Left = 312
+    Top = 8
+  end
+  object FDTClientes: TFDTable
+    IndexFieldNames = 'id'
+    Connection = FDConnection
+    ResourceOptions.AssignedValues = [rvEscapeExpand]
+    TableName = 'tclientes'
+    Left = 480
+    Top = 8
+  end
+  object qryAux: TFDQuery
+    Connection = FDConnection
+    Left = 72
+    Top = 296
+  end
+  object FDTUsuarios: TFDTable
+    IndexFieldNames = 'id'
+    Connection = FDConnection
+    ResourceOptions.AssignedValues = [rvEscapeExpand]
+    TableName = 'tusuarios'
+    Left = 344
+    Top = 8
+  end
+  object FDTRelProdutos: TFDTable
+    IndexFieldNames = 'id'
+    Connection = FDConnection
+    ResourceOptions.AssignedValues = [rvEscapeExpand]
+    TableName = 'tprodutos'
+    Left = 32
+    Top = 416
+  end
+  object FDQRelProdutos: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'Select p.ativo, p.codigo, p.descricao, un.unidade '
+      'from tprodutos as p '
+      
+        'inner join tunidades_medida as un on p.tunidade_medida_id = un.i' +
+        'd '
+      'where 1=1')
+    Left = 72
+    Top = 416
+    object FDQRelProdutosativo: TBooleanField
+      FieldName = 'ativo'
+      Origin = 'ativo'
+    end
+    object FDQRelProdutoscodigo: TWideStringField
+      FieldName = 'codigo'
+      Origin = 'codigo'
+    end
+    object FDQRelProdutosdescricao: TWideStringField
+      FieldName = 'descricao'
+      Origin = 'descricao'
+      Size = 150
+    end
+    object FDQRelProdutosunidade: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'unidade'
+      Origin = 'unidade'
+      Size = 3
+    end
+  end
+  object FDQRelClientes: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'SELECT cli.ativo'
+      #9' , cli.nome_fantasia'
+      #9' , cli.razao_social'
+      '  '#9' , cli.cpf_cnpj'
+      #9' , cli.data_cadastro'
+      #9' , cli.data_alteracao'
+      #9' , cli.endereco'
+      #9' , cli.numero_endereco'
+      #9' , cli.complemento_endereco'
+      #9' , bairro.nome_bairro'
+      #9' , cid.nome_cidade'
+      #9' , est.uf'
+      'FROM tclientes as cli '
+      'INNER JOIN tbairros as bairro'
+      'on cli.tbairros_id = bairro.id'
+      'INNER JOIN tcidades as cid'
+      'on cli.tcidades_id = cid.id'
+      'INNER JOIN testados as est'
+      'on cid.testados_id = est.id'
+      'WHERE 1=1')
+    Left = 112
+    Top = 416
+    object FDQRelClientesativo: TBooleanField
+      FieldName = 'ativo'
+      Origin = 'ativo'
+    end
+    object FDQRelClientesnome_fantasia: TWideStringField
+      FieldName = 'nome_fantasia'
+      Origin = 'nome_fantasia'
+      Size = 250
+    end
+    object FDQRelClientesrazao_social: TWideStringField
+      FieldName = 'razao_social'
+      Origin = 'razao_social'
+      Size = 250
+    end
+    object FDQRelClientescpf_cnpj: TWideStringField
+      FieldName = 'cpf_cnpj'
+      Origin = 'cpf_cnpj'
+    end
+    object FDQRelClientesdata_cadastro: TSQLTimeStampField
+      FieldName = 'data_cadastro'
+      Origin = 'data_cadastro'
+      ProviderFlags = [pfInUpdate]
+    end
+    object FDQRelClientesdata_alteracao: TSQLTimeStampField
+      FieldName = 'data_alteracao'
+      Origin = 'data_alteracao'
+      ProviderFlags = [pfInUpdate]
+    end
+    object FDQRelClientesendereco: TWideStringField
+      FieldName = 'endereco'
+      Origin = 'endereco'
+      Size = 250
+    end
+    object FDQRelClientesnumero_endereco: TWideStringField
+      FieldName = 'numero_endereco'
+      Origin = 'numero_endereco'
+    end
+    object FDQRelClientescomplemento_endereco: TWideStringField
+      FieldName = 'complemento_endereco'
+      Origin = 'complemento_endereco'
+      Size = 250
+    end
+    object FDQRelClientesnome_bairro: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'nome_bairro'
+      Origin = 'nome_bairro'
+      Size = 250
+    end
+    object FDQRelClientesnome_cidade: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'nome_cidade'
+      Origin = 'nome_cidade'
+      Size = 250
+    end
+    object FDQRelClientesuf: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'uf'
+      Origin = 'uf'
+      Size = 3
+    end
+  end
+  object FDQRelEstados: TFDQuery
+    Connection = FDConnection
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'Select * from testados;')
+    Left = 152
+    Top = 416
+    object FDQRelEstadosid: TIntegerField
+      FieldName = 'id'
+    end
+    object FDQRelEstadosnome_estado: TWideStringField
+      FieldName = 'nome_estado'
+      Size = 250
+    end
+    object FDQRelEstadosuf: TWideStringField
+      FieldName = 'uf'
+      Size = 3
+    end
+  end
+  object FDQRelUnidade: TFDQuery
+    Connection = FDConnection
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    UpdateOptions.EnableDelete = False
+    UpdateOptions.EnableInsert = False
+    UpdateOptions.EnableUpdate = False
+    SQL.Strings = (
+      'Select * from tunidades_medida;')
+    Left = 192
+    Top = 416
+    object FDQRelUnidadeid: TIntegerField
+      FieldName = 'id'
+    end
+    object FDQRelUnidadeativo: TBooleanField
+      FieldName = 'ativo'
+    end
+    object FDQRelUnidadedescricao: TWideStringField
+      FieldName = 'descricao'
+      Size = 250
+    end
+    object FDQRelUnidadeunidade: TWideStringField
+      FieldName = 'unidade'
+      Size = 3
+    end
+  end
+  object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'Forms'
+    ScreenCursor = gcrNone
+    Left = 32
+    Top = 144
+  end
+  object FDQListagemClientes: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'Select * from tclientes')
+    Left = 136
+    Top = 8
+    object FDQListagemClientesid: TIntegerField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object FDQListagemClientesativo: TBooleanField
+      FieldName = 'ativo'
+      Origin = 'ativo'
+    end
+    object FDQListagemClientesnome_fantasia: TWideStringField
+      FieldName = 'nome_fantasia'
+      Origin = 'nome_fantasia'
+      Size = 250
+    end
+    object FDQListagemClientesrazao_social: TWideStringField
+      FieldName = 'razao_social'
+      Origin = 'razao_social'
+      Size = 250
+    end
+    object FDQListagemClientescpf_cnpj: TWideStringField
+      FieldName = 'cpf_cnpj'
+      Origin = 'cpf_cnpj'
+    end
+    object FDQListagemClientesdata_cadastro: TSQLTimeStampField
+      FieldName = 'data_cadastro'
+      Origin = 'data_cadastro'
+      ProviderFlags = [pfInUpdate]
+    end
+    object FDQListagemClientesdata_alteracao: TSQLTimeStampField
+      FieldName = 'data_alteracao'
+      Origin = 'data_alteracao'
+      ProviderFlags = [pfInUpdate]
+    end
+    object FDQListagemClientesendereco: TWideStringField
+      FieldName = 'endereco'
+      Origin = 'endereco'
+      Size = 250
+    end
+    object FDQListagemClientesnumero_endereco: TWideStringField
+      FieldName = 'numero_endereco'
+      Origin = 'numero_endereco'
+    end
+    object FDQListagemClientescomplemento_endereco: TWideStringField
+      FieldName = 'complemento_endereco'
+      Origin = 'complemento_endereco'
+      Size = 250
+    end
+    object FDQListagemClientesponto_referencia: TWideStringField
+      FieldName = 'ponto_referencia'
+      Origin = 'ponto_referencia'
+      Size = 250
+    end
+    object FDQListagemClientescep: TWideStringField
+      FieldName = 'cep'
+      Origin = 'cep'
+      Size = 9
+    end
+    object FDQListagemClientestcidades_id: TIntegerField
+      FieldName = 'tcidades_id'
+      Origin = 'tcidades_id'
+    end
+    object FDQListagemClientestbairros_id: TIntegerField
+      FieldName = 'tbairros_id'
+      Origin = 'tbairros_id'
+    end
+  end
+  object FDQRelAmostragemLucro: TFDQuery
+    Connection = FDConnection
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    SQL.Strings = (
+      
+        'Select p.ativo, p.codigo, p.descricao, p.preco_custo, cast(0.45 ' +
+        'as numeric(10,4)) as percentual_lucro'
+      
+        '                       , cast(p.preco_custo + (p.preco_custo * 0' +
+        '.45 /100) as numeric(10,4)) as preco_venda'
+      '                        from tprodutos as p'
+      '                        where 1=1')
+    Left = 496
+    Top = 416
+    object FDQRelAmostragemLucroativo: TBooleanField
+      FieldName = 'ativo'
+      Origin = 'ativo'
+    end
+    object FDQRelAmostragemLucrocodigo: TWideStringField
+      FieldName = 'codigo'
+      Origin = 'codigo'
+    end
+    object FDQRelAmostragemLucrodescricao: TWideStringField
+      FieldName = 'descricao'
+      Origin = 'descricao'
+      Size = 150
+    end
+    object FDQRelAmostragemLucropreco_custo: TBCDField
+      FieldName = 'preco_custo'
+      Origin = 'preco_custo'
+      Precision = 10
+      Size = 2
+    end
+    object FDQRelAmostragemLucropercentual_lucro: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'percentual_lucro'
+      Origin = 'percentual_lucro'
+      ReadOnly = True
+      Precision = 10
+    end
+    object FDQRelAmostragemLucropreco_venda: TBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'preco_venda'
+      Origin = 'preco_venda'
+      ReadOnly = True
+      Precision = 10
+    end
+  end
+  object FDQRelClientesDesatualizados: TFDQuery
+    Connection = FDConnection
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    SQL.Strings = (
+      
+        'SELECT distinct cli.nome_fantasia, cli.razao_social, cli.telefon' +
+        'e, cli.data_alteracao, '
+      
+        '          (CURRENT_DATE - CAST(cli.data_alteracao AS DATE)) AS d' +
+        'ias_sem_atualizar'
+      '          FROM tclientes AS cli'
+      '          INNER JOIN tbairros as bairro '
+      '          on cli.tbairros_id = bairro.id '
+      '          INNER JOIN tcidades as cid '
+      '          on cli.tcidades_id = cid.id'
+      '          INNER JOIN testados as est '
+      '          on cid.testados_id = est.id '
+      '          WHERE 1=1'
+      '')
+    Left = 536
+    Top = 416
+    object FDQRelClientesDesatualizadosnome_fantasia: TWideStringField
+      FieldName = 'nome_fantasia'
+      Origin = 'nome_fantasia'
+      Size = 250
+    end
+    object FDQRelClientesDesatualizadosrazao_social: TWideStringField
+      FieldName = 'razao_social'
+      Origin = 'razao_social'
+      Size = 250
+    end
+    object FDQRelClientesDesatualizadostelefone: TWideStringField
+      FieldName = 'telefone'
+      Origin = 'telefone'
+    end
+    object FDQRelClientesDesatualizadosdata_alteracao: TSQLTimeStampField
+      FieldName = 'data_alteracao'
+      Origin = 'data_alteracao'
+      ProviderFlags = [pfInUpdate]
+    end
+    object FDQRelClientesDesatualizadosdias_sem_atualizar: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'dias_sem_atualizar'
+      Origin = 'dias_sem_atualizar'
+      ReadOnly = True
+    end
+  end
+  object qryRelMargemLucro: TFDQuery
+    Connection = FDConnection
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    SQL.Strings = (
+      'SELECT '
+      '    p.codigo'
+      #9', p.descricao'
+      #9', p.preco_custo'
+      #9', p.preco_venda'
+      '    , (preco_venda - preco_custo) AS lucro'
+      
+        '    , ((preco_venda - preco_custo) / (preco_venda)) * 100 AS mar' +
+        'gem_lucro'
+      'FROM tprodutos as p;')
+    Left = 576
+    Top = 416
+    object qryRelMargemLucrocodigo: TWideStringField
+      FieldName = 'codigo'
+      Origin = 'codigo'
+    end
+    object qryRelMargemLucrodescricao: TWideStringField
+      FieldName = 'descricao'
+      Origin = 'descricao'
+      Size = 150
+    end
+    object qryRelMargemLucropreco_custo: TBCDField
+      FieldName = 'preco_custo'
+      Origin = 'preco_custo'
+      Precision = 10
+      Size = 2
+    end
+    object qryRelMargemLucropreco_venda: TBCDField
+      FieldName = 'preco_venda'
+      Origin = 'preco_venda'
+      Precision = 10
+      Size = 2
+    end
+    object qryRelMargemLucrolucro: TFMTBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'lucro'
+      Origin = 'lucro'
+      ReadOnly = True
+      Precision = 64
+      Size = 0
+    end
+    object qryRelMargemLucromargem_lucro: TFMTBCDField
+      AutoGenerateValue = arDefault
+      FieldName = 'margem_lucro'
+      Origin = 'margem_lucro'
+      ReadOnly = True
+      Precision = 64
+      Size = 0
+    end
+  end
+  object qryRelNovosClientes: TFDQuery
+    Connection = FDConnection
+    UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
+    SQL.Strings = (
+      
+        'SELECT cli.nome_fantasia, cli.razao_social, cli.telefone, cli.da' +
+        'ta_cadastro, '
+      
+        '  (CURRENT_DATE - CAST(cli.data_cadastro AS DATE)) AS dias_cadas' +
+        'tro '
+      '  FROM tclientes AS cli '
+      '  INNER JOIN tbairros AS bairro ON cli.tbairros_id = bairro.id '
+      '  INNER JOIN tcidades AS cid ON cli.tcidades_id = cid.id '
+      '  INNER JOIN testados AS est ON cid.testados_id = est.id '
+      '  WHERE 1=1'
+      '')
+    Left = 456
+    Top = 416
+    object qryRelNovosClientesnome_fantasia: TWideStringField
+      FieldName = 'nome_fantasia'
+      Origin = 'nome_fantasia'
+      Size = 250
+    end
+    object qryRelNovosClientesrazao_social: TWideStringField
+      FieldName = 'razao_social'
+      Origin = 'razao_social'
+      Size = 250
+    end
+    object qryRelNovosClientestelefone: TWideStringField
+      FieldName = 'telefone'
+      Origin = 'telefone'
+    end
+    object qryRelNovosClientesdata_cadastro: TSQLTimeStampField
+      FieldName = 'data_cadastro'
+      Origin = 'data_cadastro'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qryRelNovosClientesdias_cadastro: TIntegerField
+      AutoGenerateValue = arDefault
+      FieldName = 'dias_cadastro'
+      Origin = 'dias_cadastro'
+      ReadOnly = True
+    end
+  end
+  object qryCadClientesDependentes: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'Select * from tclientes_dependentes;')
+    Left = 584
+    Top = 72
+    object qryCadClientesDependentesid: TIntegerField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object qryCadClientesDependentestclientes_id: TIntegerField
+      FieldName = 'tclientes_id'
+      Origin = 'tclientes_id'
+    end
+    object qryCadClientesDependentesativo: TBooleanField
+      FieldName = 'ativo'
+      Origin = 'ativo'
+    end
+    object qryCadClientesDependentesnome: TWideStringField
+      FieldName = 'nome'
+      Origin = 'nome'
+      Size = 250
+    end
+    object qryCadClientesDependentescpf_cnpj: TWideStringField
+      FieldName = 'cpf_cnpj'
+      Origin = 'cpf_cnpj'
+    end
+    object qryCadClientesDependentestelefone: TWideStringField
+      FieldName = 'telefone'
+      Origin = 'telefone'
+    end
+  end
+  object qryCadProdutosComplementos: TFDQuery
+    Connection = FDConnection
+    SQL.Strings = (
+      'Select * from tprodutos_complementos;')
+    Left = 480
+    Top = 72
+    object qryCadProdutosComplementosid: TIntegerField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object qryCadProdutosComplementostprodutos_id: TIntegerField
+      FieldName = 'tprodutos_id'
+      Origin = 'tprodutos_id'
+    end
+    object qryCadProdutosComplementosativo: TBooleanField
+      FieldName = 'ativo'
+      Origin = 'ativo'
+    end
+    object qryCadProdutosComplementosdescricao: TWideStringField
+      FieldName = 'descricao'
+      Origin = 'descricao'
+      Size = 250
+    end
+    object qryCadProdutosComplementosvalor_adicional: TBCDField
+      FieldName = 'valor_adicional'
+      Origin = 'valor_adicional'
+      Precision = 10
+      Size = 2
+    end
+  end
+end

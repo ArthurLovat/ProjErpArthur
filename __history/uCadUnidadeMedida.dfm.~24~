@@ -1,0 +1,66 @@
+inherited frmCadUnidadesMedida: TfrmCadUnidadesMedida
+  Left = 0
+  Top = 0
+  Caption = 'Cadastro De Unidades De Medida'
+  ClientHeight = 462
+  ClientWidth = 784
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poScreenCenter
+  OnClose = FormClose
+  TextHeight = 17
+  object lblDescricao: TLabel
+    Left = 200
+    Top = 160
+    Width = 81
+    Height = 23
+    Caption = 'Descricao:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lblUnidade: TLabel
+    Left = 200
+    Top = 197
+    Width = 165
+    Height = 23
+    Caption = 'Unidade De Medida:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object cxDBEdtDescricao: TcxDBTextEdit
+    Left = 371
+    Top = 162
+    DataBinding.DataField = 'descricao'
+    TabOrder = 0
+    Width = 209
+  end
+  object cxDBEdtUnidadeMedida: TcxDBTextEdit
+    Left = 371
+    Top = 199
+    DataBinding.DataField = 'unidade'
+    TabOrder = 1
+    Width = 209
+  end
+  object dbcbAtivo: TDBCheckBox
+    Left = 521
+    Top = 240
+    Width = 59
+    Height = 17
+    Caption = 'Ativo'
+    DataField = 'ativo'
+    TabOrder = 2
+    ValueUnchecked = 'F'
+  end
+end

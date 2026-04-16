@@ -1,0 +1,72 @@
+unit uListagemProdutos;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxEdit,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxButtonEdit,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  cxButtons,
+  cxGridLevel,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxClasses,
+  cxGridCustomView,
+  cxGrid,
+  uDMMain,
+  uCadProduto,
+  cxContainer,
+  cxTextEdit,
+  cxMaskEdit,
+  cxDropDownEdit,
+  cxLookupEdit,
+  cxDBLookupEdit,
+  cxDBLookupComboBox,
+  uFrmModeloListagemPadrao;
+
+type
+  TfrmListagemProdutos = class(TFrmModeloListagemPadrao)
+    
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+{ TForm2 }
+
+{ TfrmListagemProdutos }
+
+
+
+end.

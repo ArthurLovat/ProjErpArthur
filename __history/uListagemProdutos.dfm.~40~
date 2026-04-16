@@ -1,0 +1,10 @@
+inherited frmListagemProdutos: TfrmListagemProdutos
+  Caption = 'Listagem De Produtos'
+  Position = poScreenCenter
+  TextHeight = 15
+  inherited lblTitulo: TLabel
+    Width = 118
+    Caption = 'Produtos'
+    ExplicitWidth = 118
+  end
+end

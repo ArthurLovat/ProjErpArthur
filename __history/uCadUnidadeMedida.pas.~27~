@@ -1,0 +1,80 @@
+unit uCadUnidadeMedida;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxContainer,
+  cxEdit,
+  cxTextEdit,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  cxButtons,
+  Data.DB,
+  uDMMain,
+  cxDBEdit,
+  Vcl.DBCtrls,
+  uUtils,
+  uFrmModeloCadPadrao,
+  Generics.Collections;
+
+type
+  TfrmCadUnidadesMedida = class(TfrmModeloCadPadrao)
+    lblDescricao: TLabel;
+    lblUnidade: TLabel;
+    edtDescricao: TcxDBTextEdit;
+    edtUnidadeMedida: TcxDBTextEdit;
+    dbcbAtivo: TDBCheckBox;
+
+  private
+    { Private declarations }
+
+  protected
+    procedure cxbtnCadastrarClick(Sender: TObject);
+
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmCadUnidadesMedida.cxbtnCadastrarClick(Sender: TObject);
+begin
+  var vCamposValidar: TDictionary<TCxDBTextEdit, TLabel> := TDictionary<TCxDBTextEdit, TLabel>.Create;
+  try
+    vCamposValidar.Add(edtDescricao, lblDescricao);
+    vCamposValidar.Add(edtUnidadeMedida, lblUnidade);
+
+    var vRespostaDeTodosOsCamposValidados: String := TUtils.ValidarCamposCadastros(vCamposValidar);
+
+    if (vRespostaDeTodosOsCamposValidados <> 'OK') then
+    begin
+      Application.MessageBox(PWideChar(vRespostaDeTodosOsCamposValidados), 'Aviso:', MB_ICONQUESTION + MB_OK);
+      Exit;
+    end;
+
+    GetDataSet.Post;
+    ModalResult := mrOk;
+  finally
+    vCamposValidar.Free;
+  end;
+
+end;
+
+
+
+end.

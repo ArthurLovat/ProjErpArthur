@@ -1,0 +1,188 @@
+unit uFrmRelatorioProdutos;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  uFrmModeloRelatorioPadrao,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxGeometry,
+  dxFramedControl,
+  cxContainer,
+  cxEdit,
+  cxCheckBox,
+  Vcl.ComCtrls,
+  dxCore,
+  cxDateUtils,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxGridLevel,
+  cxClasses,
+  cxGridCustomView,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxGrid,
+  AdvGlowButton,
+  cxDropDownEdit,
+  cxCalendar,
+  Vcl.StdCtrls,
+  dxGDIPlusClasses,
+  cxImage,
+  Vcl.DBCtrls,
+  cxCheckComboBox,
+  cxTextEdit,
+  cxMaskEdit,
+  DGSearchComboBox,
+  cxGroupBox,
+  Vcl.ExtCtrls,
+  dxPanel,
+  uDMMain, cxDBEdit, frxClass, frxDBSet, uDMRelatorios;
+
+type
+  TFrmRelatorioProdutos = class(TFrmModeloRelatorioPadrao)
+    lblSituacao: TLabel;
+    lblCodigo: TLabel;
+    lblDesc: TLabel;
+    lblUnidadeMedida: TLabel;
+    edtCodigo: TEdit;
+    edtDescricao: TEdit;
+    grdListagemVwativo: TcxGridDBColumn;
+    grdListagemVwdescricao: TcxGridDBColumn;
+    grdListagemVwcodigo: TcxGridDBColumn;
+    grdListagemVwUnidade: TcxGridDBColumn;
+    cbxSituacao: TComboBox;
+    lkUnidade: TDBLookupComboBox;
+    dsListagem: TDataSource;
+    dsListagemUn: TDataSource;
+
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure edtCodigoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure lkUnidadeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+  private
+    { Private declarations }
+
+  protected
+      Function FazerPesquisa: boolean; override;
+      function GetDataSource: TDataSource; override;
+      function GetNomeArquivoFr3: String; override;
+      procedure VincularDadosRelatorio; override;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TFrmRelatorioProdutos.edtCodigoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if (Key = vk_return) then
+  begin
+    btnPesquisar.Click;
+  end;
+end;
+
+function TFrmRelatorioProdutos.FazerPesquisa: boolean;
+begin
+  DMMain.FDQRelProdutos.Close;
+
+  var qry: string := 'Select p.ativo, p.codigo, p.descricao' +
+                        ' ,un.unidade' +
+                    ' from tprodutos as p' +
+                    ' inner join tunidades_medida as un on p.tunidade_medida_id = un.id' +
+                    ' where 1=1';
+  if (Trim(edtCodigo.Text) <> '') then
+  begin
+    qry := qry + ' and p.codigo = ' + QuotedStr(edtCodigo.Text);
+  end;
+  if (Trim(edtDescricao.Text) <> '') then
+  begin
+    qry := qry + ' and ' + MontarSqlILike('p.descricao', edtDescricao.Text);
+  end;
+  if (Trim(cbxSituacao.Text) <> 'Ambos') then
+  begin
+    if (Trim(cbxSituacao.Text) = 'Ativo') then
+    begin
+      qry := qry + ' and p.ativo = true';
+    end
+    else
+    begin
+      qry := qry + ' and p.ativo = false';
+    end;
+  end;
+  if (Trim(lkUnidade.Text) <> '') then
+  begin
+    qry := qry + ' and un.unidade ILIKE ' + QuotedStr('%' + lkUnidade.Text + '%');
+  end;
+  qry := qry + ' ORDER BY p.descricao';
+
+  DMMain.FDQRelProdutos.SQL.Text := qry;
+  DMMain.FDQRelProdutos.Open;
+
+  Result := not DMMain.FDQRelProdutos.IsEmpty;
+
+end;
+
+procedure TFrmRelatorioProdutos.FormCreate(Sender: TObject);
+begin
+  DMMain.FDQRelUnidade.Open;
+end;
+
+procedure TFrmRelatorioProdutos.FormDestroy(Sender: TObject);
+begin
+  inherited;
+  DMMain.FDQRelUnidade.Close;
+  DMMain.FDQRelProdutos.Close;
+end;
+
+function TFrmRelatorioProdutos.GetDataSource: TDataSource;
+begin
+  Result := dsListagem;
+end;
+
+function TFrmRelatorioProdutos.GetNomeArquivoFr3: String;
+begin
+  Result := 'RelProdutos.fr3';
+end;
+
+procedure TFrmRelatorioProdutos.lkUnidadeKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if (key = VK_BACK) then
+  begin
+    lkUnidade.KeyValue := null;
+  end;
+end;
+
+procedure TFrmRelatorioProdutos.VincularDadosRelatorio;
+begin
+  Relatorios.frxDBDataSet.DataSource := GetDataSource;
+end;
+
+end.

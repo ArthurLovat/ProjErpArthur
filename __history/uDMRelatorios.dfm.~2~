@@ -1,0 +1,4 @@
+object DMRelatorios: TDMRelatorios
+  Height = 496
+  Width = 685
+end

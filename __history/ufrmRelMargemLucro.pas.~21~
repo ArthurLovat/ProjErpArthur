@@ -1,0 +1,139 @@
+unit ufrmRelMargemLucro;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uFrmModeloRelatorioPadrao, cxGraphics,
+  cxControls, cxLookAndFeels, cxLookAndFeelPainters, cxGeometry,
+  dxFramedControl, cxContainer, cxEdit, cxStyles, cxCustomData, cxFilter,
+  cxData, cxDataStorage, cxNavigator, dxDateRanges, dxScrollbarAnnotations,
+  Data.DB, cxDBData, cxGridLevel, cxClasses, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  AdvGlowButton, cxGroupBox, dxGDIPlusClasses, Vcl.ExtCtrls, Vcl.StdCtrls,
+  dxPanel, Vcl.DBCtrls, cxTextEdit, cxMaskEdit, cxSpinEdit, uDMMAin;
+
+type
+  TfrmRelMargemLucro = class(TFrmModeloRelatorioPadrao)
+    lblSituacao: TLabel;
+    lblCodigo: TLabel;
+    lblDesc: TLabel;
+    lblUnidadeMedida: TLabel;
+    edtCodigo: TEdit;
+    edtDescricao: TEdit;
+    cbxSituacao: TComboBox;
+    lkUnidade: TDBLookupComboBox;
+    spedtMargem: TcxSpinEdit;
+    lblPorcentagem: TLabel;
+    dsListagem: TDataSource;
+    dsListagemUn: TDataSource;
+    grdListagemVwcodigo: TcxGridDBColumn;
+    grdListagemVwdescricao: TcxGridDBColumn;
+    grdListagemVwpreco_custo: TcxGridDBColumn;
+    grdListagemVwpreco_venda: TcxGridDBColumn;
+    grdListagemVwlucro: TcxGridDBColumn;
+    grdListagemVwmargem_lucro: TcxGridDBColumn;
+    lblPercent: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure lkUnidadeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+  private
+
+  protected
+    Function FazerPesquisa: boolean; override;
+    function GetDataSource: TDataSource; override;
+    function GetNomeArquivoFr3: String; override;
+    procedure VincularDadosRelatorio; override;
+
+  public
+
+  end;
+
+
+implementation
+
+{$R *.dfm}
+
+{ TfrmRelMargemLucro }
+
+function TfrmRelMargemLucro.FazerPesquisa: boolean;
+begin
+  DMMain.qryRelMargemLucro.Close;
+
+  var vSql: string := 'SELECT p.codigo, p.descricao, p.preco_custo, p.preco_venda' +
+                      ', (preco_venda - preco_custo) AS lucro,' +
+                      ' ((preco_venda - preco_custo) / (preco_venda)) * 100 AS margem_lucro' +
+                      ' FROM tprodutos as p' +
+                      ' inner join tunidades_medida as un on p.tunidade_medida_id = un.id' +
+                      ' WHERE 1=1';
+  if (Trim(edtCodigo.Text) <> '') then
+  begin
+    vSql := vSql + ' and p.codigo = ' + QuotedStr(edtCodigo.Text);
+  end;
+  if (Trim(edtDescricao.Text) <> '') then
+  begin
+    vSql := vSql + ' and ' + MontarSqlILike('p.descricao', edtDescricao.Text);
+  end;
+  if (Trim(cbxSituacao.Text) <> 'Ambos') then
+  begin
+    if (Trim(cbxSituacao.Text) = 'Ativo') then
+    begin
+      vSql := vSql + ' and p.ativo = true';
+    end
+    else
+    begin
+      vSql := vSql + ' and p.ativo = false';
+    end;
+  end;
+  if (Trim(lkUnidade.Text) <> '') then
+  begin
+    vSql := vSql + ' and un.unidade ILIKE ' + QuotedStr('%' + lkUnidade.Text + '%');
+  end;
+  if (spedtMargem.Value > 0) then
+  begin
+    vSql := vSql + ' and (((p.preco_venda - p.preco_custo) / p.preco_venda) * 100) >= :margem';
+  end;
+
+  vSql := vSql + ' ORDER BY p.descricao';
+  DMMain.qryRelMargemLucro.SQL.Text := vSql;
+  if (spedtMargem.Value > 0) then
+  begin
+    DMMain.qryRelMargemLucro.ParamByName('margem').AsFloat := spedtMargem.Value;
+  end;
+  DMMain.qryRelMargemLucro.Open;
+  Result := not DMMain.qryRelMargemLucro.IsEmpty;
+end;
+
+procedure TfrmRelMargemLucro.FormCreate(Sender: TObject);
+begin
+  inherited;
+  DMMain.FDQRelUnidade.Open;
+end;
+
+function TfrmRelMargemLucro.GetDataSource: TDataSource;
+begin
+  Result := dsListagem;
+end;
+
+function TfrmRelMargemLucro.GetNomeArquivoFr3: String;
+begin
+  Result := 'RelMargemLucro.fr3';
+end;
+
+procedure TfrmRelMargemLucro.lkUnidadeKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  inherited;
+  if (key = VK_BACK) then
+  begin
+    lkUnidade.KeyValue := null;
+  end;
+end;
+
+procedure TfrmRelMargemLucro.VincularDadosRelatorio;
+begin
+  Relatorios.frxDBDataSet.DataSource := GetDataSource;
+end;
+
+end.

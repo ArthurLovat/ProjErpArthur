@@ -1,0 +1,156 @@
+unit uListagemBairros;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxEdit,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxButtonEdit,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  cxButtons,
+  cxGridLevel,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxClasses,
+  cxGridCustomView,
+  cxGrid,
+  uDMMain,
+  uCadBairros;
+
+type
+  TfrmListagemBairros = class(TForm)
+    lblBairros: TLabel;
+    cxGrdBairros: TcxGrid;
+    cxGrdBairrosVIew: TcxGridDBTableView;
+    cxGrdProdutosDBTableViewbtnExcluir: TcxGridDBColumn;
+    cxGrdProdutosDBTableViewEditar: TcxGridDBColumn;
+    cxGrdBairrosLevel1: TcxGridLevel;
+    cxbtnNovo: TcxButton;
+    cxBtnPesquisar: TcxButton;
+    edtPesquisar: TEdit;
+    dsBairros: TDataSource;
+    cxGrdBairrosVIewid: TcxGridDBColumn;
+    cxGrdBairrosVIewnome_bairro: TcxGridDBColumn;
+    procedure NovoOuEditar(AEditar: Boolean);
+    procedure FormCreate(Sender: TObject);
+    procedure AplicarFiltro;
+    procedure edtPesquisarKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure cxBtnPesquisarClick(Sender: TObject);
+    procedure cxbtnNovoClick(Sender: TObject);
+    procedure cxGrdProdutosDBTableViewEditarPropertiesButtonClick(
+      Sender: TObject; AButtonIndex: Integer);
+    procedure cxGrdProdutosDBTableViewbtnExcluirPropertiesButtonClick(
+      Sender: TObject; AButtonIndex: Integer);
+    procedure cxGrdBairrosVIewCellDblClick(Sender: TcxCustomGridTableView;
+      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+      AShift: TShiftState; var AHandled: Boolean);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+
+implementation
+
+{$R *.dfm}
+
+
+procedure TfrmListagemBairros.cxbtnNovoClick(Sender: TObject);
+begin
+  NovoOuEditar(false);
+end;
+
+procedure TfrmListagemBairros.cxBtnPesquisarClick(Sender: TObject);
+begin
+  AplicarFiltro;
+end;
+
+procedure TfrmListagemBairros.cxGrdBairrosVIewCellDblClick(
+  Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+  AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  NovoOuEditar(True);
+end;
+
+procedure TfrmListagemBairros.cxGrdProdutosDBTableViewbtnExcluirPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  cxGrdBairrosVIew.DataController.DeleteFocused;
+end;
+
+procedure TfrmListagemBairros.cxGrdProdutosDBTableViewEditarPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  NovoOuEditar(True);
+end;
+
+procedure TfrmListagemBairros.edtPesquisarKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  AplicarFiltro;
+end;
+
+procedure TfrmListagemBairros.FormCreate(Sender: TObject);
+begin
+  DMMain.FDTBairros.Open;
+end;
+
+procedure TfrmListagemBairros.AplicarFiltro;
+begin
+  if(edtPesquisar.Text <> '') then
+  begin
+    DMMain.FDTBairros.Filter := 'upper(nome_bairro) like(''%' +
+    UpperCase(StringReplace(edtPesquisar.Text, ' ', '%', [rfReplaceAll])) + '%'')';
+  end;
+  DMMain.FDTBairros.Filtered := edtPesquisar.Text <> '';
+end;
+
+procedure TfrmListagemBairros.NovoOuEditar(AEditar: Boolean);
+begin
+  var vFrmCadBairros := TFrmCadBairros.Create(nil);
+  try
+    if (AEditar) then
+    begin
+      DMMain.FDTBairros.Edit;
+    end
+    else
+    begin
+      DMMain.FDTBairros.Append;
+    end;
+
+    if (vFrmCadBairros.ShowModal = mrOk ) then
+    begin
+      Application.MessageBox('Bairro Cadastrado com sucesso!', 'Aviso:', MB_ICONQUESTION + MB_OK);
+    end;
+  finally
+    vFrmCadBairros.Free;
+  end;
+end;
+
+end.

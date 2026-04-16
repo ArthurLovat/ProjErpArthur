@@ -1,0 +1,127 @@
+unit uFrmCadUsuarios;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  uFrmModeloCadPadrao,
+  cxGraphics,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  Vcl.Menus, cxControls,
+  cxContainer,
+  cxEdit,
+  Data.DB,
+  Vcl.DBCtrls,
+  cxTextEdit,
+  cxDBEdit,
+  Vcl.StdCtrls,
+  cxButtons,
+  uDMMain,
+  uUtils,
+  Generics.Collections,
+  uValidacao;
+
+type
+  TfrmCadUsuarios = class(TfrmModeloCadPadrao)
+    lblNome: TLabel;
+    dbcbAtivo: TDBCheckBox;
+    edtNome: TcxDBTextEdit;
+    lblEmail: TLabel;
+    edtEmail: TcxDBTextEdit;
+    lblLogin: TLabel;
+    edtLogin: TcxDBTextEdit;
+    lblSenha: TLabel;
+    edtSenha: TcxDBTextEdit;
+
+  procedure btnCadastrarClick(Sender: TObject); override;
+
+  protected
+    function GetDataSet: TDataSet; override;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+
+{ TfrmCadUsuarios }
+
+procedure TfrmCadUsuarios.btnCadastrarClick(Sender: TObject);
+begin
+
+    var vValidacao: TValidacao := TValidacao.Create;
+
+    try
+      if (Trim(edtNome.Text) = '') then
+      begin
+        vValidacao.AdicionarMensagem(edtNome, 'O Nome precisa ser preenchido!');
+      end
+      else if(Length(edtNome.Text) < 3) then
+      begin
+        vValidacao.AdicionarMensagem(edtNome, 'O Nome tem que ter mais de 3 caracteres!');
+      end;
+      if (Trim(edtlogin.Text) = '') then
+      begin
+        vValidacao.AdicionarMensagem(edtlogin, 'O Login precisa ser preenchido!');
+      end
+      else if(Length(edtLogin.Text) < 3) then
+      begin
+        vValidacao.AdicionarMensagem(edtlogin, 'O Login tem que ter mais de 3 caracteres!');
+      end;
+      if (Trim(edtSenha.Text) = '') then
+      begin
+        vValidacao.AdicionarMensagem(edtSenha, 'A Senha precisa ser preenchida!');
+      end
+      else if(Length(edtSenha.Text) < 3) then
+      begin
+        vValidacao.AdicionarMensagem(edtSenha, 'A Senha tem que ter mais de 3 caracteres!');
+      end;
+
+      vValidacao.ExibirMensagens;
+
+
+
+    finally
+      vValidacao.Free;
+    end;
+
+
+//  var vCamposValidar: TDictionary<TCxDBTextEdit, TLabel> := TDictionary<TCxDBTextEdit, TLabel>.Create;
+//  try
+//    vCamposValidar.Add(edtLogin, lblLogin);
+//    vCamposValidar.Add(edtsenha, lblSenha);
+//    vCamposValidar.Add(edtNome, lblNome);
+//
+//    var vRespostaDeTodosOsCamposValidados: String := TUtils.ValidarCamposCadastros(vCamposValidar);
+//
+//    if (vRespostaDeTodosOsCamposValidados <> 'OK') then
+//    begin
+//      Application.MessageBox(PWideChar(vRespostaDeTodosOsCamposValidados), 'Aviso:', MB_ICONQUESTION + MB_OK);
+//      Exit;
+//    end;
+//
+//    GetDataSet.Post;
+//    ModalResult := mrOk;
+//  finally
+//    vCamposValidar.Free;
+//  end;
+
+end;
+
+function TfrmCadUsuarios.GetDataSet: TDataSet;
+begin
+  Result := DMMain.FDTUsuarios;
+end;
+
+end.

@@ -1,0 +1,79 @@
+unit uValidacao;
+
+interface
+
+uses
+  Vcl.Forms,
+  System.Classes,
+  System.Generics.Collections,
+  Vcl.Controls, Winapi.Windows;
+
+ Type
+  TValidacao = Class
+  private
+    FCamposValidar: TDictionary<TWinControl, String>;
+  public
+    procedure AfterConstruction; override;
+    destructor Destroy; override;
+
+    procedure AdicionarMensagem(AComponent: TWinControl; AMessage: String);
+    procedure ExibirMensagens;
+    function TemErro: boolean;
+
+
+
+  End;
+
+implementation
+
+{ TValidacao }
+
+procedure TValidacao.AdicionarMensagem(AComponent: TWinControl; AMessage: String);
+begin
+  FCamposValidar.AddOrSetValue(AComponent, AMessage);
+end;
+
+procedure TValidacao.AfterConstruction;
+begin
+  inherited;
+  FCamposValidar := TDictionary<TWinControl, String>.Create;
+end;
+
+destructor TValidacao.Destroy;
+begin
+  FCamposValidar.Free;
+  inherited;
+end;
+
+procedure TValidacao.ExibirMensagens;
+begin
+  var vListaMensagens: TStringList := TStringList.Create;
+  var vComponent: TWinControl := nil;
+  try
+    for var vCampo: TPair<TWinControl, String> in FCamposValidar do
+    begin
+      vListaMensagens.Add(' - ' + vCampo.Value);
+      if (vComponent = nil) then
+      begin
+        vComponent := vCampo.Key;
+      end;
+    end;
+
+    if (vListaMensagens.Count > 0) then
+    begin
+      vListaMensagens.Insert(0, '');
+      vListaMensagens.Insert(0, 'Corrija os problemas relatados abaixo:');
+      Application.MessageBox(PWideChar(vListaMensagens.Text), 'Aviso:', MB_ICONQUESTION + MB_OK);
+      vComponent.SetFocus;
+    end;
+  finally
+    vListaMensagens.Free;
+  end;
+end;
+
+function TValidacao.TemErro: boolean;
+begin
+  Result := (FCamposValidar.Count > 0);
+end;
+
+end.

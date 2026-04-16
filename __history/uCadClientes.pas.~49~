@@ -1,0 +1,137 @@
+unit uCadClientes;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  Vcl.Menus,
+  cxControls,
+  cxContainer,
+  cxEdit,
+  Vcl.DBCtrls,
+  cxMemo,
+  cxDBEdit,
+  Vcl.StdCtrls,
+  cxTextEdit,
+  cxButtons,
+  Data.DB,
+  uDMMain,
+  Vcl.ExtCtrls,
+  uUtils,
+  uFrmModeloCadPadrao,
+  Generics.Collections,
+  uValidacao, cxMaskEdit, cxDropDownEdit, cxCalendar;
+
+type
+  TfrmCadClientes = class(TfrmModeloCadPadrao)
+    lblRazaoSocial: TLabel;
+    lblCpfCnpj: TLabel;
+    lblNomeFantasia: TLabel;
+    lblNumero: TLabel;
+    lblEndereco: TLabel;
+    lblComplemento: TLabel;
+    lblPontoReferencia: TLabel;
+    Label1: TLabel;
+    Label2: TLabel;
+    lblCidade: TLabel;
+    lblBairros: TLabel;
+    edtRazaoSocial: TcxDBTextEdit;
+    edtCpfCnpj: TcxDBTextEdit;
+    dbcbAtivo: TDBCheckBox;
+    edtNomeFantasia: TcxDBTextEdit;
+    edtRua: TcxDBTextEdit;
+    lkCidade: TDBLookupComboBox;
+    edtComplemento: TcxDBTextEdit;
+    edtPontoReferencia: TcxDBTextEdit;
+    edtCep: TcxDBTextEdit;
+    edtNumero: TcxDBTextEdit;
+    lkBairro: TDBLookupComboBox;
+    pnlFoto: TPanel;
+    dsListagemCidades: TDataSource;
+    dsListagemBairros: TDataSource;
+    lblDtCad: TLabel;
+    dptDataCadastro: TcxDBDateEdit;
+
+    procedure btnCadastrarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+
+  private
+    { Private declarations }
+  protected
+    function GetDataSet: TDataSet; override;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+
+
+
+{ TfrmCadClientes }
+
+procedure TfrmCadClientes.btnCadastrarClick(Sender: TObject);
+begin
+  var vValidacao: TValidacao := TValidacao.Create;
+  try
+    vValidacao.RealizarValidacaoBasica(edtNomeFantasia, 'NomeFantasia', edtNomeFantasia.Text);
+    vValidacao.RealizarValidacaoBasica(edtCpfCnpj, 'Cpf/Cnpj', edtCpfCnpj.Text);
+    if (not TUtils.ValidarDocumento(edtCpfCnpj.Text)) then
+    begin
+      vValidacao.AdicionarMensagem(edtCpfCnpj, 'O CPF/CNPJ precisa ser válido');
+    end;
+    vValidacao.RealizarValidacaoBasica(edtRua, 'Rua', edtRua.Text);
+    vValidacao.RealizarValidacaoBasica(edtNumero, 'Numero', edtNumero.Text);
+    vValidacao.RealizarValidacaoBasica(lkBairro, 'Bairro', lkBairro.Text);
+    vValidacao.RealizarValidacaoBasica(lkCidade, 'Cidade', lkCidade.Text);
+    vValidacao.ExibirMensagens;
+    if (vValidacao.TemErro = False) then
+    begin
+      if (Trim(dptDataCadastro.Text) = '') then
+      begin
+        DMMain.FDQListagemClientes.FieldByName('data_cadastro').AsDateTime := Now;
+      end;
+      DMMain.FDQListagemClientes.FieldByName('data_alteracao').AsDateTime := Now;
+      GetDataSet.Post;
+      ModalResult := mrOk;
+    end;
+  finally
+    vValidacao.Free;
+  end;
+end;
+
+
+procedure TfrmCadClientes.FormDestroy(Sender: TObject);
+begin
+  inherited;
+  DMMain.FDTCidades.Close;
+  DMMAin.FDTBairros.Close;
+end;
+
+procedure TfrmCadClientes.FormShow(Sender: TObject);
+begin
+  inherited;
+  DMMain.FDTCidades.Open;
+  DMMAin.FDTBairros.Open;
+end;
+
+function TfrmCadClientes.GetDataSet: TDataSet;
+begin
+  Result := DMMain.FDQListagemClientes;
+end;
+
+end.

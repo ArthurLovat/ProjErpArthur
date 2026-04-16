@@ -1,0 +1,98 @@
+unit uListagemBairros;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxEdit,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxButtonEdit,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  cxButtons,
+  cxGridLevel,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxClasses,
+  cxGridCustomView,
+  cxGrid,
+  uDMMain,
+  uCadBairros,
+  uFrmModeloListagemPadrao;
+
+type
+  TfrmListagemBairros = class(TFrmModeloListagemPadrao)
+    tbvListagemid: TcxGridDBColumn;
+    tbvListagemnome_bairro: TcxGridDBColumn;
+    
+    { Private declarations }
+  public
+    { Public declarations }
+
+  protected
+    function GetCaptionFormulario: String; override;
+    function GetDataSet: TDataSet; override;
+    function GetFormularioCadastro: TFormClass; override;
+    function GetNomeCampoFiltro: String; override;
+    function GetDataSource: TDataSource; override;
+
+
+  end;
+
+
+implementation
+
+{$R *.dfm}
+
+
+
+{ TfrmListagemBairros }
+
+function TfrmListagemBairros.GetCaptionFormulario: String;
+begin
+  Result := Self.Caption;
+end;
+
+function TfrmListagemBairros.GetDataSet: TDataSet;
+begin
+  Result := DMMain.FDTBairros;
+end;
+
+function TfrmListagemBairros.GetDataSource: TDataSource;
+begin
+  Result := Self.dsListagem;
+end;
+
+function TfrmListagemBairros.GetFormularioCadastro: TFormClass;
+begin
+  Result := TfrmCadBairros;
+end;
+
+function TfrmListagemBairros.GetNomeCampoFiltro: String;
+begin
+  Result := 'nome_bairro';
+end;
+
+end.

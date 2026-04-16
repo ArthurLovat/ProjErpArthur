@@ -1,0 +1,49 @@
+object frmModeloCadPadrao: TfrmModeloCadPadrao
+  Left = 0
+  Top = 0
+  Caption = 'Inserir o nome do cadastro aqui'
+  ClientHeight = 462
+  ClientWidth = 788
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poScreenCenter
+  OnDestroy = FormDestroy
+  TextHeight = 15
+  object lblTitulo: TLabel
+    Left = 216
+    Top = 120
+    Width = 77
+    Height = 38
+    Caption = 'Titulo'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -28
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object btnCadastrar: TcxButton
+    Left = 447
+    Top = 248
+    Width = 145
+    Height = 25
+    Caption = 'Cadastrar'
+    TabOrder = 0
+    OnClick = btnCadastrarClick
+  end
+  object btnCancelar: TcxButton
+    Left = 296
+    Top = 248
+    Width = 145
+    Height = 25
+    Caption = 'Cancelar'
+    TabOrder = 1
+    OnClick = btnCancelarClick
+  end
+  object dsCadastro: TDataSource
+  end
+end

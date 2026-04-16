@@ -1,0 +1,82 @@
+unit uCadEstados;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  Vcl.Menus,
+  cxControls,
+  cxContainer,
+  cxEdit,
+  Vcl.DBCtrls,
+  cxMemo,
+  cxDBEdit,
+  Vcl.StdCtrls,
+  cxTextEdit,
+  cxButtons,
+  Data.DB,
+  uDMMain,
+  uUtils,
+  uFrmModeloCadPadrao,
+  Generics.Collections,
+  uValidacao;
+
+type
+  TfrmCadEstados = class(TfrmModeloCadPadrao)
+    lblDescricao: TLabel;
+    lblUF: TLabel;
+    edtDescricao: TcxDBTextEdit;
+    edtUF: TcxDBTextEdit;
+    procedure btnCadastrarClick(Sender: TObject); override;
+  private
+    { Private declarations }
+
+  protected
+    function GetDataSet: TDataSet; override;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+
+{ TfrmCadEstados }
+
+procedure TfrmCadEstados.btnCadastrarClick(Sender: TObject);
+begin
+  var vValidacao: TValidacao := TValidacao.Create;
+  try
+    vValidacao.RealizarValidacaoBasica(edtDescricao, 'Descrição', edtDescricao.Text);
+    vValidacao.RealizarValidacaoBasica(edtUf, 'UF', edtUf.Text);
+    vValidacao.ExibirMensagens;
+    if (vValidacao.TemErro = False) then
+    begin
+      GetDataSet.Post;
+      ModalResult := mrOk;
+    end;
+  finally
+    vValidacao.Free;
+  end
+end;
+
+function TfrmCadEstados.GetDataSet: TDataSet;
+begin
+  Result := DMMain.FDTEstados;
+end;
+
+end.
+
+

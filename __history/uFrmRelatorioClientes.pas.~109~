@@ -1,0 +1,221 @@
+unit uFrmRelatorioClientes;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxGeometry,
+  dxFramedControl,
+  cxContainer,
+  cxEdit,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxGridLevel,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxClasses,
+  cxGridCustomView,
+  cxGrid,
+  AdvGlowButton,
+  Vcl.StdCtrls,
+  cxGroupBox,
+  dxGDIPlusClasses,
+  Vcl.ExtCtrls,
+  dxPanel,
+  uDMMain, Vcl.ComCtrls, dxCore, cxDateUtils, cxTextEdit, cxMaskEdit,
+  cxDropDownEdit, cxCalendar, Vcl.DBCtrls, cxCheckBox, uFrmModeloRelatorioPadrao,
+  Vcl.Grids, Vcl.DBGrids, frxClass, frxDBSet, uDMRelatorios;
+
+type
+  TFrmRelatorioClientes = class(TFrmModeloRelatorioPadrao)
+    cxGroupBox1: TcxGroupBox;
+    dtpCadastroDe: TcxDateEdit;
+    lblDataCadastro: TLabel;
+    lblDataAlteracao: TLabel;
+    lblCadAte: TLabel;
+    lblAteAltera: TLabel;
+    dtpAlteracaoDe: TcxDateEdit;
+    dtpCadastroAte: TcxDateEdit;
+    dtpAlteracaoAte: TcxDateEdit;
+    cbxCadastro: TcxCheckBox;
+    cbxAlteracao: TcxCheckBox;
+    edtNome: TEdit;
+    edtCidade: TEdit;
+	  cbxSituacao: TComboBox;
+    dsListagem: TDataSource;
+    dsListagemUf: TDataSource;
+    grdListagemVwnome_fantasia: TcxGridDBColumn;
+    grdListagemVwrazao_social: TcxGridDBColumn;
+    grdListagemVwcpf_cnpj: TcxGridDBColumn;
+    grdListagemVwdata_cadastro: TcxGridDBColumn;
+    grdListagemVwdata_alteracao: TcxGridDBColumn;
+    grdListagemVwendereco: TcxGridDBColumn;
+    grdListagemVwnumero_endereco: TcxGridDBColumn;
+    grdListagemVwnome_bairro: TcxGridDBColumn;
+    grdListagemVwnome_cidade: TcxGridDBColumn;
+    grdListagemVwuf: TcxGridDBColumn;
+    lkUFF: TDBLookupComboBox;
+
+    procedure cbxCadastroPropertiesChange(Sender: TObject);
+    procedure cbxAlteracaoPropertiesChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+
+  private
+    { Private declarations }
+
+  protected
+     function FazerPesquisa: Boolean; override;
+     function GetDataSource: TDataSource; override;
+     function GetFrxReport: TfrxReport; override;
+     function GetNomeArquivoFr3: String; override;
+     procedure VincularDadosRelatorio; override;
+
+
+  public
+    { Public declarations }
+  end;
+
+
+
+implementation
+
+{$R *.dfm}
+
+
+procedure TFrmRelatorioClientes.cbxAlteracaoPropertiesChange(Sender: TObject);
+begin
+  dtpAlteracaoDe.Enabled := cbxAlteracao.Checked;
+  dtpAlteracaoAte.Enabled := cbxAlteracao.Checked;
+end;
+
+procedure TFrmRelatorioClientes.cbxCadastroPropertiesChange(Sender: TObject);
+begin
+  dtpCadastroDe.Enabled := cbxCadastro.Checked;
+  dtpCadastroAte.Enabled := cbxCadastro.Checked;
+end;
+
+function TFrmRelatorioClientes.FazerPesquisa: Boolean;
+begin
+   DMMain.FDQRelClientes.Close;
+  var qry: string;
+  qry := 'SELECT cli.ativo ' +
+         ', cli.nome_fantasia ' +
+         ', cli.razao_social ' +
+         ', cli.cpf_cnpj ' +
+         ', cli.data_cadastro ' +
+         ', cli.data_alteracao ' +
+         ', cli.endereco ' +
+         ', cli.numero_endereco ' +
+         ', cli.complemento_endereco ' +
+         ', bairro.nome_bairro ' +
+         ', cid.nome_cidade ' +
+         ', est.uf ' +
+         'FROM tclientes as cli ' +
+         'INNER JOIN tbairros as bairro ' +
+         'on cli.tbairros_id = bairro.id ' +
+         'INNER JOIN tcidades as cid ' +
+         'on cli.tcidades_id = cid.id ' +
+         'INNER JOIN testados as est ' +
+         'on cid.testados_id = est.id ' +
+         'WHERE 1=1';
+  if (Trim(edtNome.Text) <> '') then
+  begin
+    qry := qry + ' AND ' + MontarSqlIlike(['cli.nome_fantasia', 'cli.razao_social'], edtNome.Text);
+  end;
+
+  if (Trim(edtCidade.Text) <> '') then
+  begin
+    qry := qry + ' AND ' + MontarSqlIlike('cid.nome_cidade', edtCidade.Text);
+  end;
+
+  if (Trim(lkUFF.Text) <> '') then
+  begin
+    qry := qry + ' AND ' + MontarSqlIlike('est.uf', lkUFF.Text);
+  end;
+  if (Trim(cbxSituacao.Text) <> 'Ambos') then
+  begin
+    if (Trim(cbxSituacao.Text) = 'Ativo') then
+    begin
+      qry := qry + ' and cli.ativo = true';
+    end
+    else
+    begin
+      qry := qry + ' and cli.ativo = false';
+    end;
+  end;
+
+  if (cbxCadastro.Checked) then
+  begin
+    qry := qry + ' and cli.data_cadastro between ' +
+          QuotedStr(FormatDateTime('yyyy-mm-dd', dtpCadastroDe.Date)) +
+           ' and ' +
+           QuotedStr(FormatDateTime('yyyy-mm-dd', dtpCadastroAte.Date));
+  end;
+  if (cbxAlteracao.Checked) then
+  begin
+    qry := qry + ' and cli.data_alteracao between ' +
+           QuotedStr(FormatDateTime('yyyy-mm-dd', dtpAlteracaoDe.Date)) +
+           ' and ' +
+           QuotedStr(FormatDateTime('yyyy-mm-dd', dtpAlteracaoAte.Date));
+  end;
+
+  qry := qry + ' ORDER BY cli.nome_fantasia';
+
+  DMMain.FDQRelClientes.SQL.Text := qry;
+  DMMain.FDQRelClientes.Open;
+
+  Result := not DMMAin.FDQRelClientes.IsEmpty;
+end;
+
+procedure TFrmRelatorioClientes.FormCreate(Sender: TObject);
+begin
+  inherited;
+  DMMain.FDQRelEstados.Open;
+  dsListagemUf.DataSet := DMMain.FDQRelEstados;
+end;
+
+procedure TFrmRelatorioClientes.FormDestroy(Sender: TObject);
+begin
+  inherited;
+  DMMain.FDQRelEstados.Close;
+  DMMain.FDQRelClientes.Close;
+end;
+
+function TFrmRelatorioClientes.GetDataSource: TDataSource;
+begin
+  Result := dsListagem;
+end;
+
+function TFrmRelatorioClientes.GetNomeArquivoFr3: String;
+begin
+  Result := 'RelClientes.fr3';
+end;
+
+procedure TFrmRelatorioClientes.VincularDadosRelatorio;
+begin
+  Relatorios.frxDBDataSet.DataSource := GetDataSource;
+end;
+
+end.

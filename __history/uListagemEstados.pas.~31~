@@ -1,0 +1,153 @@
+unit uListagemEstados;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxEdit,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxButtonEdit,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  cxButtons,
+  cxGridLevel,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxClasses,
+  cxGridCustomView,
+  cxGrid,
+  uDMMain,
+  uCadEstados,
+  uFrmModeloListagempadrao;
+
+type
+  TfrmListagemEstados = class(TFrmModeloListagempadrao)
+    tbvListagemid: TcxGridDBColumn;
+    tbvListagemnome_estado: TcxGridDBColumn;
+    tbvListagemuf: TcxGridDBColumn;
+    procedure cxbtnNovoClick(Sender: TObject);
+    procedure NovoOuEditar(AEditar: Boolean);
+    procedure cxGrdProdutosDBTableViewbtnEditarPropertiesButtonClick(
+      Sender: TObject; AButtonIndex: Integer);
+    procedure cxGrdProdutosDBTableView1btnExcluirPropertiesButtonClick(
+      Sender: TObject; AButtonIndex: Integer);
+    procedure AplicarFiltro();
+    procedure cxBtnPesquisarClick(Sender: TObject);
+    procedure edtPesquisarKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure cxGrdProdutosDBTableView1CellDblClick(
+      Sender: TcxCustomGridTableView;
+      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+      AShift: TShiftState; var AHandled: Boolean);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmListagemEstados.cxbtnNovoClick(Sender: TObject);
+begin
+  NovoOuEditar(false);
+end;
+
+procedure TfrmListagemEstados.cxBtnPesquisarClick(Sender: TObject);
+begin
+  AplicarFiltro;
+end;
+
+procedure TfrmListagemEstados.cxGrdProdutosDBTableView1btnExcluirPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  cxGrdProdutosDBTableView1.DataController.DeleteFocused;
+end;
+
+procedure TfrmListagemEstados.cxGrdProdutosDBTableView1CellDblClick(
+  Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+  AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  NovoOuEditar(true);
+end;
+
+procedure TfrmListagemEstados.cxGrdProdutosDBTableViewbtnEditarPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  NovoOuEditar(true);
+end;
+
+procedure TfrmListagemEstados.edtPesquisarKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  if (key = vk_return) then
+  begin
+    cxBtnPesquisar.Click;
+  end;
+end;
+
+procedure TfrmListagemEstados.FormCreate(Sender: TObject);
+begin
+  DMMain.FDTEstados.Open;
+end;
+
+procedure TfrmListagemEstados.AplicarFiltro;
+begin
+  if(edtPesquisar.Text <> '') then
+  begin
+    DMMain.FDTEstados.Filter := 'upper(nome_estado) like(''%' +
+    UpperCase(StringReplace(edtPesquisar.Text, ' ', '%', [rfReplaceAll])) + '%'')';
+  end;
+  DMMain.FDTEstados.Filtered := edtPesquisar.Text <> '';
+end;
+
+procedure TfrmListagemEstados.NovoOuEditar(AEditar: Boolean);
+begin
+  var vFrmCadEstados: TFrmCadEstados;
+  vFrmCadEstados := TFrmCadEstados.Create(nil);
+  try
+    if (AEditar) then
+    begin
+      DMMain.FDTEstados.Edit;
+    end
+    else
+    begin
+      DMMain.FDTEstados.Append;
+    end;
+
+    if (vFrmCadEstados.ShowModal = mrOk ) then
+    begin
+      Application.MessageBox('Estado Cadastrado com sucesso!', 'Aviso:',
+        MB_ICONQUESTION + MB_OK);
+    end;
+  finally
+    vFrmCadEstados.Free;
+  end;
+end;
+
+end.

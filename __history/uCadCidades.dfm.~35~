@@ -1,0 +1,99 @@
+object frmCadCidades: TfrmCadCidades
+  Caption = 'Cadastro De Cidades'
+  Font.Height = -13
+  OnCreate = FormCreate
+  TextHeight = 17
+  object lblCadCidades: TLabel [1]
+    Left = 216
+    Top = 122
+    Width = 268
+    Height = 38
+    Caption = 'Cadastro De Cidades'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -28
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lblCidade: TLabel [2]
+    Left = 216
+    Top = 166
+    Width = 66
+    Height = 25
+    Caption = 'Cidade:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -19
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lblUF: TLabel [3]
+    Left = 216
+    Top = 205
+    Width = 29
+    Height = 25
+    Caption = 'UF:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -19
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  inherited btnCadastrar: TcxButton
+    TabOrder = 4
+  end
+  inherited btnCancelar: TcxButton
+    TabOrder = 5
+  end
+  object cxbtnCadastrar: TcxButton [6]
+    Left = 447
+    Top = 248
+    Width = 145
+    Height = 25
+    Caption = 'Cadastrar'
+    TabOrder = 0
+    OnClick = btnCadastrarClick
+  end
+  object cxbtnCancelar: TcxButton [7]
+    Left = 296
+    Top = 248
+    Width = 145
+    Height = 25
+    Caption = 'Cancelar'
+    TabOrder = 1
+    OnClick = btnCancelarClick
+  end
+  object edtDescricao: TcxDBTextEdit [8]
+    Left = 383
+    Top = 166
+    DataBinding.DataField = 'nome_cidade'
+    DataBinding.DataSource = dsCidade
+    TabOrder = 2
+    Width = 209
+  end
+  object dbLkCbbUF: TDBLookupComboBox [9]
+    Left = 383
+    Top = 203
+    Width = 209
+    Height = 25
+    DataField = 'testados_id'
+    DataSource = dsCidade
+    KeyField = 'id'
+    ListField = 'nome_estado'
+    ListSource = dsListagemEstados
+    TabOrder = 3
+  end
+  object dsCidade: TDataSource
+    DataSet = DMMain.FDTCidades
+    Left = 80
+    Top = 25
+  end
+  object dsListagemEstados: TDataSource
+    DataSet = DMMain.FDTEstados
+    Left = 40
+    Top = 25
+  end
+end

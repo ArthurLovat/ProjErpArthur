@@ -1,0 +1,102 @@
+unit uFrmListagemProdutos;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxEdit,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxButtonEdit,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  cxButtons,
+  cxGridLevel,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxClasses,
+  cxGridCustomView,
+  cxGrid,
+  uDMMain,
+  uCadProduto
+  ;
+
+type
+  TfrmListagemProdutos = class(TForm)
+    lblCadProduto: TLabel;
+    cxgrdProdutos: TcxGrid;
+    cxgrdDBTVListagem: TcxGridDBTableView;
+    cxgrdProdutosLevel1: TcxGridLevel;
+    cxbtnNovo: TcxButton;
+    cxBtnPesquisar: TcxButton;
+    edtPesquisar: TEdit;
+    dsProdutos: TDataSource;
+    cxgrdDBTVListagemid: TcxGridDBColumn;
+    cxgrdDBTVListagemativo: TcxGridDBColumn;
+    cxgrdDBTVListagemdescricao: TcxGridDBColumn;
+    cxgrdDBTVListagemunidade: TcxGridDBColumn;
+    procedure cxbtnNovoClick(Sender: TObject);
+    procedure NovoOuEditar(AEditar: Boolean);
+  private
+
+  public
+    { Public declarations }
+  end;
+
+
+implementation
+
+{$R *.dfm}
+
+
+
+procedure TfrmListagemProdutos.cxbtnNovoClick(Sender: TObject);
+begin
+  NovoOuEditar(False);
+end;
+
+procedure TfrmListagemProdutos.NovoOuEditar(AEditar: Boolean);
+begin
+  var vFrmCadProdutos: TfrmCadProduto;
+  vFrmCadProduto :=  TfrmCadProduto.Create(nil);
+  try
+    if (AEditar) then
+    begin
+      DMMain.FDTProdutos.Edit;
+    end
+    else
+    begin
+      DMMain.FDTProdutos.Append;
+    end;
+    if (vFrmCadProduto.ShowModal = mrOK) then
+    begin
+      ShowMessage('Produto cadastrado com sucesso');
+    end;
+
+  finally
+    vFrmCadProduto.Free;
+  end;
+end;
+
+end.

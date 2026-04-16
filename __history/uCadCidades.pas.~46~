@@ -1,0 +1,106 @@
+unit uCadCidades;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  Vcl.Menus,
+  cxControls,
+  cxContainer,
+  cxEdit,
+  Data.DB,
+  Vcl.DBCtrls,
+  cxTextEdit,
+  cxDBEdit,
+  Vcl.StdCtrls,
+  cxButtons,
+  uDMMain,
+  uUtils,
+  Generics.Collections,
+  uFrmModeloCadPadrao;
+
+type
+  TfrmCadCidades = class(TfrmModeloCadPadrao)
+    lblCidade: TLabel;
+    lblUF: TLabel;
+    edtDescricao: TcxDBTextEdit;
+    dbLkCbbUF: TDBLookupComboBox;
+    dsListagem: TDataSource;
+
+    procedure btnCadastrarClick(Sender: TObject); override;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction); override;
+
+  public
+  private
+
+  protected
+    function GetDataSet: TDataSet; override;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+
+
+{ TfrmCadCidades }
+
+procedure TfrmCadCidades.btnCadastrarClick(Sender: TObject);
+begin
+  var vCamposValidar: TDictionary<TCxDBTextEdit, TLabel> := TDictionary<TCxDBTextEdit, TLabel>.Create;
+  try
+    vCamposValidar.Add(edtDescricao, lblCidade);
+    var vRespostaDeTodosOsCamposValidados: String := TUtils.ValidarCamposCadastros(vCamposValidar);
+
+    if (vRespostaDeTodosOsCamposValidados <> 'OK') then
+    begin
+      Application.MessageBox(PWideChar(vRespostaDeTodosOsCamposValidados), 'Aviso:', MB_ICONQUESTION + MB_OK);
+      Exit;
+    end;
+    if (Trim(dbLkCbbUF.KeyField) = '') then
+    begin
+      Application.MessageBox('O Campo UF precisa estar preenchido!', 'Aviso:', MB_ICONQUESTION + MB_OK);
+      Exit;
+    end;
+
+    GetDataSet.Post;
+    ModalResult := mrOk;
+  finally
+    vCamposValidar.Free;
+  end;
+
+end;
+
+
+procedure TfrmCadCidades.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  inherited;
+  DMMain.FDTEstados.Close;
+end;
+
+procedure TfrmCadCidades.FormCreate(Sender: TObject);
+begin
+  inherited;
+  DMMAin.FDTEstados.Open;
+end;
+
+function TfrmCadCidades.GetDataSet: TDataSet;
+begin
+  Result := DMMAin.FDTCidades;
+end;
+
+end.

@@ -1,0 +1,41 @@
+inherited frmCadBairros: TfrmCadBairros
+  Left = 0
+  Top = 0
+  Caption = 'Cadastro De Bairros'
+  ClientHeight = 462
+  ClientWidth = 784
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poScreenCenter
+  TextHeight = 17
+  object lblBairro: TLabel
+    Left = 232
+    Top = 189
+    Width = 60
+    Height = 25
+    Caption = 'Bairro:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -19
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object edtDescricao: TcxDBTextEdit
+    Left = 399
+    Top = 189
+    DataBinding.DataField = 'nome_bairro'
+    DataBinding.DataSource = dsBairros
+    TabOrder = 0
+    Width = 213
+  end
+  object dsBairros: TDataSource
+    DataSet = DMMain.FDTBairros
+    Left = 744
+    Top = 425
+  end
+end

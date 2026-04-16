@@ -1,0 +1,182 @@
+unit uFrmModeloRelatorioPadrao;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxGeometry, dxFramedControl, cxContainer, cxEdit,
+  cxTextEdit, cxMaskEdit, cxDropDownEdit, DGSearchComboBox, cxGroupBox, dxPanel,
+  cxCheckBox, cxCheckComboBox, Vcl.StdCtrls, Vcl.DBCtrls, Vcl.ComCtrls, dxCore,
+  cxDateUtils, dxGDIPlusClasses, Vcl.ExtCtrls, AdvGlowButton, cxCalendar,
+  cxImage, cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator,
+  dxDateRanges, dxScrollbarAnnotations, Data.DB, cxDBData, cxGridLevel,
+  cxClasses, cxGridCustomView, cxGridCustomTableView, cxGridTableView,
+  cxGridDBTableView, cxGrid, System.Rtti, System.Generics.Collections, frxClass, frxDesgn;
+
+type
+  TFrmModeloRelatorioPadrao = class(TForm)
+    pnlFiltros: TdxPanel;
+    gpbGrupo1: TcxGroupBox;
+    btnPesquisar: TAdvGlowButton;
+    lblTitle: TLabel;
+    imgTitle: TImage;
+    grdListagemVw: TcxGridDBTableView;
+    grdListagemlvl: TcxGridLevel;
+    grdListagem: TcxGrid;
+    dxPanel1: TdxPanel;
+    btnImprimir: TAdvGlowButton;
+
+
+    procedure btnPesquisarClick(Sender: TObject);
+    procedure btnImprimirClick(Sender: TObject);
+
+
+  private
+    { Private declarations }
+
+  protected
+    procedure ExecutarPesquisa;
+    function PegaCamposQueIraoProInsert: TList<TControl>;
+    function MontarSqlILike(ACampo, AValor: String): String; overload;
+    function MontarSqlILike(ACampo: array of String; AValor: String): String; overload;
+    Function FazerPesquisa: boolean; virtual;
+    procedure MostrarRelatorio;
+    function GetDataSource: TDataSource; virtual;
+    function GetFrxReport: TfrxReport; virtual;
+    function GetNomeArquivoFr3: String; virtual;
+    procedure VincularDadosRelatorio; virtual;
+
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+uses
+  System.StrUtils;
+
+{$R *.dfm}
+
+procedure TFrmModeloRelatorioPadrao.btnImprimirClick(Sender: TObject);
+begin
+  MostrarRelatorio;
+end;
+
+procedure TFrmModeloRelatorioPadrao.btnPesquisarClick(Sender: TObject);
+begin
+  Screen.Cursor := CrHourGlass;
+  try
+    btnPesquisar.SetFocus;
+    if (FazerPesquisa = False) then
+    begin
+      ShowMessage('Nenhum informação encontrada');
+    end
+  finally
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TFrmModeloRelatorioPadrao.ExecutarPesquisa;
+begin
+  //A fazer
+end;
+
+function TFrmModeloRelatorioPadrao.MontarSqlILike(ACampo: array of String; AValor: String): String;
+begin
+  Result := '';
+  for var vCampo: String in ACampo do
+  begin
+    Result := Result + ifthen(Result <> '', ' or ') + MontarSqlILike(vCampo, AValor);
+  end;
+  if (Result <> '') then
+  begin
+    Result := '(' + Result + ')';
+  end;
+end;
+
+procedure TFrmModeloRelatorioPadrao.MostrarRelatorio;
+begin
+  if (GetDataSource.DataSet.IsEmpty) then
+  begin
+    Exit;
+  end;
+  var vCaminhoRelatorio: String := IncludeTrailingPathDelimiter(extractFilePath(ParamStr(0))) + 'Relatorios';
+  GetFrxReport.LoadFromFile(vCaminhoRelatorio + '\' + GetNomeArquivoFr3);
+  VincularDadosRelatorio;
+  GetFrxReport.ShowReport;
+end;
+
+function TFrmModeloRelatorioPadrao.MontarSqlILike(ACampo, AValor: String): String;
+begin
+  Result := ACampo + ' ILIKE all (select ''%'' || unnest(string_to_array(' + QuotedStr(AValor) + ', '' '')) || ''%'')';
+end;
+
+function TFrmModeloRelatorioPadrao.PegaCamposQueIraoProInsert: TList<TControl>;
+begin
+    var i: Integer;
+    var j: Integer;
+    var vGroupBox: TGroupBox;
+    var vControl: TControl;
+    var vContexto: TRttiContext;
+    var vTipo: TRttiType;
+    var vPropriedade: TRttiProperty;
+    var vValor: TValue;
+
+    Result := TList<TControl>.Create;
+    vContexto := TRttiContext.Create;
+
+    try
+      for i := 0 to pnlFiltros.ControlCount -1 do //o .ControlCount ve qantos filhos tem dentro de pnlFiltros
+      begin
+        if (pnlFiltros.Controls[i] is TGroupBox) then
+        begin
+          vGroupBox := TGroupBox(pnlFiltros.Controls[i]);
+
+          for j := 0 to vGroupBox.ControlCount - 1 do
+          begin
+            vControl := vGroupBox.Controls[j];
+            vTipo := vContexto.GetType(vControl.ClassType);
+            vPropriedade := vTipo.GetProperty('Text');
+
+            if (Assigned(vPropriedade)) then
+            begin
+              if (vPropriedade.GetValue(vControl).ToString.Trim <> '') then
+              begin
+                Result.add(vControl);
+              end;
+            end;
+        end;
+      end;
+    end;
+    finally
+      vContexto.Free;
+    end;
+end;
+
+procedure TFrmModeloRelatorioPadrao.VincularDadosRelatorio;
+begin
+  //override if want
+end;
+
+Function TFrmModeloRelatorioPadrao.FazerPesquisa: Boolean;
+begin
+  raise Exception.Create('Metodo FazerPesquisa não sobrescrito no formulario: ' + Self.ClassName);
+end;
+
+Function TFrmModeloRelatorioPadrao.GetDataSource: TDataSource;
+begin
+  raise Exception.Create('Metodo GetDataSource não sobrescrito no formulario: ' + Self.ClassName);
+end;
+
+function TFrmModeloRelatorioPadrao.GetFrxReport: TfrxReport;
+begin
+  raise Exception.Create('Metodo GetFrxReport não sobrescrito no formulario: ' + self.ClassName);
+end;
+
+function TFrmModeloRelatorioPadrao.GetNomeArquivoFr3: String;
+begin
+  raise Exception.Create('Metodo GetNomeArquivoFr3 mão sobrescrito no formulario: ' + self.ClassName);
+end;
+
+end.

@@ -1,0 +1,160 @@
+unit uFrmRelClientesDesatualizados;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uFrmModeloRelatorioPadrao, cxGraphics,
+  cxControls, cxLookAndFeels, cxLookAndFeelPainters, cxGeometry,
+  dxFramedControl, cxContainer, cxEdit, cxStyles, cxCustomData, cxFilter,
+  cxData, cxDataStorage, cxNavigator, dxDateRanges, dxScrollbarAnnotations,
+  Data.DB, cxDBData, cxGridLevel, cxClasses, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  AdvGlowButton, cxGroupBox, dxGDIPlusClasses, Vcl.ExtCtrls, Vcl.StdCtrls,
+  dxPanel, Vcl.DBCtrls, Vcl.ComCtrls, dxCore, cxDateUtils, cxCheckBox,
+  cxTextEdit, cxMaskEdit, cxDropDownEdit, cxCalendar, cxSpinEdit, uDMMain, uUtils;
+
+type
+  TFrmRelClientesDesatualizados = class(TFrmModeloRelatorioPadrao)
+    lblCidade: TLabel;
+    lblEstado: TLabel;
+    lblNome: TLabel;
+    lblSituacao: TLabel;
+    edtCidade: TEdit;
+    edtNome: TEdit;
+    cbxSituacao: TComboBox;
+    lkUFF: TDBLookupComboBox;
+    cxGroupBox1: TcxGroupBox;
+    lblDataCadastro: TLabel;
+    lblDataAlteracao: TLabel;
+    lblCadAte: TLabel;
+    lblAteAltera: TLabel;
+    dtpCadastroDe: TcxDateEdit;
+    dtpAlteracaoDe: TcxDateEdit;
+    dtpCadastroAte: TcxDateEdit;
+    dtpAlteracaoAte: TcxDateEdit;
+    cbxCadastro: TcxCheckBox;
+    cbxAlteracao: TcxCheckBox;
+    lblPorcentagem: TLabel;
+    spedtDias: TcxSpinEdit;
+    dsListagem: TDataSource;
+    grdListagemVwnome_fantasia: TcxGridDBColumn;
+    grdListagemVwrazao_social: TcxGridDBColumn;
+    grdListagemVwdata_alteracao: TcxGridDBColumn;
+    grdListagemVwdias_sem_atualizar: TcxGridDBColumn;
+    grdListagemVwtelefone: TcxGridDBColumn;
+    dsListagemUf: TDataSource;
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+  private
+
+  protected
+    function FazerPesquisa: boolean; override;
+    function GetDataSource: TDataSource; override;
+    function GetNomeArquivoFr3: String; override;
+    procedure VincularDadosRelatorio; override;
+
+  public
+
+  end;
+
+implementation
+
+{$R *.dfm}
+
+{ TFrmRelClientesDesatualizados }
+
+function TFrmRelClientesDesatualizados.FazerPesquisa: boolean;
+begin
+  DMMain.FDQRelClientesDesatualizados.Close;
+  var vSql: String := 'SELECT distinct cli.nome_fantasia, cli.razao_social, cli.telefone, cli.data_alteracao,'+
+        ' (CURRENT_DATE - CAST(cli.data_alteracao AS DATE)) AS dias_sem_atualizar'+
+        ' FROM tclientes AS cli' +
+        ' INNER JOIN tbairros as bairro ' +
+         ' on cli.tbairros_id = bairro.id ' +
+         ' INNER JOIN tcidades as cid ' +
+         ' on cli.tcidades_id = cid.id ' +
+         ' INNER JOIN testados as est ' +
+         ' on cid.testados_id = est.id ' +
+         ' WHERE 1=1';
+
+
+  if (Trim(edtNome.Text) <> '') then
+  begin
+    vSql := vSql + ' AND ' + MontarSqlIlike(['cli.nome_fantasia', 'cli.razao_social'], edtNome.Text);
+  end;
+  if (Trim(edtCidade.Text) <> '') then
+  begin
+    vSql := vSql + ' AND ' + MontarSqlIlike('cid.nome_cidade', edtCidade.Text);
+  end;
+  if (Trim(lkUFF.Text) <> '') then
+  begin
+    vSql := vSql + ' AND ' + MontarSqlIlike('est.uf', lkUFF.Text);
+  end;
+  if (Trim(cbxSituacao.Text) <> 'Ambos') then
+  begin
+    if (Trim(cbxSituacao.Text) = 'Ativo') then
+    begin
+      vSql := vSql + ' and cli.ativo = true';
+    end
+    else
+    begin
+      vSql := vSql + ' and cli.ativo = false';
+    end;
+  end;
+  if (cbxCadastro.Checked) then
+  begin
+    vSql := vSql + ' and cli.data_cadastro between ' + QuotedStr(FormatDateTime('yyyy-mm-dd', dtpCadastroDe.Date)) +
+           ' and ' + QuotedStr(FormatDateTime('yyyy-mm-dd', dtpCadastroAte.Date));
+  end;
+  if (cbxAlteracao.Checked) then
+  begin
+    vSql := vSql + ' and cli.data_alteracao between ' + QuotedStr(FormatDateTime('yyyy-mm-dd', dtpAlteracaoDe.Date)) +
+           ' and ' + QuotedStr(FormatDateTime('yyyy-mm-dd', dtpAlteracaoAte.Date));
+  end;
+  if (spedtDias.Value > 0) then
+  begin
+    vSql := vSql + ' and (CURRENT_DATE - CAST(cli.data_alteracao AS DATE)) >= :dias';
+  end;
+
+  vSql := vSql + ' ORDER BY cli.nome_fantasia';
+  DMMain.FDQRelClientesDesatualizados.Sql.Text := vSql;
+
+  if (spedtDias.Value > 0) then
+  begin
+    DMMAin.FDQRelClientesDesatualizados.ParamByName('dias').AsInteger := spedtDias.Value;
+  end;
+
+  DMMain.FDQRelClientesDesatualizados.Open;
+  Result := not DMMain.FDQRelClientesDesatualizados.IsEmpty;
+
+end;
+
+procedure TFrmRelClientesDesatualizados.FormCreate(Sender: TObject);
+begin
+  inherited;
+  DMMain.FDQRelEstados.Open;
+end;
+
+procedure TFrmRelClientesDesatualizados.FormDestroy(Sender: TObject);
+begin
+  inherited;
+  DMMain.FDQRelEstados.Close;
+end;
+
+function TFrmRelClientesDesatualizados.GetDataSource: TDataSource;
+begin
+  Result := Self.dsListagem;
+end;
+
+function TFrmRelClientesDesatualizados.GetNomeArquivoFr3: String;
+begin
+  Result := 'RelClientesDesatualizados.fr3';
+end;
+
+procedure TFrmRelClientesDesatualizados.VincularDadosRelatorio;
+begin
+  Relatorios.frxDBDataSet.DataSource := GetDataSource;
+end;
+
+end.

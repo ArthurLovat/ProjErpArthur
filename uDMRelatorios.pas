@@ -1,0 +1,48 @@
+unit uDMRelatorios;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, frxClass, frxDBSet, uDMMain,
+  frxExportBaseDialog, frxExportPDF;
+
+type
+  TDMRelatorios = class(TDataModule)
+    frxReport: TfrxReport;
+    frxDBDataSet: TfrxDBDataset;
+    frxPDFExport1: TfrxPDFExport;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure LoadFromFile(ANomeArquivo: String);
+    procedure ShowReport;
+  end;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+{ TDMRelatorios }
+
+procedure TDMRelatorios.LoadFromFile(ANomeArquivo: String);
+begin
+  var vCaminhoRelatorio: String := IncludeTrailingPathDelimiter(extractFilePath(ParamStr(0))) + 'Relatorios';
+  frxReport.LoadFromFile(vCaminhoRelatorio + '\' + ANomeArquivo);
+end;
+
+procedure TDMRelatorios.ShowReport;
+begin
+  if (DebugHook > 0) then
+  begin
+    frxReport.DesignReport;
+  end
+  else
+  begin
+    frxReport.ShowReport;
+  end;
+end;
+
+end.

@@ -1,0 +1,84 @@
+inherited frmCadUnidadesMedida: TfrmCadUnidadesMedida
+  Caption = 'Cadastro De Unidades De Medida'
+  ClientHeight = 462
+  Font.Height = -13
+  ExplicitWidth = 796
+  TextHeight = 17
+  inherited lblTitulo: TLabel
+    Left = 212
+    Top = 116
+    Width = 260
+    Caption = 'Unidade De Medida'
+    ExplicitLeft = 212
+    ExplicitTop = 116
+    ExplicitWidth = 260
+  end
+  object lblDescricao: TLabel [1]
+    Left = 212
+    Top = 176
+    Width = 81
+    Height = 23
+    Caption = 'Descricao:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lblUnidade: TLabel [2]
+    Left = 212
+    Top = 213
+    Width = 165
+    Height = 23
+    Caption = 'Unidade De Medida:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -17
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  inherited btnCadastrar: TcxButton
+    Top = 280
+    TabOrder = 3
+    ExplicitTop = 280
+  end
+  inherited btnCancelar: TcxButton
+    Top = 280
+    TabOrder = 4
+    ExplicitTop = 280
+  end
+  object edtDescricao: TcxDBTextEdit [5]
+    Left = 383
+    Top = 178
+    DataBinding.DataField = 'descricao'
+    DataBinding.DataSource = dsCadastro
+    TabOrder = 0
+    Width = 209
+  end
+  object edtUnidadeMedida: TcxDBTextEdit [6]
+    Left = 383
+    Top = 215
+    DataBinding.DataField = 'unidade'
+    DataBinding.DataSource = dsCadastro
+    TabOrder = 1
+    Width = 209
+  end
+  object dbcbAtivo: TDBCheckBox [7]
+    Left = 533
+    Top = 246
+    Width = 59
+    Height = 17
+    Caption = 'Ativo'
+    DataField = 'ativo'
+    DataSource = dsCadastro
+    TabOrder = 2
+    ValueUnchecked = 'F'
+  end
+  inherited dsCadastro: TDataSource
+    DataSet = DMMain.FDTUnidadesMedida
+    Left = 8
+    Top = 8
+  end
+end

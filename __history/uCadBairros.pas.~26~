@@ -1,0 +1,81 @@
+unit uCadBairros;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  Vcl.Menus,
+  cxControls,
+  cxContainer,
+  cxEdit,
+  Data.DB,
+  Vcl.DBCtrls,
+  cxTextEdit,
+  cxDBEdit,
+  Vcl.StdCtrls,
+  cxButtons,
+  uUtils,
+  uDMmain,
+  uFrmModeloCadPadrao,
+  uValidacao;
+
+type
+  TfrmCadBairros = class(TFrmModeloCadPadrao)
+    lblCadBairros: TLabel;
+    lblBairro: TLabel;
+    cxbtnCadastrar: TcxButton;
+    cxbtnCancelar: TcxButton;
+    edtDescricao: TcxDBTextEdit;
+    dsBairros: TDataSource;
+    procedure btnCadastrarClick(Sender: TObject);
+
+
+  private
+    { Private declarations }
+  protected
+    function GetDataSet: TDataSet; override;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+
+
+{ TfrmCadBairros }
+
+procedure TfrmCadBairros.btnCadastrarClick(Sender: TObject);
+begin
+  var vValidacao: TValidacao := TValidacao.Create;
+    try
+      vValidacao.RealizarValidacaoBasica(edt, 'Nome', edtNome.Text);
+      vValidacao.ExibirMensagens;
+      if (vValidacao.TemErro = False) then
+      begin
+        GetDataSet.Post;
+        ModalResult := mrOk;
+      end;
+    finally
+      vValidacao.Free;
+    end;
+end;
+
+function TfrmCadBairros.GetDataSet: TDataSet;
+begin
+  Result := DMMain.FDTBairros;
+end;
+
+end.

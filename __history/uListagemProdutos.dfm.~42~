@@ -1,0 +1,53 @@
+inherited frmListagemProdutos: TfrmListagemProdutos
+  Caption = 'Listagem De Produtos'
+  Position = poScreenCenter
+  TextHeight = 15
+  inherited lblTitulo: TLabel
+    Width = 118
+    Caption = 'Produtos'
+    ExplicitWidth = 118
+  end
+  inherited grdListagem: TcxGrid
+    inherited tbvListagem: TcxGridDBTableView
+      object tbvListagemid: TcxGridDBColumn
+        DataBinding.FieldName = 'id'
+        Width = 34
+      end
+      object tbvListagemativo: TcxGridDBColumn
+        DataBinding.FieldName = 'ativo'
+      end
+      object tbvListagemdescricao: TcxGridDBColumn
+        DataBinding.FieldName = 'descricao'
+        Width = 108
+      end
+      object tbvListagemcodigo: TcxGridDBColumn
+        DataBinding.FieldName = 'codigo'
+        Width = 82
+      end
+      object tbvListagemdata_cadastro: TcxGridDBColumn
+        DataBinding.FieldName = 'data_cadastro'
+        Width = 122
+      end
+      object tbvListagemdata_alteracao: TcxGridDBColumn
+        DataBinding.FieldName = 'data_alteracao'
+        Width = 133
+      end
+      object tbvListagempreco_custo: TcxGridDBColumn
+        DataBinding.FieldName = 'preco_custo'
+      end
+      object tbvListagempreco_venda: TcxGridDBColumn
+        DataBinding.FieldName = 'preco_venda'
+      end
+      object tbvListagemobservacao: TcxGridDBColumn
+        DataBinding.FieldName = 'observacao'
+        Width = 198
+      end
+      object tbvListagemtunidade_medida_id: TcxGridDBColumn
+        DataBinding.FieldName = 'tunidade_medida_id'
+      end
+    end
+  end
+  inherited dsListagem: TDataSource
+    DataSet = DMMain.FDTProdutos
+  end
+end

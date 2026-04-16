@@ -1,0 +1,189 @@
+unit uFrmRelAmostragemLucro;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  uFrmModeloRelatorioPadrao, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxGeometry, dxFramedControl, cxContainer, cxEdit,
+  cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator,
+  dxDateRanges, dxScrollbarAnnotations, Data.DB, cxDBData, cxGridLevel,
+  cxClasses, cxGridCustomView, cxGridCustomTableView, cxGridTableView,
+  cxGridDBTableView, cxGrid, AdvGlowButton, cxGroupBox, dxGDIPlusClasses,
+  Vcl.ExtCtrls, Vcl.StdCtrls, dxPanel, Vcl.DBCtrls, uDMMain;
+
+type
+  TFrmRelAmostragemLucro = class(TFrmModeloRelatorioPadrao)
+    lblSituacao: TLabel;
+    lblCodigo: TLabel;
+    lblDesc: TLabel;
+    lblUnidadeMedida: TLabel;
+    edtCodigo: TEdit;
+    edtDescricao: TEdit;
+    cbxSituacao: TComboBox;
+    lkUnidade: TDBLookupComboBox;
+    grdListagemVwativo: TcxGridDBColumn;
+    grdListagemVwdescricao: TcxGridDBColumn;
+    grdListagemVwcodigo: TcxGridDBColumn;
+    grdListagemVwpreco_custo: TcxGridDBColumn;
+    dsListagem: TDataSource;
+    edtPorcentagem: TEdit;
+    lblPorcentagem: TLabel;
+    Label1: TLabel;
+    grdListagemVwPorcent: TcxGridDBColumn;
+    grdListagemVwPrecoVenda: TcxGridDBColumn;
+    dsListagemUn: TDataSource;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+
+
+  private
+
+  protected
+    Function FazerPesquisa: boolean; override;
+    function GetDataSource: TDataSource; override;
+    function GetNomeArquivoFr3: String; override;
+    procedure VincularDadosRelatorio; override;
+    Procedure CalcularAmostragemDeLucro;
+    procedure AtualizarPorcentagemAcrescimo;
+
+  public
+
+  end;
+
+
+implementation
+
+{$R *.dfm}
+
+{ TFrmRelAmostragemLucro }
+
+Procedure TFrmRelAmostragemLucro.CalcularAmostragemDeLucro;
+begin
+  GetDataSource.DataSet.DisableControls;
+  var vPorcentagem := StrToFloatDef(edtPorcentagem.Text, 0) /100;
+  var vCusto: Double;
+  try
+    GetDataSource.DataSet.First;
+    while not GetDataSource.DataSet.Eof do
+    begin
+      GetDataSource.DataSet.Edit;
+      
+      vCusto := GetDataSource.DataSet.FieldByName('preco_custo').AsFloat;
+      GetDataSource.DataSet.FieldByName('PrecoVenda').AsFloat := (vCusto * vPorcentagem) + vCusto;
+      GetDataSource.DataSet.Post;
+      GetDataSource.DataSet.Next;
+    end;
+  finally
+    GetDataSource.DataSet.EnableControls;
+  end;
+end;
+
+function TFrmRelAmostragemLucro.FazerPesquisa: boolean;
+begin
+  if (Trim(edtPorcentagem.Text) <> '') then
+    begin
+    DMMain.FDQRelAmostragemLucro.Close;
+
+    var qry: string := 'Select p.ativo, p.codigo, p.descricao, p.preco_custo' +
+                      ' from tprodutos as p' +
+                      ' where 1=1';
+
+    if (Trim(edtCodigo.Text) <> '') then
+    begin
+      qry := qry + ' and p.codigo = ' + QuotedStr(edtCodigo.Text);
+    end;
+    if (Trim(edtDescricao.Text) <> '') then
+    begin
+      qry := qry + ' and ' + MontarSqlILike('p.descricao', edtDescricao.Text);
+    end;
+    if (Trim(cbxSituacao.Text) <> 'Ambos') then
+    begin
+      if (Trim(cbxSituacao.Text) = 'Ativo') then
+      begin
+        qry := qry + ' and p.ativo = true';
+      end
+      else
+      begin
+        qry := qry + ' and p.ativo = false';
+      end;
+    end;
+    if (Trim(lkUnidade.Text) <> '') then
+    begin
+      qry := qry + ' and un.unidade ILIKE ' + QuotedStr('%' + lkUnidade.Text + '%');
+    end;
+    
+
+  
+    qry := qry + ' ORDER BY p.descricao';
+
+    DMMain.FDQRelAmostragemLucro.SQL.Text := qry;
+    DMMain.FDQRelAmostragemLucro.Open;
+    AtualizarPorcentagemAcrescimo;
+    CalcularAmostragemDeLucro;
+    Result := not DMMain.FDQRelAmostragemLucro.IsEmpty;
+  end
+  else
+  begin
+    Application.MessageBox('É necessario informar uma porcentagem para prosseguir!', 'Aviso', MB_IconWarning + MB_OK);
+    Result := True;
+  end;
+end;
+
+procedure TFrmRelAmostragemLucro.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  inherited;
+  DMMain.FDQRelUnidade.Close;
+  DMMain.FDQRelAmostragemLucro.Close;
+end;
+
+procedure TFrmRelAmostragemLucro.FormCreate(Sender: TObject);
+begin
+  inherited;
+  DMMain.FDQRelUnidade.Open;
+end;
+
+function TFrmRelAmostragemLucro.GetDataSource: TDataSource;
+begin
+  Result := Self.dsListagem;
+end;
+
+function TFrmRelAmostragemLucro.GetNomeArquivoFr3: String;
+begin
+  Result := 'RelAmostragemLucro.fr3';
+end;
+
+procedure TFrmRelAmostragemLucro.AtualizarPorcentagemAcrescimo;
+begin
+
+  var vPorcentagem: Double := StrToFloatDef(edtPorcentagem.Text, 0);
+  GetDataSource.DataSet.DisableControls;
+  try
+    GetDataSource.DataSet.First;
+    while not GetDataSource.DataSet.Eof do
+    begin
+      GetDataSource.DataSet.Edit;
+      GetDataSource.DataSet.FieldByName('PorcentagemAcrescimo').AsFloat := vPorcentagem;
+      GetDataSource.DataSet.Post;
+      GetDataSource.DataSet.Next;
+    end;
+  finally
+    GetDataSource.DataSet.EnableControls;
+  end;
+end;
+
+procedure TFrmRelAmostragemLucro.VincularDadosRelatorio;
+begin
+  Relatorios.frxDBDataSet.DataSource := GetDataSource;
+end;
+
+end.

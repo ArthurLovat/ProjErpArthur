@@ -1,0 +1,610 @@
+inherited frmCadClientes: TfrmCadClientes
+  Caption = 'Cadastro De Clientes'
+  ClientHeight = 449
+  ClientWidth = 812
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  ExplicitWidth = 824
+  ExplicitHeight = 487
+  TextHeight = 15
+  inherited lblTitulo: TLabel
+    Left = 8
+    Top = 26
+    Width = 103
+    Caption = 'Clientes'
+    ExplicitLeft = 8
+    ExplicitTop = 26
+    ExplicitWidth = 103
+  end
+  inherited btnCadastrar: TcxButton
+    Left = 664
+    Top = 423
+    ExplicitLeft = 664
+    ExplicitTop = 423
+  end
+  inherited btnCancelar: TcxButton
+    Left = 513
+    Top = 423
+    ExplicitLeft = 513
+    ExplicitTop = 423
+  end
+  object cxPageControl1: TcxPageControl [3]
+    Left = 8
+    Top = 62
+    Width = 801
+    Height = 355
+    TabOrder = 2
+    Properties.ActivePage = tbsDependente
+    Properties.CustomButtons.Buttons = <>
+    ClientRectBottom = 351
+    ClientRectLeft = 4
+    ClientRectRight = 797
+    ClientRectTop = 26
+    object tbsCliente: TcxTabSheet
+      Caption = 'tbsCliente'
+      ImageIndex = 0
+      ExplicitLeft = 0
+      ExplicitTop = 27
+      object lblRazaoSocial: TLabel
+        Left = 16
+        Top = 77
+        Width = 100
+        Height = 21
+        Caption = 'Raz'#227'o Social:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblCpfCnpj: TLabel
+        Left = 16
+        Top = 106
+        Width = 74
+        Height = 21
+        Caption = 'CPF/CNPJ'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblNomeFantasia: TLabel
+        Left = 16
+        Top = 48
+        Width = 118
+        Height = 21
+        Caption = 'Nome Fantasia:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblNumero: TLabel
+        Left = 16
+        Top = 231
+        Width = 67
+        Height = 21
+        Caption = 'Numero:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblEndereco: TLabel
+        Left = 16
+        Top = 204
+        Width = 33
+        Height = 21
+        Caption = 'Rua:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblComplemento: TLabel
+        Left = 416
+        Top = 204
+        Width = 113
+        Height = 21
+        Caption = 'Complemento:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblPontoReferencia: TLabel
+        Left = 416
+        Top = 231
+        Width = 158
+        Height = 21
+        Caption = 'Ponto de Refer'#234'ncia:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label1: TLabel
+        Left = 16
+        Top = 285
+        Width = 29
+        Height = 21
+        Caption = 'CEP'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label2: TLabel
+        Left = 16
+        Top = 170
+        Width = 92
+        Height = 28
+        Caption = 'Endere'#231'o:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -20
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblCidade: TLabel
+        Left = 16
+        Top = 258
+        Width = 57
+        Height = 21
+        Caption = 'Cidade:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblBairros: TLabel
+        Left = 416
+        Top = 258
+        Width = 50
+        Height = 21
+        Caption = 'Bairro:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblDtCad: TLabel
+        Left = 16
+        Top = 135
+        Width = 134
+        Height = 21
+        Caption = 'Data de Cadastro:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object DBCheckBox1: TDBCheckBox
+        Left = 16
+        Top = 25
+        Width = 59
+        Height = 17
+        Caption = 'Ativo'
+        DataField = 'ativo'
+        DataSource = dsCadastro
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 0
+        ValueUnchecked = 'F'
+      end
+      object edtRazaoSocial: TcxDBTextEdit
+        Left = 171
+        Top = 79
+        DataBinding.DataField = 'razao_social'
+        DataBinding.DataSource = dsCadastro
+        TabOrder = 1
+        Width = 209
+      end
+      object edtCpfCnpj: TcxDBTextEdit
+        Left = 171
+        Top = 108
+        DataBinding.DataField = 'cpf_cnpj'
+        DataBinding.DataSource = dsCadastro
+        TabOrder = 2
+        Width = 209
+      end
+      object edtNomeFantasia: TcxDBTextEdit
+        Left = 171
+        Top = 50
+        DataBinding.DataField = 'nome_fantasia'
+        DataBinding.DataSource = dsCadastro
+        TabOrder = 3
+        Width = 209
+      end
+      object edtRua: TcxDBTextEdit
+        Left = 171
+        Top = 206
+        DataBinding.DataField = 'endereco'
+        DataBinding.DataSource = dsCadastro
+        TabOrder = 4
+        Width = 209
+      end
+      object lkCidade: TDBLookupComboBox
+        Left = 171
+        Top = 289
+        Width = 209
+        Height = 23
+        DataField = 'tcidades_id'
+        DataSource = dsCadastro
+        KeyField = 'id'
+        ListField = 'nome_cidade'
+        ListSource = dsListagemCidades
+        TabOrder = 5
+      end
+      object edtComplemento: TcxDBTextEdit
+        Left = 580
+        Top = 206
+        DataBinding.DataField = 'complemento_endereco'
+        DataBinding.DataSource = dsCadastro
+        TabOrder = 6
+        Width = 209
+      end
+      object edtPontoReferencia: TcxDBTextEdit
+        Left = 580
+        Top = 233
+        DataBinding.DataField = 'ponto_referencia'
+        DataBinding.DataSource = dsCadastro
+        TabOrder = 7
+        Width = 209
+      end
+      object edtCep: TcxDBTextEdit
+        Left = 171
+        Top = 260
+        DataBinding.DataField = 'cep'
+        DataBinding.DataSource = dsCadastro
+        TabOrder = 8
+        Width = 209
+      end
+      object edtNumero: TcxDBTextEdit
+        Left = 171
+        Top = 233
+        DataBinding.DataField = 'numero_endereco'
+        DataBinding.DataSource = dsCadastro
+        TabOrder = 9
+        Width = 209
+      end
+      object lkBairro: TDBLookupComboBox
+        Left = 580
+        Top = 260
+        Width = 209
+        Height = 23
+        DataField = 'tbairros_id'
+        DataSource = dsCadastro
+        KeyField = 'id'
+        ListField = 'nome_bairro'
+        ListSource = dsListagemBairros
+        TabOrder = 10
+      end
+      object pnlFoto: TPanel
+        Left = 580
+        Top = 48
+        Width = 210
+        Height = 110
+        Caption = 'Aqui viria a foto - com outro componente'
+        TabOrder = 11
+      end
+      object dptDataCadastro: TcxDBDateEdit
+        Left = 171
+        Top = 137
+        DataBinding.DataField = 'data_cadastro'
+        DataBinding.DataSource = dsCadastro
+        TabOrder = 12
+        Width = 209
+      end
+    end
+    object tbsDependente: TcxTabSheet
+      Caption = 'tbsDependente'
+      ImageIndex = 1
+      object lblComplementos: TLabel
+        Left = 39
+        Top = 10
+        Width = 118
+        Height = 24
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Caption = 'Dependentes'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -20
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+      end
+      object imgComplementos: TImage
+        Left = 2
+        Top = 8
+        Width = 29
+        Height = 29
+        Margins.Left = 4
+        Margins.Top = 4
+        Margins.Right = 4
+        Margins.Bottom = 4
+        Picture.Data = {
+          0D546478536D617274496D61676589504E470D0A1A0A0000000D494844520000
+          0020000000200806000000737A7AF40000001C744558745469746C6500546561
+          6D3B50656F706C653B47726F75703B55736572937B6049000008954944415478
+          5EE596798C5D551DC73FF7DDB7CF9BCEFA66EB6C6DA7D396ADCB60B55A50084B
+          4B2D145C82261844310A31460984188D8D1A8D09891AF748C410051411810A82
+          81D2D28DB6D376DA326D677D336FDE9B7D7BEB5DCEE2F3659A8C6D64E02FFFF0
+          26DF9CDF4BCEF77C3FE79CFCEEBB86D69AFFE5E301FEBF018CDDBB775F66D86E
+          BE56A635DB95521F964A6F9452B729A9EA0A639F2BD51BD2553FEDACBAB37BD1
+          7C80253DAED4DDA76BEE62F1E3BD34FC66FD8FA8247830D2B87675A02C4A596B
+          0781D26AB416CC0D75B78D9F7FBB6DA4E79DCF34F73F75434D89D9A99546D497
+          470DEFD29E743A75033574BEEB156473EE1722AD1DAB5BB67E0A3B97C51F0A61
+          CF2799397F989193FB99880DE23ABA747E3EFFA8CFE7C5E7F7BE2F0FF0EE2790
+          4A5B9B1B4BAA891D7F8333FBDE646C7088924810379F6762620E470530CBAA58
+          5EBF71DD2DBB7F7B17C0C9A7BFB7ABBC752D53F11843BDC34C0C3F412864163D
+          89A11166A767B02D9B74C6A95BB20BE652B67F3C3ECC913D7FA5FDC69D4CCD66
+          387AA093F8AC07CA5712A96E206458945BBD8D07BFB5F5577B1F5AFFDCD4B1BF
+          6D3AF7C22F39F3EAB3ACDABA1D5F4D3BC78F9C66FFEB07E9EF1F219553CC659C
+          02803DB3E409CCCEDBB1BED3A7310365B45EB391B68E6B716D456E7C80C4C13D
+          68C7A271E307304A2ACBC275ABF09556921E1DF44DF67432FC4E17479F7C8C1B
+          BFFA5DD66DF92053A75FC230431CDD7B8263074FE02ADD5DBA14C04C5AEC49A5
+          071EBCF2DA4D842361028100DA8C30BCF74F042BAAA85CB99A81F3FD6CBAA103
+          89412679A1003084959E23100AC2D414879E7E9CBBBEF9033CB5D5E08DA09400
+          8F69D986FFB925AFE054C986BDE1EAFA3FF8037EEDD112296C949D2576F60CA1
+          F24AE2A78E3372B68BD8813DCCF59F209DEC273516673619676A68183B9B67A4
+          F702CA4AA39546B92ED9544657B734FF2C59B7A17BC92B98989870DFA8AC7AB8
+          3693EF981AEC5B57551F45BA9AA9C959DC6C9673A77A30AA9A39D3D945F9B25E
+          502EE9548EB9F91CD2B5D11808C3C09919013C4C244699CFDABD6FE596FF7C6E
+          6EDACED7BE88100A25254ACBCB4F60E7CE9D056837139FCE3FDF7D602FD9A193
+          2857200890880D336F79D87CC72E2A377C94AE8114874E26E9EC9DA56F523193
+          9364F292AAFA3AA42B50CA28009F632C6FBC28A59CEBECEC94B6E5E03A0E8E5B
+          90232E0700482693F69B93D65FCE2427E4F143E7480C8F6284CB191A1C2512AD
+          A5B1B981EB6FBF957BBFFD30F73C743F77DF7B3BB7EEBA89D9AC87BCA35956D7
+          42BC6F90C3AF1FA26B745C1E7702CFC662310B60D76D3BB8E3B66D14211CFB3F
+          010AAF654F41FE6DF7D4AFDD716FDDE357DCBCC51CB57D9CEAEA25D4D04E6C78
+          9AC6D66622253EC20193DADA721A9757515F5B494B6B0395D565389E0065EDEB
+          3974A48BEE911CAABCCCBCEAE6FC2FDB3F62AF01821F5BF323D3127671F78EEB
+          E0BD180CF81E79ECA64D350DE16F2C2B2DBDB32EDA6C2606FB59B5B90D331F24
+          ADBCE0B1F079C0540ECA92082B839349A195201229A5AA2282B7BE81AAD60A3C
+          EE2A9C4141DFF469DA56B67584429E53D54DE60B9349FBC73BAEFE452760DDFD
+          68541980E7CE2FAD6EF8D0F56B7E5D5559B56345433B35D15A525682A1C410DD
+          E72F108F27A9AEA86143DB16CC7D3D6CFBE42D04FC26767A86DCF42C4A7BB1A5
+          8767FFF83CED0FDCC3D9C43E06630384C3419A5694D1D8544BD01761243EC6F9
+          9E01A6C753AFF774E63E7FE6AD7CD200FC5F7B6CFD53D76DD9FA89B6E66BC83A
+          5364AD29A4920539B84A2084CD7C6E9ACAC055CCBCD2C3FA6861D1E628C2B611
+          AEC0575ACD3B27CF727A32CDC6FB6E25CD8505CF14B6C8A395444A8DE90DE037
+          FDC487C6E93CDCFBCCCBBF49DFE705BCCA70B786C23ECE8EBC8ADF0C619A7E50
+          0A4BE4B1DC3C592B855002AF1E47AFAEE2DCE13E6AEB6BC00CE20B86B02D8BAE
+          93DDD47EFA36326E92E9FC3839BBE82986ABA234D2CE61A0092F0BE031D5F580
+          CF0B18AE234A84CE93CACE20B5A6D8A314A414BA20211525C128A627845D2E38
+          675AA49F7B8DBA869AE2DCFE9E01FAA321A2E536966BE0D8825C3EB3B0864669
+          0D5A2217EAA0CF40A32A00D30B68C7B153878E1C8D68AF8D2F68E0F39BC5706F
+          C0A42CDC40B4B409AFE1677C629CC9B1513EF7D9FB3977F018DD878F235C077F
+          692D6B7D1E8E1EDDC78AD56B6858DE46C0AC673637C87426899D73D168ECBC53
+          90C0CE4A00094803301BDB8315D75C57B2DD17A0C3E3D56B0C43B7D457B7F9EA
+          6B56348227987766C9B853B434B4521A2E653A91A4A3E60A827983F15882C9D4
+          0417D404D12B9A4965E6898F8C112D6FA4A2AC0E216C2B393998484EF4B9D2D5
+          C3C261C0CEEB63E78FB8AFCC24D564F193AC2003F002E62279BFF89DABEE5F56
+          1178A47DE5DACA8E2B3B0885FDCCA4C6E91B1C24361427319A4008457565194D
+          4DF5AC5AD94420E4233196A0EB540FBD3D89D1F48CF8C5FE3F677E07D8805824
+          F7E30F86F4E26F42166A03301FF8E1D50F5EB96EF54F366FD882613AE49C5984
+          B2F16060183E6C37872D2C0C3C08E962BB16192B45DEC9E051265E6F18C7929C
+          3ED1C7F933A35FD9FF4CFEF78003E8428EFEAF7F4617010C93AFB7B456139F7B
+          1BD313C0347C2825B1854DCE49613B79A45248B9484A2FFA3D8F8197FAE66A06
+          7A925F069E025C4003BC1B00804749D1E2F39B4CCCCE1483D4C5C595BC58230A
+          52B2582FC0E88B50A8228445D8170183E50B591E40BD1700434889655B64F3D6
+          C2CE8A6D89145084901AA18A410BC19A42BD085617E79B5A80410060D1EE9704
+          50B625DEFAFBCB07AEF3870CBCFE82021E4CAF510CD106987EE3E2EE515A175B
+          4D38AA08E2586E41A2283B3B8E141C0204C07B01D08078F2FB03DBB6ECAC6C8C
+          36FA6F328C426B9ABA0D5493D4D240528AA15A945668A98B00FF6EB1C298D65A
+          A3A41E91827EE1D0373620FF39D82546001B50807E2F0012B00FBF3413039E00
+          3C8009188067F178A97791E482C4C57AE92BB81C42016251907149A87189C758
+          04702910EF0700804B8DEF5F4B7BFF05FE0B53014353D0E70000000049454E44
+          AE426082}
+        Proportional = True
+        Stretch = True
+      end
+      object btnAdicionar: TcxButton
+        Left = 696
+        Top = 13
+        Width = 94
+        Height = 25
+        Caption = 'Adicionar'
+        OptionsImage.Glyph.SourceDPI = 96
+        OptionsImage.Glyph.Data = {
+          89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+          610000001B744558745469746C65004164643B506C75733B426172733B526962
+          626F6E3B9506332F0000036349444154785E35927D6C535518C69F73EE6DEB64
+          63A3AEFB60A3A36E33B8C56581E0D8707E21CC1A43A2A22304FE3001512A86C4
+          E900132451FF503367420043B244364C483031465C248B4441C0980C45B4D065
+          CDBA4ECAE82AAC5DBBDE8FF3E1BD27F1397973DE9C3CBFF7233964226FC2D543
+          A53E0280443E3FD752525AB14323FA06685A3381E492F329C6ADF39954E2F8C9
+          C3DBA6018858DE940A9C2C5870C1D51BB6FAF61DBB327860F81A1BFE25297FB8
+          3127C7EFE4E5D5745E9EBB9991239766E481937FE4DE1818DB0DC0EB322EABBA
+          B63FD5EB7D6CCBBE6F1B83FE9E67BA82E084C0E4123697CAE0D109BC94805B0C
+          E7AFCC606A66EEECF75FBCBB753AFAEB2201A0BD3E7861B02914D8DBF34408A9
+          AC0D2181D3672E23319D81AB950D016CEBED824E809A722FC62E4CE17A343130
+          D4DF73507FB9FFAB551E9F6FCF93EB82B879BB088D52504A14FCC9CE4E95F79D
+          B80CD396284A8179C7D3DD1144F29FEC5BE1D73E1BA6BEB2C09BEDCD955A7CCE
+          44D1744C1687C9045C05EBFC686F0DAADCB08413D2098E89B4E1BC5779965687
+          5ED585D03ACBFDA548E7197EFA711C776EDFC5FF12200A7075F4E85975D7D4FA
+          F1F4A635A82C5F02A2956CD46D2EEB1D160B455BC19FEE5E0F4A885A45828071
+          81137D1B61DB0C1E5D43E4C8CF5858E4D0A1810BBA5CB76DEEBDB768C1E604AE
+          EA6B1F40D9121F0A265385BC0E5457530109404A8010E27805EEE60598CDA15B
+          8699C8E7CD4784EEC3F2BA00767C340A4AA9327E79300CE1505BDEFF0E9AA681
+          5082150DD5604CA26858282E1693D428E42F6666B3909068EF68C5E6171FC7E6
+          17BA611A260C93A9029C713CF7FC3A3C1BEE404B5B2398E0989FCBA190FD774C
+          CFA46243B11B4B77ADADF67BB236478E10500AA5D2121D5C48354D3A674108A1
+          56114C201E4BB1D9F86FA70880FB1EDD3E34B0A229B4E7E1350FC2E22E2011BF
+          16C3FCBD050557562DC3CA964608B8B4C4E49F4924A27F1F193F1DD9AF03B0FE
+          1AFDE03D113EDC6431B1A96575089212B4AD6D555F581280D902398343308EC9
+          EB49DC9A981A75E043000CA46D09005A49457059DB4BC78E77EDFCDAEAFDF892
+          DC3B1295EF7C13977D4E444E45E52BCE5BE7AE338555E10FDF0650EE32B30E4B
+          D24C0212A8F210EAAED3D01969BB3FD0BCDDE32BEB06D56AD5D09CCDDA66EE62
+          EED6EF43A9AB2331008603ABCEFF019D3AAD15CCD8D2E00000000049454E44AE
+          426082}
+        TabOrder = 0
+        OnClick = btnAdicionarClick
+      end
+      object grdListagem: TcxGrid
+        Left = 2
+        Top = 44
+        Width = 788
+        Height = 278
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -12
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 1
+        object tbvListagem: TcxGridDBTableView
+          DataController.DataSource = dsListagemClientesDependentes
+          OptionsData.CancelOnExit = False
+          OptionsData.Deleting = False
+          OptionsData.DeletingConfirmation = False
+          OptionsData.Inserting = False
+          object tbvListagemExcluir: TcxGridDBColumn
+            Caption = 'Excluir'
+            PropertiesClassName = 'TcxButtonEditProperties'
+            Properties.Buttons = <
+              item
+                Default = True
+                Glyph.SourceDPI = 96
+                Glyph.Data = {
+                  89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+                  610000001974455874536F6674776172650041646F626520496D616765526561
+                  647971C9653C0000000C744558745469746C650054726173683B649A356D0000
+                  024249444154785E75924F6BD44018C69FD9CC36E976975D28A52DDA562DB1C5
+                  2FE021C52FE04128C52A28BD7810912E5814113D78F0E4A907BD0852C4434FF5
+                  50B4071145DB83081E2C45BBBBAD8AF51F8B6CDBD5CD6EE69F99A181B0A40F09
+                  79923CEFF07BDF19AA94429BC8D9A96B6FFA7ABB3DC7B10128B45A0C3F7E5657
+                  E61FDD1D439B28122484F06AB5DDD9B907776E025053176EDC9652CE2041D475
+                  5D63CAE532C6CF14970921DED0E14184CFE2E973578A1A7060E8204252FD5FE3
+                  AE2CCCCF8EE9BA38013935397DFFD8E8B037E21E427F5F0F0AF91CD21D142CE0
+                  A8FFFD87ED9D3A46DD419437BE7961F61E80CB9A8EEA62002925E5C542EF01EC
+                  0629A4EB01489AC39104CD264775BB893FB526FC264177FF004AA5CD4B00A601
+                  C888C0924262F9C54B8D0E4A2DA42905491128A9C03807E7C2B4111BBA151118
+                  ADAF3ECF1F3F31BE3331711241AB85ADEFBF313A321C12F82855BEE2A87B04BE
+                  DFC0D2D22BBC7DBD5068DF05012050522293C982520A100BD95C0E969582440A
+                  99AE2C0801A410D0598D1F23302F4C2A820EDB41486E2663DBB62E306D394E67
+                  E83974265A2022507BDB2826CFCF98FE95A4900A86C40A6F2194FEAE7D442012
+                  0F92101C003197E01ACA583D40E3A24C5C541FA04882F3A8084CA3EF2DC6431F
+                  CF542A15E3955271021D94918D500D03E73C2193D402E7D50FAB6B3D9D8E6D82
+                  1B9B9FC1183733F8F8691D8D860FC1D9D6BE0B1025E79E3E59BCDA95CDA090CF
+                  E3D7970A1817085A0C6BEFDF210818A8957EBC2FC1B3C587D701DC8A9D0D2BC1
+                  33C4F41F3E8F1596C01C0CF00000000049454E44AE426082}
+                Kind = bkGlyph
+              end>
+            Properties.ViewStyle = vsButtonsOnly
+            Options.Filtering = False
+            Options.FilteringAddValueItems = False
+            Options.ShowEditButtons = isebAlways
+            Options.ExpressionEditing = False
+          end
+          object tbvListagemEditar: TcxGridDBColumn
+            Caption = 'Editar'
+            PropertiesClassName = 'TcxButtonEditProperties'
+            Properties.Buttons = <
+              item
+                Default = True
+                Glyph.SourceDPI = 96
+                Glyph.Data = {
+                  89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+                  610000000B744558745469746C6500456469743B6535AC440000007B49444154
+                  785E9D93210E80400C040FC78B30BC0124AFC0A2215870F0987B161F38A06D42
+                  36A9622B46CE744D53B766964938854A9D88FC285F840DEC268383B93CBBC82D
+                  8CDC6C443695D561641F310819B35D202283A00C823208CB3ED0F2320283500B
+                  0B272370091911C87F03C5AE22D230FF91DCEC9E7DEF17E6DCCD046CE136C900
+                  00000049454E44AE426082}
+                Kind = bkGlyph
+              end>
+            Properties.MaxLength = 0
+            Properties.ViewStyle = vsButtonsOnly
+            Options.Filtering = False
+            Options.FilteringAddValueItems = False
+            Options.ShowEditButtons = isebAlways
+            Options.ExpressionEditing = False
+          end
+          object tbvListagemativo: TcxGridDBColumn
+            Caption = 'Ativo'
+            DataBinding.FieldName = 'ativo'
+            Options.Editing = False
+            Width = 52
+          end
+          object tbvListagemid: TcxGridDBColumn
+            Caption = 'ID'
+            DataBinding.FieldName = 'id'
+            Options.Editing = False
+            Width = 49
+          end
+          object tbvListagemtclientes_id: TcxGridDBColumn
+            Caption = 'ID Cliente'
+            DataBinding.FieldName = 'tclientes_id'
+            Options.Editing = False
+            Width = 72
+          end
+          object tbvListagemnome: TcxGridDBColumn
+            Caption = 'Nome'
+            DataBinding.FieldName = 'nome'
+            Options.Editing = False
+            Width = 201
+          end
+          object tbvListagemcpf_cnpj: TcxGridDBColumn
+            Caption = 'CPF/CNPJ'
+            DataBinding.FieldName = 'cpf_cnpj'
+            Options.Editing = False
+          end
+          object tbvListagemtelefone: TcxGridDBColumn
+            Caption = 'Telefone'
+            DataBinding.FieldName = 'telefone'
+            Options.Editing = False
+            Width = 95
+          end
+        end
+        object lvlListagem: TcxGridLevel
+          GridView = tbvListagem
+        end
+      end
+    end
+  end
+  inherited dsCadastro: TDataSource
+    DataSet = DMMain.FDTClientes
+  end
+  object dsListagemCidades: TDataSource
+    DataSet = DMMain.FDTCidades
+    Left = 64
+  end
+  object dsListagemBairros: TDataSource
+    DataSet = DMMain.FDTBairros
+    Left = 32
+  end
+  object dsListagemClientesDependentes: TDataSource
+    DataSet = DMMain.qryCadClientesDependentes
+    Left = 96
+  end
+end

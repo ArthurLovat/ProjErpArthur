@@ -1,0 +1,154 @@
+unit uListagemCidades;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxEdit,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxButtonEdit,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  cxButtons,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxClasses,
+  cxGridCustomView,
+  cxGrid,
+  uDMMain,
+  cxGridLevel,
+  uCadCidades,
+  ufrmModeloListagemPadrao;
+
+type
+  TfrmListagemCidades = class(TfrmModeloListagemPadrao)
+    tbvListagemid: TcxGridDBColumn;
+    tbvListagemnome_cidade: TcxGridDBColumn;
+    tbvListagemtestados_id: TcxGridDBColumn;
+
+    procedure edtPesquisarKeyDown(Sender: TObject;
+          var Key: Word; Shift: TShiftState);
+    procedure cxGrdProdutosDBTableViewbtnEditarPropertiesButtonClick(
+      Sender: TObject; AButtonIndex: Integer);
+    procedure cxGrdProdutosDBTableView1btnExcluirPropertiesButtonClick(
+                Sender: TObject; AButtonIndex: Integer);
+    procedure cxBtnPesquisarClick(Sender: TObject);
+    procedure cxbtnNovoClick(Sender: TObject);
+    procedure NovoOuEditar(AEditar: Boolean);
+    procedure AplicarFiltro;
+    procedure cxGrdProdutosDBTableView1CellDblClick(
+      Sender: TcxCustomGridTableView;
+      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+      AShift: TShiftState; var AHandled: Boolean);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+
+procedure TfrmListagemCidades.cxbtnNovoClick(Sender: TObject);
+begin
+  NovoOuEditar(false);
+end;
+
+procedure TfrmListagemCidades.cxBtnPesquisarClick(Sender: TObject);
+begin
+  AplicarFiltro;
+end;
+
+procedure TfrmListagemCidades.cxGrdProdutosDBTableView1btnExcluirPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  cxGrdProdutosDBTableView1.DataController.DeleteFocused;
+end;
+
+procedure TfrmListagemCidades.cxGrdProdutosDBTableView1CellDblClick(
+  Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+  AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  NovoOuEditar(true);
+end;
+
+procedure TfrmListagemCidades.cxGrdProdutosDBTableViewbtnEditarPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  NovoOuEditar(true);
+end;
+
+procedure TfrmListagemCidades.edtPesquisarKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  if (key = vk_return) then
+  begin
+    Aplicarfiltro;
+  end;
+end;
+
+procedure TfrmListagemCidades.FormCreate(Sender: TObject);
+begin
+  DMMain.FDTCidades.Open;
+end;
+
+procedure TfrmListagemCidades.AplicarFiltro;
+begin
+  if(edtPesquisar.Text <> '') then
+  begin
+    DMMain.FDTCidades.Filter := 'upper(nome_cidade) like(''%' +
+    UpperCase(StringReplace(edtPesquisar.Text, ' ', '%', [rfReplaceAll])) + '%'')';
+  end;
+  DMMain.FDTCidades.Filtered := edtPesquisar.Text <> '';
+end;
+
+procedure TfrmListagemCidades.NovoOuEditar(AEditar: Boolean);
+begin
+  var vFrmCadCidades: TFrmCadCidades;
+  vFrmCadCidades := TFrmCadCidades.Create(nil);
+  try
+    if (AEditar) then
+    begin
+      DMMain.FDTCidades.Edit;
+    end
+    else
+    begin
+      DMMain.FDTCidades.Append;
+    end;
+
+    if (vFrmCadCidades.ShowModal = mrOk ) then
+    begin
+      Application.MessageBox('Cidade Cadastrada com sucesso!', 'Aviso:',
+        MB_ICONQUESTION + MB_OK);
+    end;
+  finally
+    vFrmCadCidades.Free;
+  end;
+end;
+
+end.

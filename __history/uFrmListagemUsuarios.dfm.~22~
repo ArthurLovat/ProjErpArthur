@@ -1,0 +1,65 @@
+inherited frmListagemUsuarios: TfrmListagemUsuarios
+  Caption = 'Usuarios'
+  ClientWidth = 1088
+  Position = poScreenCenter
+  ExplicitHeight = 699
+  TextHeight = 15
+  inherited lblTitulo: TLabel
+    Width = 111
+    Caption = 'Usuarios'
+    ExplicitWidth = 111
+  end
+  inherited grdListagem: TcxGrid
+    inherited tbvListagem: TcxGridDBTableView
+      object tbvListagemid: TcxGridDBColumn
+        DataBinding.FieldName = 'id'
+        Options.Editing = False
+        Width = 36
+      end
+      object tbvListagemativo: TcxGridDBColumn
+        DataBinding.FieldName = 'ativo'
+        Options.Editing = False
+        Width = 38
+      end
+      object tbvListagemlogin: TcxGridDBColumn
+        DataBinding.FieldName = 'login'
+        Options.Editing = False
+        Width = 65
+      end
+      object tbvListagemsenha: TcxGridDBColumn
+        DataBinding.FieldName = 'senha'
+        Options.Editing = False
+        Width = 69
+      end
+      object tbvListagemnome: TcxGridDBColumn
+        DataBinding.FieldName = 'nome'
+        Options.Editing = False
+        Width = 118
+      end
+      object tbvListagememail: TcxGridDBColumn
+        DataBinding.FieldName = 'email'
+        Options.Editing = False
+        Width = 145
+      end
+      object tbvListagemdata_alteracao: TcxGridDBColumn
+        DataBinding.FieldName = 'data_alteracao'
+        Options.Editing = False
+        Width = 115
+      end
+      object tbvListagemdata_cadastro: TcxGridDBColumn
+        DataBinding.FieldName = 'data_cadastro'
+        Options.Editing = False
+        Width = 119
+      end
+      object tbvListagemid_externo: TcxGridDBColumn
+        DataBinding.FieldName = 'id_externo'
+        Options.Editing = False
+        Width = 286
+      end
+    end
+  end
+  inherited dsListagem: TDataSource
+    DataSet = DMMain.FDTUsuarios
+    Left = 144
+  end
+end

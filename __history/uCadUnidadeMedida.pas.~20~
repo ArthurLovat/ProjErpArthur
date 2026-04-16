@@ -1,0 +1,105 @@
+unit uCadUnidadeMedida;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxContainer,
+  cxEdit,
+  cxTextEdit,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  cxButtons,
+  Data.DB,
+  uDMMain,
+  cxDBEdit,
+  Vcl.DBCtrls,
+  uUtils;
+
+type
+  TfrmCadUnidadesMedida = class(TForm)
+    cxbtnCadastrar: TcxButton;
+    cxbtnCancelar: TcxButton;
+    lblCadUnidadesMedida: TLabel;
+    lblDescricao: TLabel;
+    lblUnidade: TLabel;
+    dsUnidadesMedida: TDataSource;
+    cxDBEdtDescricao: TcxDBTextEdit;
+    cxDBEdtUnidadeMedida: TcxDBTextEdit;
+    dbcbAtivo: TDBCheckBox;
+    procedure cxbtnCadastrarClick(Sender: TObject);
+    procedure cxbtnCancelarClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmCadUnidadesMedida.cxbtnCadastrarClick(Sender: TObject);
+begin
+  var vUtils := Tutils.Create;
+  Try
+    if (Trim(cxDBEdtDescricao.Text) = '') then
+    begin
+      Application.MessageBox('A Descrição é obrigatoria', 'Aviso:', MB_ICONQUESTION + MB_OK);
+      vUtils.DarSetFocus(cxDBEdtDescricao);
+      exit
+    end;
+    if (Length(cxDBEdtDescricao.Text) < 3) then
+    begin
+      Application.MessageBox('A Descrição deve ter mais de 3 caracteres', 'Aviso:', MB_ICONQUESTION + MB_OK);
+      vUtils.DarSetFocus(cxDBEdtDescricao);
+      exit
+    end;
+    if (Trim(cxDBEdtUnidadeMedida.Text) = '') then
+    begin
+      Application.MessageBox('A Unidade de medida é obrigatoria', 'Aviso:', MB_ICONQUESTION + MB_OK);
+      vUtils.DarSetFocus(cxDBEdtUnidadeMedida);
+      exit
+    end;
+    if (Length(cxDBEdtUnidadeMedida.Text) > 3) then
+    begin
+      Application.MessageBox('A Unidade de medida não deve ter mais de 3 caracteres', 'Aviso:', MB_ICONQUESTION + MB_OK);
+      vUtils.DarSetFocus(cxDBEdtUnidadeMedida);
+      exit
+    end;
+    DMMain.FDTUnidadesMedida.Post;
+    ModalResult := mrOk;
+  Finally
+    vUtils.Free
+  End;
+
+
+
+end;
+
+procedure TfrmCadUnidadesMedida.cxbtnCancelarClick(Sender: TObject);
+begin
+  DMMain.FDTUnidadesMedida.Cancel;
+  Self.Close;
+end;
+
+procedure TfrmCadUnidadesMedida.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  DMMain.FDTUnidadesMedida.Cancel;
+end;
+
+end.

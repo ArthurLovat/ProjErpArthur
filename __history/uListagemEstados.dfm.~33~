@@ -1,0 +1,16 @@
+inherited frmListagemEstados: TfrmListagemEstados
+  Caption = 'frmListagemEstados'
+  ClientHeight = 662
+  ClientWidth = 1088
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  TextHeight = 15
+  inherited lblTitulo: TLabel
+    Width = 98
+    Caption = 'Estados'
+    ExplicitWidth = 98
+  end
+  inherited dsListagem: TDataSource
+    DataSet = DMMain.FDTEstados
+  end
+end

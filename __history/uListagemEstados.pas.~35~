@@ -1,0 +1,93 @@
+unit uListagemEstados;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxEdit,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxButtonEdit,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  cxButtons,
+  cxGridLevel,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxClasses,
+  cxGridCustomView,
+  cxGrid,
+  uDMMain,
+  uCadEstados,
+  uFrmModeloListagempadrao;
+
+type
+  TfrmListagemEstados = class(TFrmModeloListagempadrao)
+    tbvListagemid: TcxGridDBColumn;
+    tbvListagemnome_estado: TcxGridDBColumn;
+    tbvListagemuf: TcxGridDBColumn;
+
+  private
+    { Private declarations }
+
+  protected
+    function GetCaptionFormulario: String; override;
+    function GetDataSet: TDataSet; override;
+    function GetFormularioCadastro: TFormClass; override;
+    function GetNomeCampoFiltro: String; override;
+  public
+    { Public declarations }
+  end;
+
+
+implementation
+
+{$R *.dfm}
+
+
+
+{ TfrmListagemEstados }
+
+
+function TfrmListagemEstados.GetCaptionFormulario: String;
+begin
+  Result := Self.Caption;
+end;
+
+function TfrmListagemEstados.GetDataSet: TDataSet;
+begin
+  Result := DMMAin.FDTEstados;
+end;
+
+function TfrmListagemEstados.GetFormularioCadastro: TFormClass;
+begin
+  Result := TfrmCadEstados;
+end;
+
+function TfrmListagemEstados.GetNomeCampoFiltro: String;
+begin
+  Result := 'nome_estado';
+end;
+
+end.

@@ -1,0 +1,31 @@
+inherited frmListagemEstados: TfrmListagemEstados
+  Caption = 'Estados'
+  Position = poScreenCenter
+  TextHeight = 15
+  inherited lblTitulo: TLabel
+    Width = 98
+    Caption = 'Estados'
+    ExplicitWidth = 98
+  end
+  inherited grdListagem: TcxGrid
+    inherited tbvListagem: TcxGridDBTableView
+      object tbvListagemid: TcxGridDBColumn
+        DataBinding.FieldName = 'id'
+        Options.Editing = False
+      end
+      object tbvListagemnome_estado: TcxGridDBColumn
+        DataBinding.FieldName = 'nome_estado'
+        Options.Editing = False
+        Width = 841
+      end
+      object tbvListagemuf: TcxGridDBColumn
+        DataBinding.FieldName = 'uf'
+        Options.Editing = False
+        Width = 36
+      end
+    end
+  end
+  inherited dsListagem: TDataSource
+    DataSet = DMMain.FDTEstados
+  end
+end

@@ -1,0 +1,92 @@
+unit uFrmListagemUsuarios;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  ufrmModeloListagemPadrao,
+  cxGraphics,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  Vcl.Menus,
+  cxControls,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxEdit,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxButtonEdit,
+  cxGridLevel,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxClasses,
+  cxGridCustomView,
+  cxGrid,
+  Vcl.StdCtrls,
+  cxButtons,
+  uDMMain,
+  uFrmCadUsuarios;
+
+type
+  TfrmListagemUsuarios = class(TfrmModeloListagemPadrao)
+    tbvListagemid: TcxGridDBColumn;
+    tbvListagemativo: TcxGridDBColumn;
+    tbvListagemlogin: TcxGridDBColumn;
+    tbvListagemsenha: TcxGridDBColumn;
+    tbvListagemnome: TcxGridDBColumn;
+    tbvListagememail: TcxGridDBColumn;
+    tbvListagemdata_alteracao: TcxGridDBColumn;
+    tbvListagemdata_cadastro: TcxGridDBColumn;
+    tbvListagemid_externo: TcxGridDBColumn;
+  private
+
+  protected
+    function GetCaptionFormulario: String; override;
+    function GetDataSet: TDataSet; override;
+    function GetFormularioCadastro: TFormClass; override;
+    function GetNomeCampoFiltro: String; override;
+
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+function TfrmListagemUsuarios.GetCaptionFormulario: String;
+begin
+  Result := Self.Caption;
+end;
+
+function TfrmListagemUsuarios.GetDataSet: TDataSet;
+begin
+  Result := DMMain.FDTUsuarios;
+end;
+
+function TfrmListagemUsuarios.GetFormularioCadastro: TFormClass;
+begin
+  Result := TfrmCadUsuarios;
+end;
+
+function TfrmListagemUsuarios.GetNomeCampoFiltro: String;
+begin
+  Result := edtPesquisar.Text;
+end;
+
+end.

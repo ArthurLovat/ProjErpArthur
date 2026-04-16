@@ -1,0 +1,117 @@
+unit uCadEstados;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  Vcl.Menus,
+  cxControls,
+  cxContainer,
+  cxEdit,
+  Vcl.DBCtrls,
+  cxMemo,
+  cxDBEdit,
+  Vcl.StdCtrls,
+  cxTextEdit,
+  cxButtons,
+  Data.DB,
+  uDMMain,
+  uUtils,
+  uFrmModeloCadPadrao;
+
+type
+  TfrmCadEstados = class(TFrmModeloCadpadrao)
+    lblDescricao: TLabel;
+    lblUF: TLabel;
+    cxDBEdtDescricao: TcxDBTextEdit;
+    cxDBEdtUF: TcxDBTextEdit;
+    procedure cxbtnCadastrarClick(Sender: TObject);
+    procedure cxbtnCancelarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmCadestados.cxbtnCadastrarClick(Sender: TObject);
+begin
+  var vUtils := Tutils.Create;
+  Try
+    if (Trim(cxDBEdtDescricao.Text) = '') then
+    begin
+      Application.MessageBox('O Nome do estado deve ser preenchido!', 'Aviso:', MB_ICONQUESTION + MB_OK);
+      vUtils.DarSetFocus(cxDBEdtDescricao);
+      Exit
+    end;
+    if (length(cxDBEdtDescricao.Text) < 3) then
+    begin
+      Application.MessageBox('O Nome do estado deve ter pelo menos 3 caracteres!', 'Aviso:', MB_ICONQUESTION + MB_OK);
+      vUtils.DarSetFocus(cxDBEdtDescricao);
+      Exit
+    end;
+    if (Trim(cxDBEdtUF.Text) = '') then
+    begin
+      Application.MessageBox('A UF deve ser preenchida!', 'Aviso:', MB_ICONQUESTION + MB_OK);
+      vUtils.DarSetFocus(cxDBEdtUF);
+      Exit
+    end;
+    if (length(cxDBEdtUF.Text) <> 2) then
+    begin
+      Application.MessageBox('A UF deve ter 2 caracteres', 'Aviso:', MB_ICONQUESTION + MB_OK);
+      vUtils.DarSetFocus(cxDBEdtUF);
+      Exit
+    end;
+
+    DMMain.FDTEstados.Post;
+    ModalResult := mrOk;
+  Finally
+    vUtils.Free;
+  End;
+
+
+
+end;
+
+procedure TfrmCadestados.cxbtnCancelarClick(Sender: TObject);
+begin
+  DMMain.FDTEstados.Cancel;
+  Self.Close;
+end;
+
+procedure TfrmCadEstados.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  DMMAin.FDTEstados.Cancel;
+end;
+
+procedure TfrmCadestados.FormCreate(Sender: TObject);
+begin
+  DMMain.FDTEstados.Open;
+end;
+
+end.
+
+
+
+
+
+
+
+
+

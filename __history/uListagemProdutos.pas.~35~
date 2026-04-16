@@ -1,0 +1,114 @@
+unit uListagemProdutos;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxEdit,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxButtonEdit,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  cxButtons,
+  cxGridLevel,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxClasses,
+  cxGridCustomView,
+  cxGrid,
+  uDMMain,
+  uCadProduto,
+  cxContainer,
+  cxTextEdit,
+  cxMaskEdit,
+  cxDropDownEdit,
+  cxLookupEdit,
+  cxDBLookupEdit,
+  cxDBLookupComboBox,
+  uFrmModeloListagemPadrao;
+
+type
+  TfrmListagemProdutos = class(TFrmModeloListagemPadrao)
+    tbvListagemid: TcxGridDBColumn;
+    tbvListagemativo: TcxGridDBColumn;
+    tbvListagemdescricao: TcxGridDBColumn;
+    tbvListagemcodigo: TcxGridDBColumn;
+    tbvListagemdata_cadastro: TcxGridDBColumn;
+    tbvListagemdata_alteracao: TcxGridDBColumn;
+    tbvListagempreco_custo: TcxGridDBColumn;
+    tbvListagempreco_venda: TcxGridDBColumn;
+    tbvListagemobservacao: TcxGridDBColumn;
+    tbvListagemtunidade_medida_id: TcxGridDBColumn;
+    
+
+  private
+
+  protected
+    function GetCaptionFormulario: String; override;
+    function GetDataSet: TDataSet; override;
+    function GetFormularioCadastro: TFormClass; override;
+    function GetNomeCampoFiltro: String; override;
+    //procedure DoWhenEditing; Override;
+    //procedure DoWhenInserting; Override;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+
+
+
+{ TfrmListagemProdutos }
+
+//procedure TfrmListagemProdutos.DoWhenEditing;
+//begin
+//  inherited;
+//  //
+//end;
+//procedure TfrmListagemProdutos.DoWhenInserting;
+//begin
+//  inherited;
+//
+//end;
+function TfrmListagemProdutos.GetCaptionFormulario: String;
+begin
+  Result := Self.Caption;
+end;
+function TfrmListagemProdutos.GetDataSet: TDataSet;
+begin
+  Result := DMMain.FDTProdutos;
+end;
+function TfrmListagemProdutos.GetFormularioCadastro: TFormClass;
+begin
+  Result := TFrmCadProduto;
+end;
+function TfrmListagemProdutos.GetNomeCampoFiltro: String;
+begin
+  Result := 'descricao';
+end;
+end.

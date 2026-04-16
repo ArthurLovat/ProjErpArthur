@@ -1,0 +1,166 @@
+unit uUnidadesMedida;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxEdit,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxContainer,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  cxButtons,
+  cxTextEdit,
+  cxGridLevel,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxClasses,
+  cxGridCustomView,
+  cxGrid,
+  uCadUnidadeMedida,
+  UDMMain,
+  cxDBEdit,
+  cxButtonEdit;
+
+type
+  TfrmUnidadesMedida = class(TForm)
+    cxGrid1: TcxGrid;
+    cxGrid1Level1: TcxGridLevel;
+    cxbtnNovo: TcxButton;
+    cxBtnPesquisar: TcxButton;
+    lblCadMedida: TLabel;
+    dsUnidadesMedida: TDataSource;
+    cxGrid1DBTableView1: TcxGridDBTableView;
+    cxGrid1DBTableView1id: TcxGridDBColumn;
+    cxGrid1DBTableView1ativo: TcxGridDBColumn;
+    cxGrid1DBTableView1descricao: TcxGridDBColumn;
+    cxGrid1DBTableView1unidade: TcxGridDBColumn;
+    cxGrid1DBTableView1btnExcluir: TcxGridDBColumn;
+    cxGrid1DBTableView1BtnEditar: TcxGridDBColumn;
+    edtPesquisar: TEdit;
+    procedure cxbtnNovoClick(Sender: TObject);
+    procedure NovoOuEditar(AEditar: Boolean);
+    procedure AplicarFiltro;
+    procedure cxBtnPesquisarClick(Sender: TObject);
+    procedure cxGrid1DBTableView1btnExcluirPropertiesButtonClick(
+      Sender: TObject; AButtonIndex: Integer);
+    procedure cxGrid1DBTableView1BtnEditarPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure FormCreate(Sender: TObject);
+    procedure edtPesquisarKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure cxGrid1DBTableView1CellDblClick(Sender: TcxCustomGridTableView;
+      ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton;
+      AShift: TShiftState; var AHandled: Boolean);
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+
+procedure TfrmUnidadesMedida.cxbtnNovoClick(Sender: TObject);
+begin
+  NovoOuEditar(False);
+end;
+
+procedure TfrmUnidadesMedida.NovoOuEditar(AEditar: Boolean);
+begin
+  var vFrmCadUnidadeMedida: TfrmCadUnidadesMedida;
+  vFrmCadUnidadeMedida := TfrmCadUnidadesMedida.Create(nil);
+  try
+    if (AEditar) then
+    begin
+      DMMain.FDTUnidadesMedida.Edit;
+    end
+    else
+    begin
+      DMMain.FDTUnidadesMedida.Append;
+    end;
+    if (vFrmCadUnidadeMedida.ShowModal = mrOK) then
+    begin
+      Application.MessageBox('Unidade de medida cadastrada com sucesso!', 'Aviso:',
+        MB_ICONQUESTION + MB_OK);
+    end;
+
+  finally
+    vFrmCadUnidadeMedida.Free;
+  end;
+end;
+
+procedure TfrmUnidadesMedida.AplicarFiltro;
+begin
+  if (edtPesquisar.Text <> '')  then
+  begin
+    DMMain.FDTUnidadesMedida.Filter := 'upper(descricao) like(''%' +
+    UpperCase(StringReplace(edtPesquisar.Text, ' ', '%', [rfReplaceAll])) + '%'')';
+  end;
+  DMMain.FDTUnidadesMedida.Filtered := edtPesquisar.Text <> '';
+end;
+
+procedure TfrmUnidadesMedida.cxBtnPesquisarClick(Sender: TObject);
+begin
+  AplicarFiltro;
+end;
+
+procedure TfrmUnidadesMedida.cxGrid1DBTableView1BtnEditarPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  NovoOuEditar(True);
+end;
+
+procedure TfrmUnidadesMedida.cxGrid1DBTableView1btnExcluirPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  cxGrid1DBTableView1.DataController.DeleteFocused;
+end;
+
+procedure TfrmUnidadesMedida.cxGrid1DBTableView1CellDblClick(
+  Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+  AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  NovoOuEditar(True);
+end;
+
+procedure TfrmUnidadesMedida.edtPesquisarKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (key = vk_return) then
+  begin
+    cxBtnPesquisar.Click;
+  end;
+end;
+
+procedure TfrmUnidadesMedida.FormCreate(Sender: TObject);
+begin
+  DMMain.FDTUnidadesMedida.Open;
+end;
+
+end.

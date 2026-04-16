@@ -1,0 +1,14 @@
+inherited frmListagemCidades: TfrmListagemCidades
+  Caption = 'Cidades'
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  TextHeight = 15
+  inherited lblTitulo: TLabel
+    Width = 101
+    Caption = 'Cidades'
+    ExplicitWidth = 101
+  end
+  inherited dsListagem: TDataSource
+    DataSet = DMMain.FDTCidades
+  end
+end

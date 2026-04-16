@@ -1,0 +1,79 @@
+unit uFrmModeloCadPadrao;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  Vcl.Menus,
+  cxControls,
+  cxContainer,
+  cxEdit,
+  Vcl.DBCtrls,
+  cxTextEdit,
+  cxDBEdit,
+  Vcl.StdCtrls,
+  cxButtons,
+  uUtils, Data.DB,
+  Generics.Collections;
+
+type
+  TfrmModeloCadPadrao = class(TForm)
+    lblTitulo: TLabel;
+    btnCadastrar: TcxButton;
+    btnCancelar: TcxButton;
+    dsCadastro: TDataSource;
+
+    procedure btnCancelarClick(Sender: TObject); virtual;
+    procedure btnCadastrarClick(Sender: TObject); virtual;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction); Virtual;
+
+    private
+      { Private declarations }
+    protected
+
+      function GetDataSet: TDataSet; Virtual;
+    public
+      { Public declarations }
+
+    end;
+
+
+
+implementation
+
+{$R *.dfm}
+
+
+procedure TfrmModeloCadPadrao.btnCadastrarClick(Sender: TObject);
+begin
+  raise Exception.Create('Metodo btnCadastrarClick não sobresscrito na classe ' + Self.ClassName);
+end;
+
+procedure TfrmModeloCadPadrao.btnCancelarClick(Sender: TObject);
+begin
+  GetDataSet.Cancel;
+  Self.Close;
+end;
+
+function TfrmModeloCadPadrao.GetDataSet: TDataSet;
+begin
+  raise Exception.Create('Metodo GetDataSet não sobresscrito na classe ' + Self.ClassName);
+end;
+
+procedure TfrmModeloCadPadrao.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  GetDataSet.Cancel;
+end;
+end.

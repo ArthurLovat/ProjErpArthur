@@ -1,0 +1,39 @@
+program ErpArthur;
+
+uses
+  Vcl.Forms,
+  uHome in 'uHome.pas' {frmHome},
+  uUnidadesMedida in 'uUnidadesMedida.pas' {frmUnidadesMedida},
+  uCadUnidadeMedida in 'uCadUnidadeMedida.pas' {frmCadUnidadesMedida},
+  uDMMain in 'uDMMain.pas' {DMMain: TDataModule},
+  uCadProduto in 'uCadProduto.pas' {FrmCadProduto},
+  uListagemProdutos in 'uListagemProdutos.pas' {frmListagemProdutos},
+  uListagemEstados in 'uListagemEstados.pas' {frmListagemEstados},
+  uCadEstados in 'uCadEstados.pas' {frmCadestados},
+  uListagemCidades in 'uListagemCidades.pas' {frmListagemCidades},
+  uCadCidades in 'uCadCidades.pas' {frmCadCidades},
+  uCadBairros in 'uCadBairros.pas' {frmCadBairros},
+  uUtils in 'uUtils.pas',
+  uListagemBairros in 'uListagemBairros.pas' {frmListagemBairros},
+  uListagemClientes in 'uListagemClientes.pas' {frmListagemClientes},
+  uCadClientes in 'uCadClientes.pas' {frmCadClientes},
+  ufrmModeloListagemPadrao in 'ufrmModeloListagemPadrao.pas' {frmModeloListagemPadrao},
+  uFrmModeloCadPadrao in 'uFrmModeloCadPadrao.pas' {frmModeloCadPadrao},
+  uFrmListagemUsuarios in 'uFrmListagemUsuarios.pas' {frmListagemUsuarios},
+  uFrmCadUsuarios in 'uFrmCadUsuarios.pas' {frmCadUsuarios},
+  uValidacao in 'uValidacao.pas',
+  uFrmNewHome in 'uFrmNewHome.pas' {Form1},
+  uFrmModeloRelatorioPadrao in 'uFrmModeloRelatorioPadrao.pas' {FrmModeloRelatorioPadrao},
+  uFrmRelatorioProdutos in 'uFrmRelatorioProdutos.pas' {FrmRelatorioProdutos},
+  uFrmRelatorioClientes in 'uFrmRelatorioClientes.pas' {FrmRelatorioClientes},
+  uDMRelatorios in 'uDMRelatorios.pas' {DMRelatorios: TDataModule};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TDMMain, DMMain);
+  Application.CreateForm(TfrmHome, frmHome);
+  Application.Run;
+end.

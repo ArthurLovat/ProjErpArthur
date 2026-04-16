@@ -1,0 +1,67 @@
+unit ufrmRelClientesNovos;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uFrmModeloRelatorioPadrao, cxGraphics,
+  cxControls, cxLookAndFeels, cxLookAndFeelPainters, cxGeometry,
+  dxFramedControl, cxContainer, cxEdit, cxStyles, cxCustomData, cxFilter,
+  cxData, cxDataStorage, cxNavigator, dxDateRanges, dxScrollbarAnnotations,
+  Data.DB, cxDBData, cxGridLevel, cxClasses, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid,
+  AdvGlowButton, cxGroupBox, dxGDIPlusClasses, Vcl.ExtCtrls, Vcl.StdCtrls,
+  dxPanel, Vcl.DBCtrls, Vcl.ComCtrls, dxCore, cxDateUtils, cxSpinEdit,
+  cxCheckBox, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxCalendar, uDMMain;
+
+type
+  TfrmRelClientesNovos = class(TFrmModeloRelatorioPadrao)
+    lblCidade: TLabel;
+    lblEstado: TLabel;
+    lblNome: TLabel;
+    lblSituacao: TLabel;
+    edtCidade: TEdit;
+    edtNome: TEdit;
+    cbxSituacao: TComboBox;
+    lkUFF: TDBLookupComboBox;
+    cxGroupBox1: TcxGroupBox;
+    lblDataCadastro: TLabel;
+    lblDataAlteracao: TLabel;
+    lblCadAte: TLabel;
+    lblAteAltera: TLabel;
+    lblPorcentagem: TLabel;
+    dtpCadastroDe: TcxDateEdit;
+    dtpAlteracaoDe: TcxDateEdit;
+    dtpCadastroAte: TcxDateEdit;
+    dtpAlteracaoAte: TcxDateEdit;
+    cbxCadastro: TcxCheckBox;
+    cbxAlteracao: TcxCheckBox;
+    spedtDias: TcxSpinEdit;
+    dsListagem: TDataSource;
+    dsListagemUf: TDataSource;
+    grdListagemVwnome_fantasia: TcxGridDBColumn;
+    grdListagemVwrazao_social: TcxGridDBColumn;
+    grdListagemVwtelefone: TcxGridDBColumn;
+    grdListagemVwdata_cadastro: TcxGridDBColumn;
+    grdListagemVwdias_cadastro: TcxGridDBColumn;
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmRelClientesNovos: TfrmRelClientesNovos;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmRelClientesNovos.FormCreate(Sender: TObject);
+begin
+  inherited;
+  DMMain.FDQRelEstados.Open;
+end;
+
+end.

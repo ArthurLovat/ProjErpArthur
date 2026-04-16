@@ -1,0 +1,68 @@
+inherited frmCadestados: TfrmCadestados
+  Caption = 'Cadastro De Estados'
+  ClientWidth = 788
+  Font.Height = -13
+  OnCreate = FormCreate
+  ExplicitHeight = 499
+  TextHeight = 17
+  inherited lblTitulo: TLabel
+    Left = 212
+    Top = 121
+    Width = 254
+    Caption = 'Cadastro De Estado'
+    ExplicitLeft = 212
+    ExplicitTop = 121
+    ExplicitWidth = 254
+  end
+  object lblDescricao: TLabel [1]
+    Left = 212
+    Top = 165
+    Width = 64
+    Height = 25
+    Caption = 'Estado:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -19
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lblUF: TLabel [2]
+    Left = 212
+    Top = 202
+    Width = 29
+    Height = 25
+    Caption = 'UF:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -19
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  inherited btnCadastrar: TcxButton
+    TabOrder = 2
+  end
+  inherited btnCancelar: TcxButton
+    TabOrder = 3
+  end
+  object cxDBEdtDescricao: TcxDBTextEdit [5]
+    Left = 383
+    Top = 165
+    DataBinding.DataField = 'nome_estado'
+    DataBinding.DataSource = dsCadastro
+    TabOrder = 0
+    Width = 209
+  end
+  object cxDBEdtUF: TcxDBTextEdit [6]
+    Left = 383
+    Top = 204
+    DataBinding.DataField = 'uf'
+    DataBinding.DataSource = dsCadastro
+    TabOrder = 1
+    Width = 209
+  end
+  inherited dsCadastro: TDataSource
+    DataSet = DMMain.FDTEstados
+  end
+end

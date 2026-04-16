@@ -1,0 +1,213 @@
+unit uCadProduto;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  Vcl.Menus,
+  cxControls,
+  cxContainer,
+  cxEdit,
+  Data.DB,
+  Vcl.StdCtrls,
+  Vcl.DBCtrls,
+  cxTextEdit,
+  cxDBEdit,
+  cxButtons,
+  uDMMain,
+  cxMemo,
+  cxMaskEdit,
+  cxDropDownEdit,
+  uUtils,
+  uFrmModeloCadpadrao,
+  uValidacao;
+
+type
+  TFrmCadProduto = class(TFrmModeloCadpadrao)
+    lblDescricao: TLabel;
+    lblPrecoCusto: TLabel;
+    edtDescricao: TcxDBTextEdit;
+    edtPrecoCusto: TcxDBTextEdit;
+    dbcbAtivo: TDBCheckBox;
+    lblCodigo: TLabel;
+    edtCodigo: TcxDBTextEdit;
+    lblUnidadeMedida: TLabel;
+    lblPrecoVenda: TLabel;
+    edtPrecoVenda: TcxDBTextEdit;
+    lblObservacao: TLabel;
+    cxDBMmoObservacao: TcxDBMemo;
+    dbLkCbbUnidadeMedida: TDBLookupComboBox;
+    dsListagemUnidadeMedida: TDataSource;
+    procedure cxbtnCancelarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnCadastrarClick(Sender: TObject);
+
+  protected
+    function GetDataSet: TDataSet; override;
+  private
+    function BuscarUltimoCodigo: String;
+    function VerSeOCodigoInseridoJaExiste: boolean;
+    function StringToInteger(AString: String): Integer;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TFrmCadProduto.btnCadastrarClick(Sender: TObject);
+begin
+  var vValidacao: Tvalidacao := TValidacao.Create;
+  try
+    vValidacao.RealizarValidacaoBasica(edtDescricao, 'Descrição', edtDescricao.Text);
+    vValidacao.RealizarValidacaoBasica(edtPrecoVenda, 'Preço De Venda', edtPrecoVenda.Text);
+
+
+  finally
+
+  end;
+end;
+
+function TFrmCadProduto.BuscarUltimoCodigo: String;
+begin
+  try
+
+    DMMain.qryAux.Close;
+    DMMain.qryAux.SQL.Text := 'SELECT COALESCE(MAX(str_to_int_def(codigo)), 0) + 1 as maior_num FROM Tprodutos;';
+    DMMain.qryAux.Open;
+    Result := DMMain.qryAux.FieldByName('maior_num').AsInteger.ToString;
+    DMMain.qryAux.Close;
+
+  except
+    on Exception: Exception do
+    begin
+      var vMessage := 'Não foi possivel buscar o maior Codigo!' + Exception.Message;
+      Application.MessageBox(PWideChar(vMessage), 'Erro:', MB_ICONQUESTION + MB_OK);
+      Result := '';
+    end;
+  end;
+end;
+
+procedure btnCadastrarClick(Sender: TObject);
+begin
+//  if (Trim(cxDBEdtDescricao.Text) = '') then
+//  begin
+//    Application.MessageBox('A Descricao é obrigatorio!', 'Aviso:', MB_ICONQUESTION + MB_OK);
+//    TUtils.DarSetFocus(cxDBEdtDescricao);
+//    Exit;
+//  end;
+//  if (Length(cxDBEdtDescricao.Text) < 3) then
+//  begin
+//    Application.MessageBox('A Descrição precisa ter mais que 3 caracteres!', 'Aviso:', MB_ICONQUESTION + MB_OK);
+//    TUtils.DarSetFocus(cxDBEdtDescricao);
+//    Exit;
+//  end;
+//  if (Trim(cxDBEdtPrecoVenda.Text) = '') then
+//  begin
+//    Application.MessageBox('O Preço de venda é obrigatorio!', 'Aviso:', MB_ICONQUESTION + MB_OK);
+//    TUtils.DarSetFocus(cxDBEdtPrecoVenda);
+//    Exit;
+//  end;
+//
+//  if (VerSeOCodigoInseridoJaExiste) then
+//  begin
+//    Application.MessageBox('O Codigo inserido já existe!', 'Aviso:', MB_ICONQUESTION + MB_OK);
+//    TUtils.DarSetFocus(cxDBEdtCodigo);
+//    Exit;
+//  end;
+//
+//  if (Trim(cxDBEdtCodigo.Text) = '' ) then
+//  begin
+//    cxDBEdtCodigo.Text := BuscarUltimoCodigo;
+//  end;
+//
+//
+//  DMMain.FDTProdutos.Post;
+//  ModalResult := mrOk;
+end;
+
+procedure TFrmCadProduto.cxbtnCancelarClick(Sender: TObject);
+begin
+  DMMAin.FDTProdutos.Cancel;
+  Self.Close;
+end;
+
+procedure TFrmCadProduto.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  DMMain.FDTProdutos.Cancel;
+end;
+
+procedure TFrmCadProduto.FormCreate(Sender: TObject);
+begin
+  DMMain.FDTUnidadesMedida.Open;
+end;
+
+function TFrmCadProduto.GetDataSet: TDataSet;
+begin
+
+end;
+
+function TFrmCadProduto.StringToInteger(AString: String): Integer;
+begin
+  try
+    if (AString = '') then
+    begin
+      Result := 0
+    end
+    else
+    begin
+     Result := Integer(AString);
+    end;
+  except
+    on Exception: Exception do
+    begin
+      var vMessage := 'Não foi possivel converter para Inegrer no metodo: TFrmCadProduto.StringToInteger' + Exception.Message;
+      Application.MessageBox(PWideChar(vMessage), 'Erro:', MB_ICONQUESTION + MB_OK);
+      Result := 0;
+    end;
+  end;
+
+end;
+
+function TFrmCadProduto.VerSeOCodigoInseridoJaExiste: boolean;
+begin
+  try
+    if (Trim(cxDBEdtCodigo.Text).IsEmpty) then
+    begin
+      Exit(False);
+    end;
+
+    DMMain.qryAux.Close;
+    DMMain.qryAux.SQL.Text := 'SELECT codigo FROM Tprodutos WHERE codigo = :ACodigo and id <> :AId;';
+    DMMain.qryAux.ParamByName('ACodigo').AsString := cxDBEdtCodigo.Text;
+    DMMain.qryAux.ParamByName('AId').AsInteger := DMMain.FDTProdutos.FieldByName('id').AsInteger;
+    DMMain.qryAux.Open;
+
+    Result := not DMMain.qryAux.IsEmpty;
+
+    DMMain.qryAux.Close;
+
+  except
+    on Exception: Exception do
+    begin
+      var vMessage := 'Não foi possivel ver se o Codigo ja existe!' + Exception.Message;
+      Application.MessageBox(PWideChar(vMessage), 'Erro:', MB_ICONQUESTION + MB_OK);
+      Result := False;
+    end;
+  end;
+end;
+
+end.

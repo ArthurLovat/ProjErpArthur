@@ -1,0 +1,287 @@
+inherited frmRelClientesNovos: TfrmRelClientesNovos
+  Caption = 'Novos Clientes'
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  ExplicitWidth = 1092
+  ExplicitHeight = 698
+  TextHeight = 15
+  inherited pnlFiltros: TdxPanel
+    inherited lblTitle: TLabel
+      Width = 131
+      Caption = 'Clientes Novos'
+      ExplicitWidth = 131
+    end
+    inherited imgTitle: TImage
+      Picture.Data = {
+        0D546478536D617274496D61676589504E470D0A1A0A0000000D494844520000
+        0020000000200806000000737A7AF400000020744558745469746C650047726F
+        757042795265736F757263653B5363686564756C65723B2E5B9E7E000007E649
+        444154785EA5977B7054571DC7BFF791EC6EB2C9861242C88B844720BC051AC0
+        368C9650DA611850A4D4322AB416C5CEE84C742A533A54AD481DAA56C7C15AA5
+        7FD8A1D64EA928A58381B4150B9429AF100C21853421249BEC6E927DEF7D9D73
+        3CF7ECDD001926B5E4B7F3993D7B9239DFEFF9FECE3D9B488C31D825491232F5
+        6AC3723CFEEBE3F6848DF2C2E6DA2D8A246F936569016300A168650C018BB0B3
+        7DE1C4EBBF7FA7E532009343380C4E396B8FCA9D0C0C0BDB3CBF69F1AEEA3973
+        1BA654CF84ACC88885073138308044348658248A6838827852DBFFCA9196A702
+        513D09C0E2B0FFD7803CD290CDF60D0B6673E1433F796C61FFB49A590DF7D73F
+        84AC2C06FF2767D175F128026D1FA1BBED1C7A3A3B108B45E176676F5A33BF64
+        0F80EC116B7E5E0302C5A5C807E7D52E5955BF7A4D7E79551562FDED70197E94
+        14FB50E02B80A61948A64C9E421C81DE103ADABBA02ACA9645259E694E729938
+        EF2A01992F5E724F61212E379FC39183EFB01B5DDD608A0B84AAC81B5F0177FE
+        04E83A816152981CC320C8CA96D409B9CA9300B2C66040202553D6504AD3F0C9
+        D52EEBC6404A3ADC781EEF36B6A0CB9F82465CA8A89E8DA2496530090364191E
+        AF0B8A22169B0F4075D695EED6004B19E4CA60288CFE50C29ABB7001366CDD06
+        A2E6E03F275BF0D68126BCF1C6BF70B1AD07265CF0E479E02B708B432C4B281A
+        EB1960369A6E1DBBDE79038C2958F6C04ACC5FB4105B7FD48067F6ECC6CF7EB7
+        1B3F7D7107B6EF78121BD62F8737DF07CB92402903212C08808DF510D28E40F4
+        B52BED1D114991E48AAAE95055066F9E173E5F1E0A7CF9F079F938271BE585B9
+        A85B3C0DD1046529CD824ED8F1CC5D309604E847D74281EBFD9135B9B91E25C7
+        9B036AA4400C0DCCD2C18809622661EAE9395FAE079018A231BDF7CA80F16700
+        6626C9BB3E031C72F4526F4B49D1B808D1E2B0F404AC5414961683998C428B86
+        A1C786606A49300A78DC4AAA2398D8DC13B382B75E44633140C5428C5CF0775E
+        03E1099889214E18A9213FB4485098604CE6F16BC8CFCD3EF3F1F5483300634C
+        2D18994224A61D683E751C964E91087523D2DB81587F37E2413F92E101286E1F
+        7AFB03B68983003461FA739634CABC5A98EFF6FD60EDA2A6BA152BE64D292F44
+        B4B71DA97008966942CD2DC48DFE089AFF7BF9D26F0EB5AE8A24CD0100C69DE2
+        1FEDCB495EF9EC09D8DC5AA56BF7890442512D79A6BDE7F10F9B1AE9E9D3E741
+        722BE0ABAA853C7E06DA3B0368696DA3275AFBBEC3C5E3A26D23AAFAB1BF62FA
+        D7F78F9E4046FCE8CFEF1B998062B3BAE1F507A70C1CFAE7924A0B81DE3EE8A9
+        2428A330F404FA945938C36A1F39FBE633FF700CB04CAA23DEEF04E118AA13CE
+        ADC23247A958BA29AF78DEEA07D5FCD25DCBEB36A3A7B9112B565523140CA0EB
+        EA155CEC9F88C5F5DFC0D97FC77E5559BFE3F221F5FCDE6C903A3B664A194029
+        980338C434EDB103438258A7EA9A9B57A80CFC456FEEBAF2BE2DF993BEB06E9B
+        C79BF7F4B4D271F991701C4B962C445342C77B179A503755468F598A9A07D663
+        CEBCB9DFC30727A4A933677D596E3F5357BEFDC76961CB022304D41943D74193
+        4950C3846C999012095CDDBF7F19806C1594A1E91775427CEED75EA8289ABAF8
+        70EDAC9299F5F796439115ECF9CB49584C45482EC3BB9D25686C69875C548B65
+        523134027977F781EF179178B54929DA9EDB691B10093042C11887DE8EE2CD43
+        F98CEACC8194D5638E78CD9A1DC5A53397BDF7AD87674C2EF07AD03D686220A1
+        41828437DFEF404777007F78EE11B87372A0A82EECFCE371048343D8C2C5A76E
+        DC280440888D4880DAE806A8696382183A52B138FCA74EC2304D615418187EE4
+        A6D5BDB4F2DEB2C98AA2E042571C2601245942C5E489387ABA152BE68DE3765D
+        024D3751336522DE3E7A015B9C9D99E7CF0380188BF839C432412DC231F9D842
+        2A1E07650CB160309380A40250167EF3E5C545E3F3D74F2DC9C3A5EE04E23A83
+        CCC525092828F0A2A672028231038CFB8D2775182641FF601235D3CB257ACDBE
+        A48248F8FD429C5247DCC6B21C23E9394DD701CA90F3CA3E1C39F631F0EDAFA6
+        0DB80B4A9F98535580405847DF504AF45E51A4E1E7C3C5630F8574FBC613CE2D
+        8BA26F3085EC2C493AF5DDEDD8FAE843B887C1362D7E4E2803E5104AD310260C
+        F8838338D878028F12714E865BA040CA5A3AB1C08DCE4042C4AB2804B2642790
+        5E304751C48E939A291E21C21842610DC5856E71278834C5EFDE7C961BDF3F81
+        683C8175ABEB0146390A5455150629A5B7B5802BC995B91E159EB881625F1618
+        9CDD330831AFEAE2BB558529260BC7A00CDCA82C51C2C0589A4CFDF2B7FB70A1
+        A50D6B573F0062512168710CD3128609251C0A008A0A801889A1BD7BFFDEDAC0
+        9D0DBBA3764CF6C29488B82446F0F2AB6F21539DA14968FFD42FCDFD4A09A863
+        40725258F9A52FA2BDA313130BC78381414831B121B11615666F26609EF9D3C6
+        9D007665FEA0749032643E5F1AF19993A4EBDE7E29DD169A0E13C09C59D311E7
+        F1574D2E132DA30EE2258C50CECD3340381AC71816BCBDA451C65E3B2971E884
+        3E15EDBBFAE9751175214F808814D3828C3AE2A26D10A53A5910C19D8447274B
+        9C7AA775802404AE5EEB4255459998CBEC9EDC92C06B079BEC769D03905447F9
+        FF8D61F4B21761B678702002CD302139BB995D33039595E5F007068520652C8D
+        63E2C5679F5A0AA083135131B6B29289F8877F3BFCC1FD4C88D074CC70C49803
+        840B612E1E0D9F05708DCF870060AC06F4E77FF8C4C3005C230FAEC3C839C649
+        712270EA7F9759DAC273CFE9940000000049454E44AE426082}
+    end
+    inherited gpbGrupo1: TcxGroupBox
+      Caption = 'Filtros'
+      object lblCidade: TLabel
+        Left = 16
+        Top = 64
+        Width = 43
+        Height = 15
+        Caption = 'Cidade: '
+      end
+      object lblEstado: TLabel
+        Left = 16
+        Top = 93
+        Width = 38
+        Height = 15
+        Caption = 'Estado:'
+      end
+      object lblNome: TLabel
+        Left = 16
+        Top = 35
+        Width = 39
+        Height = 15
+        Caption = 'Nome: '
+      end
+      object lblSituacao: TLabel
+        Left = 16
+        Top = 123
+        Width = 48
+        Height = 15
+        Caption = 'Situa'#231#227'o:'
+      end
+      object edtCidade: TEdit
+        Left = 154
+        Top = 61
+        Width = 180
+        Height = 23
+        TabOrder = 0
+      end
+      object edtNome: TEdit
+        Left = 154
+        Top = 32
+        Width = 180
+        Height = 23
+        TabOrder = 1
+      end
+      object cbxSituacao: TComboBox
+        Left = 154
+        Top = 122
+        Width = 180
+        Height = 23
+        Style = csDropDownList
+        ItemIndex = 0
+        TabOrder = 2
+        Text = 'Ambos'
+        Items.Strings = (
+          'Ambos'
+          'Ativo'
+          'Inativo')
+      end
+      object lkUFF: TDBLookupComboBox
+        Left = 154
+        Top = 90
+        Width = 180
+        Height = 23
+        DataField = 'uf'
+        KeyField = 'uf'
+        ListField = 'uf'
+        ListSource = dsListagemUf
+        NullValueKey = 46
+        TabOrder = 3
+      end
+    end
+    object cxGroupBox1: TcxGroupBox
+      Left = 383
+      Top = 56
+      Caption = 'Periodos'
+      TabOrder = 2
+      Height = 169
+      Width = 502
+      object lblDataCadastro: TLabel
+        Left = 16
+        Top = 35
+        Width = 97
+        Height = 15
+        Caption = 'Data De Cadastro: '
+      end
+      object lblDataAlteracao: TLabel
+        Left = 16
+        Top = 64
+        Width = 97
+        Height = 15
+        Caption = 'Data De Altera'#231#227'o:'
+      end
+      object lblCadAte: TLabel
+        Left = 281
+        Top = 35
+        Width = 18
+        Height = 15
+        Caption = 'Ate'
+      end
+      object lblAteAltera: TLabel
+        Left = 281
+        Top = 64
+        Width = 18
+        Height = 15
+        Caption = 'Ate'
+      end
+      object lblPorcentagem: TLabel
+        Left = 128
+        Top = 93
+        Width = 148
+        Height = 15
+        Caption = 'Cadastrado a mais de: (dias)'
+      end
+      object dtpCadastroDe: TcxDateEdit
+        Left = 154
+        Top = 32
+        Enabled = False
+        TabOrder = 4
+        Width = 121
+      end
+      object dtpAlteracaoDe: TcxDateEdit
+        Left = 154
+        Top = 61
+        Enabled = False
+        TabOrder = 5
+        Width = 121
+      end
+      object dtpCadastroAte: TcxDateEdit
+        Left = 305
+        Top = 32
+        Enabled = False
+        TabOrder = 0
+        Width = 121
+      end
+      object dtpAlteracaoAte: TcxDateEdit
+        Left = 305
+        Top = 61
+        Enabled = False
+        TabOrder = 1
+        Width = 121
+      end
+      object cbxCadastro: TcxCheckBox
+        Left = 135
+        Top = 36
+        Style.TransparentBorder = False
+        TabOrder = 2
+      end
+      object cbxAlteracao: TcxCheckBox
+        Left = 135
+        Top = 65
+        Style.TransparentBorder = False
+        TabOrder = 3
+      end
+      object spedtDias: TcxSpinEdit
+        Left = 304
+        Top = 90
+        Properties.DisplayFormat = '0'
+        Properties.ValueType = vtFloat
+        TabOrder = 6
+        Width = 124
+      end
+    end
+  end
+  inherited grdListagem: TcxGrid
+    inherited grdListagemVw: TcxGridDBTableView
+      DataController.DataSource = dsListagem
+      OptionsData.Editing = False
+      object grdListagemVwnome_fantasia: TcxGridDBColumn
+        Caption = 'Nome Fantasia'
+        DataBinding.FieldName = 'nome_fantasia'
+        Width = 352
+      end
+      object grdListagemVwrazao_social: TcxGridDBColumn
+        Caption = 'Raz'#227'o Social'
+        DataBinding.FieldName = 'razao_social'
+        Width = 307
+      end
+      object grdListagemVwtelefone: TcxGridDBColumn
+        Caption = 'Telefone'
+        DataBinding.FieldName = 'telefone'
+      end
+      object grdListagemVwdata_cadastro: TcxGridDBColumn
+        Caption = 'Data Cadastro'
+        DataBinding.FieldName = 'data_cadastro'
+        Width = 141
+      end
+      object grdListagemVwdias_cadastro: TcxGridDBColumn
+        Caption = 'Dias Cadastrado'
+        DataBinding.FieldName = 'dias_cadastro'
+        Width = 92
+      end
+    end
+  end
+  object dsListagem: TDataSource
+    DataSet = DMMain.qryRelNovosClientes
+    Left = 208
+    Top = 32
+  end
+  object dsListagemUf: TDataSource
+    DataSet = DMMain.FDQRelEstados
+    Left = 232
+    Top = 32
+  end
+end

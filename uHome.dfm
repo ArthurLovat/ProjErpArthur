@@ -1,0 +1,94 @@
+object frmHome: TfrmHome
+  Left = 0
+  Top = 0
+  Caption = 'Home'
+  ClientHeight = 642
+  ClientWidth = 1088
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Menu = mmnMenu
+  Position = poScreenCenter
+  TextHeight = 15
+  object mmnMenu: TMainMenu
+    object Cadastros1: TMenuItem
+      Caption = 'Cadastros'
+      object Bairros1: TMenuItem
+        Caption = 'Bairros'
+        OnClick = Bairros1Click
+      end
+      object Clientes1: TMenuItem
+        Caption = 'Clientes'
+        OnClick = Clientes1Click
+      end
+      object Cidades3: TMenuItem
+        Caption = 'Cidades'
+        OnClick = Cidades3Click
+      end
+      object Bairros2: TMenuItem
+        Caption = 'Estados'
+        OnClick = Bairros2Click
+      end
+      object Produtos1: TMenuItem
+        Caption = 'Produtos'
+        OnClick = Produtos1Click
+      end
+      object UnidadesDeMedida1: TMenuItem
+        Caption = 'Unidades De Medida'
+        OnClick = UnidadesDeMedida1Click
+      end
+      object N1: TMenuItem
+        Caption = '-'
+      end
+      object Usuarios: TMenuItem
+        Caption = 'Usuarios'
+        OnClick = UsuariosClick
+      end
+    end
+    object Relatorios1: TMenuItem
+      Caption = 'Relatorios'
+      object Clientes3: TMenuItem
+        Caption = 'Clientes'
+        OnClick = Clientes3Click
+      end
+      object Clientes2: TMenuItem
+        Caption = '-'
+      end
+      object ClientesDesatualizados1: TMenuItem
+        Caption = 'Clientes Desatualizados'
+        OnClick = ClientesDesatualizados1Click
+      end
+      object N3: TMenuItem
+        Caption = '-'
+      end
+      object ClientesNovos1: TMenuItem
+        Caption = 'Clientes Novos'
+        OnClick = ClientesNovos1Click
+      end
+      object N5: TMenuItem
+        Caption = '-'
+      end
+      object Produtos2: TMenuItem
+        Caption = 'Produtos'
+        OnClick = Produtos2Click
+      end
+      object N2: TMenuItem
+        Caption = '-'
+      end
+      object AmostragemdeLucros1: TMenuItem
+        Caption = 'Amostragem de Lucros'
+        OnClick = AmostragemdeLucros1Click
+      end
+      object N4: TMenuItem
+        Caption = '-'
+      end
+      object MargemDeLucro1: TMenuItem
+        Caption = 'Margem De Lucro'
+        OnClick = MargemDeLucro1Click
+      end
+    end
+  end
+end

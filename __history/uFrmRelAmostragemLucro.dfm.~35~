@@ -1,0 +1,215 @@
+inherited FrmRelAmostragemLucro: TFrmRelAmostragemLucro
+  Caption = 'Amostragem De Lucro'
+  ClientHeight = 662
+  ClientWidth = 1088
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnCreate = FormCreate
+  ExplicitWidth = 1100
+  ExplicitHeight = 700
+  TextHeight = 15
+  inherited pnlFiltros: TdxPanel
+    inherited lblTitle: TLabel
+      Width = 195
+      Caption = 'Amostragem de Lucro'
+      ExplicitWidth = 195
+    end
+    inherited imgTitle: TImage
+      Picture.Data = {
+        0D546478536D617274496D61676589504E470D0A1A0A0000000D494844520000
+        0020000000200806000000737A7AF40000001974455874536F66747761726500
+        41646F626520496D616765526561647971C9653C0000000D744558745469746C
+        650033444C696E653BEA1C4784000005C449444154785EBD57DB6F544518FF9D
+        E526108DA99A2A68048C4F462D0A245A104DC15029A455419427DB95D0C6A0E5
+        3FF0DD07314A90280F72092DC4007B691385B26D29B48208B44030EC4229D2ED
+        05A1AD15DCF67CCEF9E67AB25813133DD9C9CCCE39DFFE2EDF3773663DC82B02
+        408FFFB9859FC5BF8823D57C2F00FFF6BB53872391C8AB13451287FDCD0D8FD4
+        FD09E2C90D00C6C7C753956B179500C0A41DFB4ED2FF7D7DB5E70401983299F9
+        2B76B99C0F32323C2D2F5FB2B9E30126C263999EEC26BCA64E89C0F789832200
+        E093840DC791EE75B3234B464F18549FEE15CDB166E46231010AA2F823751105
+        0DB2C1F6E14909E61B7C07444EF09C4B724F431740D251721CF0E483E1200A89
+        B40433D9D17C2718DCB37346A5128200BC13BB129DF0A1C993754011B0CC01B8
+        82018F037E389BC537A96EEE25820502AC3B1CE210891FCB3078F67AD6491553
+        C164C0B0617748175348A18786E35751F8F46328F80D68CB0C33E965CF15C2BA
+        E7D62D69AB193CD69246DFAFBD78AFF419952A9B025E05365796B5BB16926D19
+        C445436B1AD1F78B71B48BD0766584B1963D5B68D5925A17EA771202FC60B300
+        EFBBCDE01F454B40D65EE38065450CC88D948AC4F12BACE2C68D5B4C6DFB8E56
+        6CA85C8CA62E76829996082758B1252FC0D338D89261F095C573B1E1ADF90059
+        6CDF75C0F77DA3DE97F0EC6242A866F0DE5B78E3E5392076E30AB67DDD828DD1
+        2538D249321D2094182780B8B0FC50CB6564FB8751B6782EA26FCE97D8AC49E1
+        101C077CC715560E6179A03C8DDEEC6D94BE340751AD80644AB66E4FA166C352
+        5190C0B1B42041E09A8805E0CD97D1373024C0E731B8E3B875C1F7F352C00D5A
+        796B260067E51F040A24388F75717DB12D850F372EC5F767088F3C5E80CFF69F
+        C5B98BBDE81F18C6AA25F350E582B3722705E4A6C0D0E31F16E06964FB0270D7
+        3E435EFE300131E1D0E75B9BB0A9E635EC8975A1BF3B8B81C1C0F6A75055219F
+        F115B603615641FE4E4810F629DB0578558501370E0C5DBA284988949415CF63
+        B55BBE3C82BEABAC5C824BC74CACEF2AD043D7017715F405CA8B85F240014231
+        E839B01F838D07F0D08A723C51FEB670A788EFC55A2E735F266CAF1473723511
+        88CCC6905703BEEF2CC3DCD818330AE64A8BE7A0B2A288C77036A8E1E43E14FC
+        7913339E7C1883CD095C23C26C41A2B2BC48AB1163A17C9C93CA1B9A47A2F734
+        09525C029C0872E3BE7180D99002AC2A7FC1FACDB1127C28B697410A57AC1420
+        6730904AA28749AC4125BB15DE0549A2B99B9B59DE447615B8E7019B6CC19AA4
+        100C05E089BD68EFEAC603336702C9180A4BCB409DA731984AE03A93589B07A8
+        6129FF2CA6DD761DF0CD4B45532428E5F13AB45FE8C6CCD5EB70FFB4FB702159
+        0F34C4A513E74EE3E6D1387A08985DB1C6B159E9B8F731C690B30E186A96F148
+        723F2BEF387F0D3304F8F2DACD1CDA0EE07CA21E948C31099CFD499038841E70
+        3A147A1854893529E214C81A80AD01C81B5005371C17B69FEF66F0D76B6B0DFF
+        45353568270827EA408D713C1A38F1F3290C1E3EC4E99855F18E49A3EDDD12F1
+        6C96EC3254AC58793D461275AC7CFAEA77B1FCE3CD2038AF672241A21A1D205C
+        144E20A9499C44EE521B4677FF6235CBCEC477755CC2822D3BD5BB80420E184A
+        23F13A563E7DD53A01CECADDE31A37ED44072048D4018D09CC5ABF1E930A1E84
+        9B6A576AEF85AB4835D5E34573D0711D00A949C20906E79C1BF6F6A2D068A120
+        F163404290C6AE9DEE2EA708D8B3C9EEF60C8AA251FBCA764F44F0CD56C1E0CB
+        043801F94BC88E0DB90535D54C22DDB88F31F3494B06CF5755A16453ADD9B4EC
+        32346C384C2BB72E9A0CBAD90C3FB15090A0EA6A8D68D573BAC8CC59703B8EC8
+        0309D4BE0D4739C900E248F51D9A92B65A1FE1C397AA74935A206F69BA473222
+        A573FAD4495685C60D9B6934D90AD7FD447FA45CE88070F84434F6C7E8EFCD9F
+        7C9A78C5D034CC3DB740183AB4693924C90CAC53F03C679E3F26E0EE9DD15600
+        394FA5611A80299ABFEEFF9BBFEB5A157200EEFC05B985C4A5CE1B6B51000000
+        0049454E44AE426082}
+    end
+    inherited gpbGrupo1: TcxGroupBox
+      Caption = 'Filtros'
+      ExplicitWidth = 558
+      Width = 558
+      object lblSituacao: TLabel
+        Left = 16
+        Top = 123
+        Width = 48
+        Height = 15
+        Caption = 'Situa'#231#227'o:'
+      end
+      object lblCodigo: TLabel
+        Left = 16
+        Top = 35
+        Width = 42
+        Height = 15
+        Caption = 'C'#243'digo:'
+      end
+      object lblDesc: TLabel
+        Left = 16
+        Top = 64
+        Width = 57
+        Height = 15
+        Caption = 'Descri'#231#227'o: '
+      end
+      object lblUnidadeMedida: TLabel
+        Left = 16
+        Top = 93
+        Width = 110
+        Height = 15
+        Caption = 'Unidade De Medida: '
+      end
+      object lblPorcentagem: TLabel
+        Left = 336
+        Top = 35
+        Width = 74
+        Height = 15
+        Caption = 'Porcentagem:'
+      end
+      object Label1: TLabel
+        Left = 538
+        Top = 35
+        Width = 10
+        Height = 15
+        Caption = '%'
+      end
+      object edtCodigo: TEdit
+        Left = 136
+        Top = 32
+        Width = 180
+        Height = 23
+        TabOrder = 0
+      end
+      object edtDescricao: TEdit
+        Left = 136
+        Top = 61
+        Width = 180
+        Height = 23
+        TabOrder = 1
+      end
+      object cbxSituacao: TComboBox
+        Left = 136
+        Top = 119
+        Width = 180
+        Height = 23
+        Style = csDropDownList
+        ItemIndex = 0
+        TabOrder = 2
+        Text = 'Ambos'
+        Items.Strings = (
+          'Ambos'
+          'Ativo'
+          'Inativo')
+      end
+      object lkUnidade: TDBLookupComboBox
+        Left = 136
+        Top = 90
+        Width = 180
+        Height = 23
+        DataField = 'unidade'
+        KeyField = 'unidade'
+        ListField = 'unidade'
+        ListSource = dsListagemUn
+        TabOrder = 3
+      end
+      object spedtPorcentagem: TcxSpinEdit
+        Left = 416
+        Top = 32
+        Properties.DisplayFormat = '#,##0.###'
+        Properties.ValueType = vtFloat
+        TabOrder = 4
+        Width = 116
+      end
+    end
+  end
+  inherited grdListagem: TcxGrid
+    inherited grdListagemVw: TcxGridDBTableView
+      DataController.DataSource = dsListagem
+      object grdListagemVwativo: TcxGridDBColumn
+        Caption = 'Ativo'
+        DataBinding.FieldName = 'ativo'
+      end
+      object grdListagemVwcodigo: TcxGridDBColumn
+        Caption = 'C'#243'digo'
+        DataBinding.FieldName = 'codigo'
+      end
+      object grdListagemVwdescricao: TcxGridDBColumn
+        Caption = 'Descri'#231#227'o'
+        DataBinding.FieldName = 'descricao'
+        Width = 258
+      end
+      object grdListagemVwpreco_custo: TcxGridDBColumn
+        Caption = 'Pre'#231'o de Custo'
+        DataBinding.FieldName = 'preco_custo'
+        PropertiesClassName = 'TcxSpinEditProperties'
+        Properties.DisplayFormat = 'R$ #,##0.00'
+        Width = 85
+      end
+      object grdListagemVwPorcent: TcxGridDBColumn
+        Caption = 'Porcentagem De Lucro'
+        DataBinding.FieldName = 'percentual_lucro'
+        PropertiesClassName = 'TcxSpinEditProperties'
+        Properties.DisplayFormat = '#,##0.###%'
+        Width = 155
+      end
+      object grdListagemVwPrecoVenda: TcxGridDBColumn
+        Caption = 'Pre'#231'o Venda Calculado'
+        DataBinding.FieldName = 'preco_venda'
+        PropertiesClassName = 'TcxSpinEditProperties'
+        Properties.DisplayFormat = '%2.2m'
+        Width = 138
+      end
+    end
+  end
+  object dsListagem: TDataSource
+    DataSet = DMMain.FDQRelAmostragemLucro
+    Left = 352
+    Top = 32
+  end
+  object dsListagemUn: TDataSource
+    DataSet = DMMain.FDQRelUnidade
+    Left = 304
+    Top = 32
+  end
+end

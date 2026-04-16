@@ -1,0 +1,86 @@
+unit uCadBairros;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  Vcl.Menus,
+  cxControls,
+  cxContainer,
+  cxEdit,
+  Data.DB,
+  Vcl.DBCtrls,
+  cxTextEdit,
+  cxDBEdit,
+  Vcl.StdCtrls,
+  cxButtons,
+  uUtils,
+  uDMmain;
+
+type
+  TfrmCadBairros = class(TForm)
+    lblCadBairros: TLabel;
+    lblBairro: TLabel;
+    cxbtnCadastrar: TcxButton;
+    cxbtnCancelar: TcxButton;
+    cxDBEdtDescricao: TcxDBTextEdit;
+    dsBairros: TDataSource;
+    procedure cxbtnCadastrarClick(Sender: TObject);
+    procedure cxbtnCancelarClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmCadBairros.cxbtnCadastrarClick(Sender: TObject);
+begin
+  var vUtils := Tutils.Create;
+  try
+    if (Trim(cxDBEdtDescricao.Text) = '') then
+    begin
+      Application.MessageBox('O Bairro é obrigatório!', 'Aviso:', MB_ICONQUESTION + MB_OK);
+      vUtils.DarSetFocus(cxDBEdtDescricao);
+      Exit
+    end;
+    if (Length(cxDBEdtDescricao.Text) < 3) then
+    begin
+      Application.MessageBox('O Bairro precisa ter mais de 3 caracteres!', 'Aviso', MB_ICONQUESTION + MB_OK);
+      vUtils.DarSetFocus(cxDBEdtDescricao);
+      Exit
+    end;
+  finally
+    vUtils.Free;
+  end;
+  DMMain.FDTBairros.Post;
+  Modalresult := MrOk;
+end;
+
+procedure TfrmCadBairros.cxbtnCancelarClick(Sender: TObject);
+begin
+  DMMain.FDTBairros.Cancel;
+  Self.Close;
+end;
+
+procedure TfrmCadBairros.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  DMMain.FDTBairros.Cancel;
+end;
+
+end.

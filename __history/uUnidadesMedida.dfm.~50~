@@ -1,0 +1,10 @@
+inherited frmUnidadesMedida: TfrmUnidadesMedida
+  Caption = 'Unidades De medida'
+  ClientHeight = 662
+  ClientWidth = 1088
+  Position = poScreenCenter
+  TextHeight = 15
+  inherited dsListagem: TDataSource
+    DataSet = DMMain.FDTUnidadesMedida
+  end
+end

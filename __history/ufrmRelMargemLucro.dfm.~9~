@@ -1,0 +1,174 @@
+inherited frmRelMargemLucro: TfrmRelMargemLucro
+  Caption = 'Margem De Lucros'
+  Position = poScreenCenter
+  TextHeight = 15
+  inherited pnlFiltros: TdxPanel
+    inherited lblTitle: TLabel
+      Width = 157
+      Caption = 'Margem De Lucro'
+      ExplicitWidth = 157
+    end
+    inherited imgTitle: TImage
+      Picture.Data = {
+        0D546478536D617274496D61676589504E470D0A1A0A0000000D494844520000
+        0020000000200806000000737A7AF40000001C744558745469746C6500566572
+        746963616C6C3B416C69676E3B426F74746F6DF2CD0254000002FE4944415478
+        5EED573D8B544B14AC9E5D1E0F0D444D4413FF811809C25B0613D11F20E68218
+        B960E0FB1582A2CB9A19E80F1033455434F3BD4CCC8C4D0441F0639DDBA74A38
+        9C739B1D6777BCE32E067A99A17BE8EA7BAAEBD4E9EE2992F02B9F1180DF9BC0
+        F2A2134B297D37BED99F7E946DF625FD3C810C182A2E473BDA828001A80018BF
+        7794C0F2EAB5138F464B65A55F9D7FA21560C6E76BFFFE7F1AC064570860A495
+        8BE7571DC08C0AF591D6EFDE5801B01478EC188134B2085086D76F1F86C24DE7
+        A3078F43D60CBF1B040A8280C4EF9C4709463A811D57202525E50408A144FE7B
+        023498696E1966692D444212C80A4990009468011015343A6E680A7E944D4905
+        44F359990941AE8088C1044AE66C1B224A8C513075AD025080E89B0CE4000532
+        F8D5B5938F4B296348A04BEB2FEDEBDC8CCFAE5F7979C6AB200249F43115A104
+        96345493131860427FE9F8C2B9CB80E8D3DAC64208C0ED7B37C75EDB4140EC72
+        CC710C3C55C130E110058A197DF29B77CF9C3624C83BC2E17DC750ABF5B5CD28
+        433A8192AB77E294C15A0AB2D55C0F980954AE2A1EBABC4ECC2A7BB22451AD3A
+        81E230F4DBB1B182D4301326816A4E20093779D96DCAABDC8451868194125B41
+        C3220418CE66440E1FC4AA9A0218918069E20A04D2878424C6C1262C560972D2
+        9C9D2C9C409704DA4E4803A4C0B55214097201139274A94566F0BE3574306BAB
+        9204B3542B51893568010FC0AA503981C54B9B71112950239B1E20A1D2CCA2C0
+        520B788014AA3A8836D384A4367B801D04422A7DC97ABB781510665F53D60650
+        98904D91B613AA254A89B526DE0013CA42D6037B8E400823C529E7D5614C2CF3
+        34DCBFF75004171866649467DE07E71208907DFED83D59BBF5E094844DABCA8E
+        553D8D3B1E3EBCDF787167FDF93FD397913C986AC71781E5ACB37CFA3E50628F
+        FF2B6FBB33E423800E80C5F8DFF15D9AAA26056603C097242169BE0200BEFA84
+        2D9FA64790F9B4CDD16D9982990A8CCF5E529E74841C2A30EB37F782A8C6EC2B
+        C79BF9E82820C7337DFCDE9C2AC0ABFFEE973F7F4E7F39816F0710C7C7723F7E
+        610000000049454E44AE426082}
+    end
+    inherited gpbGrupo1: TcxGroupBox
+      Caption = 'Filtros'
+      ExplicitWidth = 670
+      Width = 670
+      object lblSituacao: TLabel
+        Left = 16
+        Top = 123
+        Width = 48
+        Height = 15
+        Caption = 'Situa'#231#227'o:'
+      end
+      object lblCodigo: TLabel
+        Left = 16
+        Top = 35
+        Width = 42
+        Height = 15
+        Caption = 'C'#243'digo:'
+      end
+      object lblDesc: TLabel
+        Left = 16
+        Top = 64
+        Width = 57
+        Height = 15
+        Caption = 'Descri'#231#227'o: '
+      end
+      object lblUnidadeMedida: TLabel
+        Left = 16
+        Top = 93
+        Width = 110
+        Height = 15
+        Caption = 'Unidade De Medida: '
+      end
+      object lblPorcentagem: TLabel
+        Left = 322
+        Top = 35
+        Width = 166
+        Height = 15
+        Caption = 'Dasatualizados a mais de: (dias)'
+      end
+      object edtCodigo: TEdit
+        Left = 136
+        Top = 32
+        Width = 180
+        Height = 23
+        TabOrder = 0
+      end
+      object edtDescricao: TEdit
+        Left = 136
+        Top = 61
+        Width = 180
+        Height = 23
+        TabOrder = 1
+      end
+      object cbxSituacao: TComboBox
+        Left = 136
+        Top = 119
+        Width = 180
+        Height = 23
+        Style = csDropDownList
+        ItemIndex = 0
+        TabOrder = 2
+        Text = 'Ambos'
+        Items.Strings = (
+          'Ambos'
+          'Ativo'
+          'Inativo')
+      end
+      object lkUnidade: TDBLookupComboBox
+        Left = 136
+        Top = 90
+        Width = 180
+        Height = 23
+        DataField = 'unidade'
+        KeyField = 'unidade'
+        ListField = 'unidade'
+        TabOrder = 3
+      end
+      object spedtDias: TcxSpinEdit
+        Left = 494
+        Top = 32
+        Properties.DisplayFormat = '0'
+        Properties.ValueType = vtFloat
+        TabOrder = 4
+        Width = 124
+      end
+    end
+  end
+  inherited grdListagem: TcxGrid
+    inherited grdListagemVw: TcxGridDBTableView
+      DataController.DataSource = dsListagem
+      object grdListagemVwcodigo: TcxGridDBColumn
+        Caption = 'C'#243'digo'
+        DataBinding.FieldName = 'codigo'
+        Width = 103
+      end
+      object grdListagemVwdescricao: TcxGridDBColumn
+        Caption = 'Descri'#231#227'o'
+        DataBinding.FieldName = 'descricao'
+        Width = 262
+      end
+      object grdListagemVwpreco_custo: TcxGridDBColumn
+        Caption = 'Pre'#231'o De Custo'
+        DataBinding.FieldName = 'preco_custo'
+        Width = 92
+      end
+      object grdListagemVwpreco_venda: TcxGridDBColumn
+        Caption = 'Pre'#231'o De Venda'
+        DataBinding.FieldName = 'preco_venda'
+        Width = 94
+      end
+      object grdListagemVwlucro: TcxGridDBColumn
+        Caption = 'Lucro'
+        DataBinding.FieldName = 'lucro'
+        Width = 98
+      end
+      object grdListagemVwmargem_lucro: TcxGridDBColumn
+        Caption = 'Margem De Lucro %'
+        DataBinding.FieldName = 'margem_lucro'
+        Width = 115
+      end
+    end
+  end
+  object dsListagem: TDataSource
+    DataSet = DMMain.qryRelMargemLucro
+    Left = 232
+    Top = 32
+  end
+  object dsListagemUn: TDataSource
+    DataSet = DMMain.FDQRelUnidade
+    Left = 272
+    Top = 32
+  end
+end

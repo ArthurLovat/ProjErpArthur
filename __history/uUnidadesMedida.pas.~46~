@@ -1,0 +1,95 @@
+unit uUnidadesMedida;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxEdit,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxContainer,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  cxButtons,
+  cxTextEdit,
+  cxGridLevel,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxClasses,
+  cxGridCustomView,
+  cxGrid,
+  uCadUnidadeMedida,
+  UDMMain,
+  cxDBEdit,
+  cxButtonEdit,
+  uFrmModeloListagemPadrao;
+
+type
+  TfrmUnidadesMedida = class(TFrmModeloListagemPadrao)
+    tbvListagemid: TcxGridDBColumn;
+    tbvListagemativo: TcxGridDBColumn;
+    tbvListagemdescricao: TcxGridDBColumn;
+    tbvListagemunidade: TcxGridDBColumn;
+    
+
+  private
+  protected
+    function GetCaptionFormulario: String; override;
+    function GetDataSet: TDataSet; override;
+    function GetFormularioCadastro: TFormClass; override;
+    function GetNomeCampoFiltro: String; override;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+
+
+
+{ TfrmUnidadesMedida }
+
+function TfrmUnidadesMedida.GetCaptionFormulario: String;
+begin
+  Result := Self.Caption;
+end;
+
+function TfrmUnidadesMedida.GetDataSet: TDataSet;
+begin
+  Result := DMMain.FDTUnidadesMedida;
+end;
+
+function TfrmUnidadesMedida.GetFormularioCadastro: TFormClass;
+begin
+  Result := TfrmCadUnidadesMedida;
+end;
+
+function TfrmUnidadesMedida.GetNomeCampoFiltro: String;
+begin
+
+end;
+
+end.

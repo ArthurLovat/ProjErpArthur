@@ -1,0 +1,57 @@
+inherited frmCadestados: TfrmCadestados
+  Left = 0
+  Top = 0
+  Caption = 'Cadastro De Estados'
+  ClientHeight = 461
+  ClientWidth = 788
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnCreate = FormCreate
+  TextHeight = 17
+  object lblDescricao: TLabel
+    Left = 216
+    Top = 189
+    Width = 64
+    Height = 25
+    Caption = 'Estado:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -19
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lblUF: TLabel
+    Left = 216
+    Top = 226
+    Width = 29
+    Height = 25
+    Caption = 'UF:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -19
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object cxDBEdtDescricao: TcxDBTextEdit
+    Left = 387
+    Top = 191
+    DataBinding.DataField = 'nome_estado'
+    TabOrder = 0
+    Width = 209
+  end
+  object cxDBEdtUF: TcxDBTextEdit
+    Left = 387
+    Top = 228
+    DataBinding.DataField = 'uf'
+    TabOrder = 1
+    Width = 209
+  end
+end
