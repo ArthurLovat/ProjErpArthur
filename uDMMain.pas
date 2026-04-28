@@ -118,12 +118,25 @@ type
     qryCadClientesDependentesnome: TWideStringField;
     qryCadClientesDependentescpf_cnpj: TWideStringField;
     qryCadClientesDependentestelefone: TWideStringField;
+    dtsListagemClientes: TDataSource;
+    qryProdutos: TFDQuery;
+    qryProdutosid: TIntegerField;
+    qryProdutosativo: TBooleanField;
+    qryProdutosdescricao: TWideStringField;
+    qryProdutoscodigo: TWideStringField;
+    qryProdutosdata_cadastro: TSQLTimeStampField;
+    qryProdutosdata_alteracao: TSQLTimeStampField;
+    qryProdutospreco_custo: TBCDField;
+    qryProdutospreco_venda: TBCDField;
+    qryProdutosobservacao: TWideMemoField;
+    qryProdutostunidade_medida_id: TIntegerField;
     qryCadProdutosComplementos: TFDQuery;
     qryCadProdutosComplementosid: TIntegerField;
     qryCadProdutosComplementostprodutos_id: TIntegerField;
     qryCadProdutosComplementosativo: TBooleanField;
     qryCadProdutosComplementosdescricao: TWideStringField;
     qryCadProdutosComplementosvalor_adicional: TBCDField;
+    qryCadClientesDependentesdata_cadastro: TSQLTimeStampField;
     //procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
@@ -139,9 +152,5 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
-
-
-
-
 
 end.

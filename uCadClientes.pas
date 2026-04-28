@@ -35,7 +35,8 @@ uses
   cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator,
   dxDateRanges, dxScrollbarAnnotations, cxDBData, cxGridLevel, cxClasses,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
-  cxGrid, dxGDIPlusClasses, cxPC, cxButtonEdit, ufrmCadClientesDependentes;
+  cxGrid, dxGDIPlusClasses, cxPC, cxButtonEdit, ufrmCadClientesDependentes,
+  cxCheckBox;
 
 type
   TfrmCadClientes = class(TfrmModeloCadPadrao)
@@ -43,7 +44,6 @@ type
     dsListagemBairros: TDataSource;
     cxPageControl1: TcxPageControl;
     tbsCliente: TcxTabSheet;
-    DBCheckBox1: TDBCheckBox;
     lblRazaoSocial: TLabel;
     lblCpfCnpj: TLabel;
     lblNomeFantasia: TLabel;
@@ -56,15 +56,30 @@ type
     lblCidade: TLabel;
     lblBairros: TLabel;
     lblDtCad: TLabel;
+
+    [TValidarRequerido('Razão Social')]
     edtRazaoSocial: TcxDBTextEdit;
+
+    [TValidarRequerido('CPF/CNPJ')]
+    [TValidarDocumento('CPF/CNPJ')]
     edtCpfCnpj: TcxDBTextEdit;
+
+    [TValidarRequerido('Nome Fantasia')]
     edtNomeFantasia: TcxDBTextEdit;
+
+    [TValidarRequerido('Rua')]
     edtRua: TcxDBTextEdit;
+
+    [TValidarRequerido('Cidade')]
     lkCidade: TDBLookupComboBox;
+
     edtComplemento: TcxDBTextEdit;
     edtPontoReferencia: TcxDBTextEdit;
     edtCep: TcxDBTextEdit;
+
+    [TValidarRequerido('Numero')]
     edtNumero: TcxDBTextEdit;
+    [TValidarRequerido('Bairro')]
     lkBairro: TDBLookupComboBox;
     pnlFoto: TPanel;
     dptDataCadastro: TcxDBDateEdit;
@@ -78,76 +93,111 @@ type
     tbvListagemExcluir: TcxGridDBColumn;
     tbvListagemEditar: TcxGridDBColumn;
     lvlListagem: TcxGridLevel;
-    tbvListagemid: TcxGridDBColumn;
-    tbvListagemtclientes_id: TcxGridDBColumn;
     tbvListagemativo: TcxGridDBColumn;
     tbvListagemnome: TcxGridDBColumn;
     tbvListagemcpf_cnpj: TcxGridDBColumn;
     tbvListagemtelefone: TcxGridDBColumn;
+    tbvListagemdata_cadastro: TcxGridDBColumn;
+    chkAtivo: TcxDBCheckBox;
 
-    procedure btnCadastrarClick(Sender: TObject);
+
+    procedure btnCadastrarClick(Sender: TObject); virtual;
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure btnAdicionarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure tbvListagemExcluirPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure tbvListagemEditarPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
 
   private
-    { Private declarations }
   protected
     function GetDataSet: TDataSet; override;
+    function GetFormularioCadastro: TFormClass; override;
+    function GetDataSource: TDataSource; override;
+     
   public
-    { Public declarations }
   end;
 
 implementation
 
 {$R *.dfm}
 
-
-
-
-{ TfrmCadClientes }
-
 procedure TfrmCadClientes.btnAdicionarClick(Sender: TObject);
 begin
-  TUtils.AbrirTela(TfrmCadClientesDependentes);
+  if (not DMMain.qryCadClientesDependentes.Active) then
+  begin
+    DMMain.qryCadClientesDependentes.Open;
+  end;
+  DMMain.qryCadClientesDependentes.Append;
+  TUtils.AbrirTela(TfrmCadClientesDependentes)
 end;
 
 procedure TfrmCadClientes.btnCadastrarClick(Sender: TObject);
 begin
   var vValidacao: TValidacao := TValidacao.Create;
   try
-    vValidacao.RealizarValidacaoBasica(edtNomeFantasia, 'NomeFantasia', edtNomeFantasia.Text);
-    vValidacao.RealizarValidacaoBasica(edtCpfCnpj, 'Cpf/Cnpj', edtCpfCnpj.Text);
-    if (not TUtils.ValidarDocumento(edtCpfCnpj.Text)) then
-    begin
-      vValidacao.AdicionarMensagem(edtCpfCnpj, 'O CPF/CNPJ precisa ser válido');
-    end;
-    vValidacao.RealizarValidacaoBasica(edtRua, 'Rua', edtRua.Text);
-    vValidacao.RealizarValidacaoBasica(edtNumero, 'Numero', edtNumero.Text);
-    vValidacao.RealizarValidacaoBasica(lkBairro, 'Bairro', lkBairro.Text);
-    vValidacao.RealizarValidacaoBasica(lkCidade, 'Cidade', lkCidade.Text);
+    vValidacao.ValidarFormularioAutomatico(Self);
     vValidacao.ExibirMensagens;
+    
     if (vValidacao.TemErro = False) then
     begin
-      if (Trim(dptDataCadastro.Text) = '') then
-      begin
-        DMMain.FDQListagemClientes.FieldByName('data_cadastro').AsDateTime := Now;
+      try
+        if (Trim(dptDataCadastro.Text) = '') then
+        begin
+          DMMain.FDQListagemClientes.FieldByName('data_cadastro').AsDateTime := Now;
+        end;
+        
+        DMMain.FDQListagemClientes.FieldByName('data_alteracao').AsDateTime := Now;
+        DMMAin.FDConnection.StartTransaction;
+        GetDataSet.Post;
+        var vIdCliente := DMMain.FDQListagemClientes.FieldByName('id').AsInteger;
+        DMMain.FDQListagemClientes.ApplyUpdates(0);
+        
+        
+        ShowMessage('ID do cliente gerado: ' + IntToStr(vIdCliente));
+        DMMain.FDQListagemClientes.CommitUpdates;
+        
+        
+        DMMain.qryCadClientesDependentes.Edit;
+        DMMain.qryCadClientesDependentes.FieldByName('tclientes_id').AsInteger := vIdCliente;
+        DMMain.qryCadClientesDependentes.Post;
+        DMMain.qryCadClientesDependentes.ApplyUpdates(0);
+
+        DMMain.qryCadClientesDependentes.CommitUpdates;
+        DMMain.FDConnection.Commit;
+        
+        DMMain.FDQListagemClientes.Refresh;
+        ModalResult := mrOk;
+      except on E: Exception do
+        begin
+          DMMAin.FDConnection.Rollback;
+          ShowMessage('Erro ao salvar: ' + E.Message);
+        end;
       end;
-      DMMain.FDQListagemClientes.FieldByName('data_alteracao').AsDateTime := Now;
-      GetDataSet.Post;
-      ModalResult := mrOk;
     end;
   finally
     vValidacao.Free;
+    if (ModalResult = mrOk) then
+    begin
+      DMMain.qryCadClientesDependentes.Close;
+    end;
   end;
 end;
 
+procedure TfrmCadClientes.FormCreate(Sender: TObject);
+begin
+  inherited;
+  DMMain.qryCadClientesDependentes.Open;
+end;
 
 procedure TfrmCadClientes.FormDestroy(Sender: TObject);
 begin
   inherited;
   DMMain.FDTCidades.Close;
   DMMAin.FDTBairros.Close;
+  DMMain.qryCadClientesDependentes.Close;
 end;
 
 procedure TfrmCadClientes.FormShow(Sender: TObject);
@@ -160,6 +210,29 @@ end;
 function TfrmCadClientes.GetDataSet: TDataSet;
 begin
   Result := DMMain.FDQListagemClientes;
+end;
+
+function TfrmCadClientes.GetDataSource: TDataSource;
+begin
+  Result := dsListagemClientesDependentes;
+end;
+
+function TfrmCadClientes.GetFormularioCadastro: TFormClass;
+begin
+  Result := TfrmCadClientesDependentes;
+end;
+
+procedure TfrmCadClientes.tbvListagemEditarPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  NovoOuEditar(True);
+end;
+
+procedure TfrmCadClientes.tbvListagemExcluirPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  inherited;
+  tbvListagem.DataController.DeleteFocused;
 end;
 
 end.

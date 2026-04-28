@@ -37,7 +37,8 @@ uses
   cxGridDBTableView,
   cxClasses,
   cxGridCustomView,
-  cxGrid;
+  cxGrid,
+  cxCheckBox;
 
 type
   TfrmModeloListagemPadrao = class(TForm)
@@ -73,6 +74,7 @@ type
     procedure doWhenEditing; virtual;
     procedure DoWheninserting; virtual;
     function GetDataSource: TDataSource; virtual;
+
   public
     procedure AfterConstruction; override;
   end;
@@ -120,7 +122,15 @@ end;
 
 procedure TfrmModeloListagemPadrao.DoWheninserting;
 begin
-  //override if wish
+  var vCampoAtivo: TField;
+  if (GetDataSet.Active) then
+  begin
+    vCampoAtivo := GetDataSet.FindField('ativo');
+    if (Assigned(vCampoAtivo)) then
+    begin
+      vCampoAtivo.AsBoolean := True;
+    end;
+  end;
 end;
 
 procedure TfrmModeloListagemPadrao.edtPesquisarKeyDown(Sender: TObject;
@@ -137,7 +147,6 @@ begin
   GetDataSet.Close;
   GetDataSource.DataSet.Close;
 end;
-
 
 function TfrmModeloListagemPadrao.GetCaptionFormulario: String;
 begin

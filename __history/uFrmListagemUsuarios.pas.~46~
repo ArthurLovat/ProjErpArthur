@@ -1,0 +1,110 @@
+unit uFrmListagemUsuarios;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  ufrmModeloListagemPadrao,
+  cxGraphics,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  Vcl.Menus,
+  cxControls,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxEdit,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxButtonEdit,
+  cxGridLevel,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxClasses,
+  cxGridCustomView,
+  cxGrid,
+  Vcl.StdCtrls,
+  cxButtons,
+  uDMMain,
+  uFrmCadUsuarios;
+
+type
+  TfrmListagemUsuarios = class(TfrmModeloListagemPadrao)
+    tbvListagemid: TcxGridDBColumn;
+    tbvListagemativo: TcxGridDBColumn;
+    tbvListagemlogin: TcxGridDBColumn;
+    tbvListagemsenha: TcxGridDBColumn;
+    tbvListagemnome: TcxGridDBColumn;
+    tbvListagememail: TcxGridDBColumn;
+    tbvListagemdata_alteracao: TcxGridDBColumn;
+    tbvListagemdata_cadastro: TcxGridDBColumn;
+    tbvListagemid_externo: TcxGridDBColumn;
+  private
+
+  protected
+    function GetCaptionFormulario: String; override;
+    function GetDataSet: TDataSet; override;
+    function GetDataSource: TDataSource; override;
+    function GetFormularioCadastro: TFormClass; override;
+    function GetNomeCampoFiltro: String; override;
+    procedure DoWhenEditing; Override;
+    procedure DoWhenInserting; Override;
+
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmListagemUsuarios.DoWhenEditing;
+begin
+  dsListagem.DataSet.FieldByName('data_alteracao').AsDateTime := NOW();
+end;
+
+procedure TfrmListagemUsuarios.DoWhenInserting;
+begin
+  dsListagem.DataSet.FieldByName('ativo').AsString := 'T';
+end;
+
+function TfrmListagemUsuarios.GetCaptionFormulario: String;
+begin
+  Result := Self.Caption;
+end;
+
+function TfrmListagemUsuarios.GetDataSet: TDataSet;
+begin
+  Result := DMMain.FDTUsuarios;
+end;
+
+function TfrmListagemUsuarios.GetDataSource: TDataSource;
+begin
+  Result := Self.dsListagem;
+end;
+
+function TfrmListagemUsuarios.GetFormularioCadastro: TFormClass;
+begin
+  Result := TfrmCadUsuarios;
+end;
+
+function TfrmListagemUsuarios.GetNomeCampoFiltro: String;
+begin
+  Result := 'nome';
+end;
+
+end.

@@ -1,0 +1,149 @@
+unit uListagemClientes;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxEdit,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxButtonEdit,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  cxButtons,
+  cxGridLevel,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxClasses,
+  cxGridCustomView,
+  cxGrid,
+  uDMMain,
+  uCadClientes,
+  uFrmModeloListagemPadrao,
+  uDMRelatorios;
+
+type
+  TfrmListagemClientes = class(TfrmModeloListagemPadrao)
+    tbvListagemid: TcxGridDBColumn;
+    tbvListagemativo: TcxGridDBColumn;
+    tbvListagemnome_fantasia: TcxGridDBColumn;
+    tbvListagemrazao_social: TcxGridDBColumn;
+    tbvListagemcpf_cnpj: TcxGridDBColumn;
+    tbvListagemdata_cadastro: TcxGridDBColumn;
+    tbvListagemdata_alteracao: TcxGridDBColumn;
+    tbvListagemendereco: TcxGridDBColumn;
+    tbvListagemnumero_endereco: TcxGridDBColumn;
+    tbvListagemcomplemento_endereco: TcxGridDBColumn;
+    tbvListagemponto_referencia: TcxGridDBColumn;
+    tbvListagemcep: TcxGridDBColumn;
+    tbvListagemtcidades_id: TcxGridDBColumn;
+    tbvListagemtbairros_id: TcxGridDBColumn;
+    tbvListagemFicha: TcxGridDBColumn;
+    procedure tbvListagemFichaPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+  
+
+  private
+    { Private declarations }
+    procedure MostrarFichaCadastral;
+
+  protected
+    function GetCaptionFormulario: String; override;
+    function GetDataSet: TDataSet; override;
+    function GetFormularioCadastro: TFormClass; override;
+    function GetNomeCampoFiltro: String; override;
+    function GetDataSource: TDataSource; override;
+    procedure DoWheninserting; override;
+  public
+    { Public declarations }
+  end;
+implementation
+
+{$R *.dfm}
+
+
+procedure TfrmListagemClientes.DoWheninserting;
+begin
+  if (GetDataSet.Active) then
+  begin
+    GetDataset.FieldByName('ativo').AsBoolean := True;
+  end;
+end;
+
+function TfrmListagemClientes.GetCaptionFormulario: String;
+begin
+  Result := Self.Caption;
+end;
+
+function TfrmListagemClientes.GetDataSet: TDataSet;
+begin
+ Result := DMMain.FDQListagemClientes;
+end;
+
+function TfrmListagemClientes.GetDataSource: TDataSource;
+begin
+  Result := Self.dsListagem;
+end;
+
+function TfrmListagemClientes.GetFormularioCadastro: TFormClass;
+begin
+  Result := TfrmCadClientes;
+end;
+
+function TfrmListagemClientes.GetNomeCampoFiltro: String;
+begin
+  Result := 'nome_fantasia';
+end;
+
+procedure TfrmListagemClientes.MostrarFichaCadastral;
+begin
+  var vRelatorio: TDMRelatorios;
+  var vIdCliente: Integer;
+
+  vIdCliente := tbvListagem.DataController.Values[tbvListagem.DataController.FocusedRecordIndex,
+                  tbvListagemid.Index];
+
+  vRelatorio := TDMRelatorios.Create(nil);
+  try
+    GetDataSet.Filter := 'id = ' + IntToStr(vIdCliente);
+    GetDataSet.Filtered := True;
+
+    vRelatorio.LoadFromFile('FichaCadCliente.fr3');
+    vRelatorio.FrxDBDataSet.DataSet := GetDataSet;
+    vRelatorio.ShowReport;
+  finally
+    GetDataSet.Filtered := False;
+    GetDataSet.Filter := '';
+    vRelatorio.Free;
+  end;
+  
+end;
+
+procedure TfrmListagemClientes.tbvListagemFichaPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  MostrarFichaCadastral;
+end;
+
+end.

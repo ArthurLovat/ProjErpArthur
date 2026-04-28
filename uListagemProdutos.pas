@@ -61,10 +61,8 @@ type
     tbvListagempreco_venda: TcxGridDBColumn;
     tbvListagemobservacao: TcxGridDBColumn;
     tbvListagemtunidade_medida_id: TcxGridDBColumn;
-    
 
   private
-
   protected
     function GetCaptionFormulario: String; override;
     function GetDataSet: TDataSet; override;
@@ -75,17 +73,11 @@ type
     function GetDataSource: TDataSource; override;
 
   public
-    { Public declarations }
   end;
 
 implementation
 
 {$R *.dfm}
-
-
-
-
-{ TfrmListagemProdutos }
 
 procedure TfrmListagemProdutos.DoWhenEditing;
 begin
@@ -93,6 +85,7 @@ begin
 end;
 procedure TfrmListagemProdutos.DoWhenInserting;
 begin
+  inherited;
   GetDataSet.FieldByName('data_cadastro').AsDateTime := Now;
 end;
 function TfrmListagemProdutos.GetCaptionFormulario: String;
@@ -101,7 +94,7 @@ begin
 end;
 function TfrmListagemProdutos.GetDataSet: TDataSet;
 begin
-  Result := DMMain.FDTProdutos;
+  Result := DMMain.qryProdutos;
 end;
 function TfrmListagemProdutos.GetDataSource: TDataSource;
 begin
@@ -112,6 +105,7 @@ function TfrmListagemProdutos.GetFormularioCadastro: TFormClass;
 begin
   Result := TFrmCadProduto;
 end;
+
 function TfrmListagemProdutos.GetNomeCampoFiltro: String;
 begin
   Result := 'descricao';

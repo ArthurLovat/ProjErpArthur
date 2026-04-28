@@ -7,7 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uFrmModeloCadPadrao, cxGraphics,
   cxLookAndFeels, cxLookAndFeelPainters, Vcl.Menus, Data.DB, Vcl.StdCtrls,
   cxButtons, uDMMain, cxControls, cxContainer, cxEdit, cxTextEdit, cxDBEdit,
-  Vcl.DBCtrls, cxMaskEdit, cxSpinEdit, uValidacao, uUtils;
+  Vcl.DBCtrls, cxMaskEdit, cxSpinEdit, uValidacao, uUtils, cxDropDownEdit,
+  cxCalendar;
 
 type
   TfrmCadClientesDependentes = class(TfrmModeloCadPadrao)
@@ -18,18 +19,14 @@ type
     edtNomeFantasia: TcxDBTextEdit;
     mkedtTelefone: TcxDBMaskEdit;
     mkedtCpfCnpj: TcxDBMaskEdit;
+    lblDtCad: TLabel;
+    dptDataCadastro: TcxDBDateEdit;
     procedure mkedtCpfCnpjPropertiesChange(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
-    procedure btnCadastrarClick(Sender: TObject);
+    procedure btnCadastrarClick(Sender: TObject); override;
   private
-    
   protected
-    
     function GetDataSet: TDataSet; override;
-    
   public
-
   end;
 
 implementation
@@ -48,25 +45,16 @@ begin
     vValidacao.ExibirMensagens;
     if (vValidacao.TemErro = False) then
     begin
-      GetDataSet.Post; //Dado erro nessa linha, verificar com o ale como prosseguir
+      if (Trim(dptDataCadastro.Text) = '') then
+      begin
+        DMMain.qryCadClientesDependentes.FieldByName('data_cadastro').AsDateTime := Now;
+      end;
+      GetDataSet.Post;
       ModalResult := mrOk;
     end;
   finally
     vValidacao.Free;
   end;
-end;
-
-procedure TfrmCadClientesDependentes.FormCreate(Sender: TObject);
-begin
-  inherited;
-  GetDataSet.Open;
-  DMMain.qryCadClientesDependentes.Open;
-end;
-
-procedure TfrmCadClientesDependentes.FormDestroy(Sender: TObject);
-begin
-  inherited;
-  GetDataSet.Close;
 end;
 
 function TfrmCadClientesDependentes.GetDataSet: TDataSet;

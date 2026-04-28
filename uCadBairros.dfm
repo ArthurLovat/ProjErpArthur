@@ -3,6 +3,7 @@ inherited frmCadBairros: TfrmCadBairros
   ClientHeight = 462
   ClientWidth = 784
   Font.Height = -13
+  ExplicitWidth = 796
   ExplicitHeight = 500
   TextHeight = 17
   inherited lblTitulo: TLabel

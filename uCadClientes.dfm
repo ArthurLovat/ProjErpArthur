@@ -2,6 +2,7 @@ inherited frmCadClientes: TfrmCadClientes
   Caption = 'Cadastro De Clientes'
   ClientHeight = 449
   ClientWidth = 812
+  OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
   ExplicitWidth = 824
@@ -25,6 +26,7 @@ inherited frmCadClientes: TfrmCadClientes
   inherited btnCancelar: TcxButton
     Left = 513
     Top = 423
+    TabOrder = 2
     ExplicitLeft = 513
     ExplicitTop = 423
   end
@@ -33,18 +35,16 @@ inherited frmCadClientes: TfrmCadClientes
     Top = 62
     Width = 801
     Height = 355
-    TabOrder = 2
-    Properties.ActivePage = tbsDependente
+    TabOrder = 1
+    Properties.ActivePage = tbsCliente
     Properties.CustomButtons.Buttons = <>
     ClientRectBottom = 351
     ClientRectLeft = 4
     ClientRectRight = 797
     ClientRectTop = 26
     object tbsCliente: TcxTabSheet
-      Caption = 'tbsCliente'
+      Caption = 'Cliente'
       ImageIndex = 0
-      ExplicitLeft = 0
-      ExplicitTop = 27
       object lblRazaoSocial: TLabel
         Left = 16
         Top = 77
@@ -201,23 +201,6 @@ inherited frmCadClientes: TfrmCadClientes
         Font.Style = [fsBold]
         ParentFont = False
       end
-      object DBCheckBox1: TDBCheckBox
-        Left = 16
-        Top = 25
-        Width = 59
-        Height = 17
-        Caption = 'Ativo'
-        DataField = 'ativo'
-        DataSource = dsCadastro
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -12
-        Font.Name = 'Segoe UI'
-        Font.Style = [fsBold]
-        ParentFont = False
-        TabOrder = 0
-        ValueUnchecked = 'F'
-      end
       object edtRazaoSocial: TcxDBTextEdit
         Left = 171
         Top = 79
@@ -239,7 +222,7 @@ inherited frmCadClientes: TfrmCadClientes
         Top = 50
         DataBinding.DataField = 'nome_fantasia'
         DataBinding.DataSource = dsCadastro
-        TabOrder = 3
+        TabOrder = 0
         Width = 209
       end
       object edtRua: TcxDBTextEdit
@@ -252,7 +235,7 @@ inherited frmCadClientes: TfrmCadClientes
       end
       object lkCidade: TDBLookupComboBox
         Left = 171
-        Top = 289
+        Top = 258
         Width = 209
         Height = 23
         DataField = 'tcidades_id'
@@ -260,14 +243,14 @@ inherited frmCadClientes: TfrmCadClientes
         KeyField = 'id'
         ListField = 'nome_cidade'
         ListSource = dsListagemCidades
-        TabOrder = 5
+        TabOrder = 6
       end
       object edtComplemento: TcxDBTextEdit
         Left = 580
         Top = 206
         DataBinding.DataField = 'complemento_endereco'
         DataBinding.DataSource = dsCadastro
-        TabOrder = 6
+        TabOrder = 8
         Width = 209
       end
       object edtPontoReferencia: TcxDBTextEdit
@@ -275,15 +258,15 @@ inherited frmCadClientes: TfrmCadClientes
         Top = 233
         DataBinding.DataField = 'ponto_referencia'
         DataBinding.DataSource = dsCadastro
-        TabOrder = 7
+        TabOrder = 9
         Width = 209
       end
       object edtCep: TcxDBTextEdit
         Left = 171
-        Top = 260
+        Top = 285
         DataBinding.DataField = 'cep'
         DataBinding.DataSource = dsCadastro
-        TabOrder = 8
+        TabOrder = 7
         Width = 209
       end
       object edtNumero: TcxDBTextEdit
@@ -291,7 +274,7 @@ inherited frmCadClientes: TfrmCadClientes
         Top = 233
         DataBinding.DataField = 'numero_endereco'
         DataBinding.DataSource = dsCadastro
-        TabOrder = 9
+        TabOrder = 5
         Width = 209
       end
       object lkBairro: TDBLookupComboBox
@@ -319,13 +302,26 @@ inherited frmCadClientes: TfrmCadClientes
         Top = 137
         DataBinding.DataField = 'data_cadastro'
         DataBinding.DataSource = dsCadastro
-        TabOrder = 12
+        TabOrder = 3
         Width = 209
+      end
+      object chkAtivo: TcxDBCheckBox
+        Left = 16
+        Top = 23
+        Caption = 'Ativo'
+        DataBinding.DataField = 'ativo'
+        DataBinding.DataSource = dsCadastro
+        Style.TransparentBorder = False
+        TabOrder = 12
       end
     end
     object tbsDependente: TcxTabSheet
-      Caption = 'tbsDependente'
+      Caption = 'Dependentes'
       ImageIndex = 1
+      ExplicitLeft = 5
+      ExplicitTop = 27
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblComplementos: TLabel
         Left = 39
         Top = 10
@@ -471,7 +467,7 @@ inherited frmCadClientes: TfrmCadClientes
         OnClick = btnAdicionarClick
       end
       object grdListagem: TcxGrid
-        Left = 2
+        Left = 3
         Top = 44
         Width = 788
         Height = 278
@@ -521,6 +517,7 @@ inherited frmCadClientes: TfrmCadClientes
                 Kind = bkGlyph
               end>
             Properties.ViewStyle = vsButtonsOnly
+            Properties.OnButtonClick = tbvListagemExcluirPropertiesButtonClick
             Options.Filtering = False
             Options.FilteringAddValueItems = False
             Options.ShowEditButtons = isebAlways
@@ -545,6 +542,7 @@ inherited frmCadClientes: TfrmCadClientes
               end>
             Properties.MaxLength = 0
             Properties.ViewStyle = vsButtonsOnly
+            Properties.OnButtonClick = tbvListagemEditarPropertiesButtonClick
             Options.Filtering = False
             Options.FilteringAddValueItems = False
             Options.ShowEditButtons = isebAlways
@@ -554,28 +552,16 @@ inherited frmCadClientes: TfrmCadClientes
             Caption = 'Ativo'
             DataBinding.FieldName = 'ativo'
             Options.Editing = False
-            Width = 52
-          end
-          object tbvListagemid: TcxGridDBColumn
-            Caption = 'ID'
-            DataBinding.FieldName = 'id'
-            Options.Editing = False
-            Width = 49
-          end
-          object tbvListagemtclientes_id: TcxGridDBColumn
-            Caption = 'ID Cliente'
-            DataBinding.FieldName = 'tclientes_id'
-            Options.Editing = False
-            Width = 72
+            Width = 38
           end
           object tbvListagemnome: TcxGridDBColumn
             Caption = 'Nome'
             DataBinding.FieldName = 'nome'
             Options.Editing = False
-            Width = 201
+            Width = 237
           end
           object tbvListagemcpf_cnpj: TcxGridDBColumn
-            Caption = 'CPF/CNPJ'
+            Caption = 'Cpf / Cnpj'
             DataBinding.FieldName = 'cpf_cnpj'
             Options.Editing = False
           end
@@ -583,7 +569,10 @@ inherited frmCadClientes: TfrmCadClientes
             Caption = 'Telefone'
             DataBinding.FieldName = 'telefone'
             Options.Editing = False
-            Width = 95
+          end
+          object tbvListagemdata_cadastro: TcxGridDBColumn
+            DataBinding.FieldName = 'data_cadastro'
+            Width = 128
           end
         end
         object lvlListagem: TcxGridLevel

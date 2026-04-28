@@ -37,24 +37,25 @@ type
     procedure btnCancelarClick(Sender: TObject); virtual;
     procedure btnCadastrarClick(Sender: TObject); virtual;
     procedure FormClose(Sender: TObject; var Action: TCloseAction); Virtual;
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState); virtual;
 
     private
-
     protected
       function GetDataSet: TDataSet; Virtual;
+      function GetFormularioCadastro: TFormClass; virtual;
+      function GetDataSource: TDataSource; virtual;
+      procedure DoWhenEditing; virtual;
+      procedure DoWhenInserting; virtual;
+      procedure NovoOuEditar(AEditar: boolean); virtual;
 
     public
       procedure AfterConstruction; override;
 
     end;
 
-
-
 implementation
 
 {$R *.dfm}
-
-
 procedure TfrmModeloCadPadrao.AfterConstruction;
 begin
   inherited;
@@ -72,9 +73,54 @@ begin
   Self.Close;
 end;
 
+procedure TfrmModeloCadPadrao.DoWhenEditing;
+begin
+  //Override quando necessario no NovoOuEditar
+end;
+
+procedure TfrmModeloCadPadrao.DoWhenInserting;
+begin
+  //Override quando necessario no NovoOuEditar
+end;
+
 function TfrmModeloCadPadrao.GetDataSet: TDataSet;
 begin
   raise Exception.Create('Metodo GetDataSet não sobresscrito na classe ' + Self.ClassName);
+end;
+
+function TfrmModeloCadPadrao.GetDataSource: TDataSource;
+begin
+  //Override quando necessario no NovoOuEditar
+  Result := GetDataSource;
+end;
+
+function TfrmModeloCadPadrao.GetFormularioCadastro: TFormClass;
+begin
+  //Override quando necessario no NovoOuEditar
+  Result := GetFormularioCadastro;
+end;
+
+procedure TfrmModeloCadPadrao.NovoOuEditar(AEditar: boolean);
+begin
+  var vForm: TForm := GetFormularioCadastro.Create(nil);
+  try
+    if (AEditar) then
+    begin
+      GetDataSource.DataSet.Edit;
+      DoWhenEditing;
+    end
+    else
+    begin
+      GetDataSource.DataSet.Append;
+      DoWhenInserting;
+    end;
+    if (vForm.ShowModal = mrOk ) then
+    begin
+      //Coisa boa
+    end;
+  finally
+    vForm.Free;
+  end;
 end;
 
 procedure TfrmModeloCadPadrao.FormClose(Sender: TObject;
@@ -82,4 +128,19 @@ procedure TfrmModeloCadPadrao.FormClose(Sender: TObject;
 begin
   GetDataSet.Cancel;
 end;
+procedure TfrmModeloCadPadrao.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (Key = VK_RETURN) then
+  begin
+    if not ((ActiveControl is TMemo) and not (ActiveControl is TButton) and
+       not (ActiveControl is TcxButton)) then
+    begin
+      ShowMessage('Teste');
+      Key := 0;
+      Perform(WM_NEXTDLGCTL, 0, 0);
+    end;
+  end;
+end;
+
 end.

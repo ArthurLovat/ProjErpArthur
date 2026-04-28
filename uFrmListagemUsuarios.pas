@@ -74,12 +74,13 @@ implementation
 
 procedure TfrmListagemUsuarios.DoWhenEditing;
 begin
+  inherited;
   dsListagem.DataSet.FieldByName('data_alteracao').AsDateTime := NOW();
 end;
 
 procedure TfrmListagemUsuarios.DoWhenInserting;
 begin
-  dsListagem.DataSet.FieldByName('ativo').AsString := 'T';
+  inherited;
 end;
 
 function TfrmListagemUsuarios.GetCaptionFormulario: String;

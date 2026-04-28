@@ -1,12 +1,15 @@
 object DMMain: TDMMain
-  Height = 532
-  Width = 661
+  Height = 548
+  Width = 822
   object FDConnection: TFDConnection
     Params.Strings = (
       'Database=projeto_erp_arthur'
       'User_Name=easycom'
       'Password=easycom'
       'DriverID=PG')
+    FetchOptions.AssignedValues = [evDetailCascade]
+    TxOptions.Isolation = xiReadCommitted
+    TxOptions.DisconnectAction = xdRollback
     Connected = True
     LoginPrompt = False
     Left = 32
@@ -42,15 +45,15 @@ object DMMain: TDMMain
   object FDPhysPgDriverLink1: TFDPhysPgDriverLink
     VendorLib = 'C:\Users\User\Documents\Embarcadero\Studio\Projects\libpq.dll'
     Left = 32
-    Top = 296
+    Top = 256
   end
   object FDTProdutos: TFDTable
     IndexFieldNames = 'id'
     Connection = FDConnection
     ResourceOptions.AssignedValues = [rvEscapeExpand]
     TableName = 'tprodutos'
-    Left = 584
-    Top = 8
+    Left = 64
+    Top = 16
   end
   object FDTEstados: TFDTable
     IndexFieldNames = 'id'
@@ -81,13 +84,13 @@ object DMMain: TDMMain
     Connection = FDConnection
     ResourceOptions.AssignedValues = [rvEscapeExpand]
     TableName = 'tclientes'
-    Left = 480
-    Top = 8
+    Left = 104
+    Top = 16
   end
   object qryAux: TFDQuery
     Connection = FDConnection
-    Left = 72
-    Top = 296
+    Left = 32
+    Top = 312
   end
   object FDTUsuarios: TFDTable
     IndexFieldNames = 'id'
@@ -276,11 +279,16 @@ object DMMain: TDMMain
     Top = 144
   end
   object FDQListagemClientes: TFDQuery
+    CachedUpdates = True
     Connection = FDConnection
+    UpdateOptions.AssignedValues = [uvFetchGeneratorsPoint, uvGeneratorName]
+    UpdateOptions.FetchGeneratorsPoint = gpImmediate
+    UpdateOptions.GeneratorName = 'tclientes_id_seq'
+    UpdateOptions.KeyFields = 'id'
     SQL.Strings = (
       'Select * from tclientes')
-    Left = 136
-    Top = 8
+    Left = 616
+    Top = 136
     object FDQListagemClientesid: TIntegerField
       FieldName = 'id'
       Origin = 'id'
@@ -359,7 +367,7 @@ object DMMain: TDMMain
         '.45 /100) as numeric(10,4)) as preco_venda'
       '                        from tprodutos as p'
       '                        where 1=1')
-    Left = 496
+    Left = 288
     Top = 416
     object FDQRelAmostragemLucroativo: TBooleanField
       FieldName = 'ativo'
@@ -414,7 +422,7 @@ object DMMain: TDMMain
       '          on cid.testados_id = est.id '
       '          WHERE 1=1'
       '')
-    Left = 536
+    Left = 328
     Top = 416
     object FDQRelClientesDesatualizadosnome_fantasia: TWideStringField
       FieldName = 'nome_fantasia'
@@ -456,7 +464,7 @@ object DMMain: TDMMain
         '    , ((preco_venda - preco_custo) / (preco_venda)) * 100 AS mar' +
         'gem_lucro'
       'FROM tprodutos as p;')
-    Left = 576
+    Left = 368
     Top = 416
     object qryRelMargemLucrocodigo: TWideStringField
       FieldName = 'codigo'
@@ -512,7 +520,7 @@ object DMMain: TDMMain
       '  INNER JOIN testados AS est ON cid.testados_id = est.id '
       '  WHERE 1=1'
       '')
-    Left = 456
+    Left = 248
     Top = 416
     object qryRelNovosClientesnome_fantasia: TWideStringField
       FieldName = 'nome_fantasia'
@@ -542,11 +550,14 @@ object DMMain: TDMMain
   end
   object qryCadClientesDependentes: TFDQuery
     CachedUpdates = True
+    IndexFieldNames = 'tclientes_id'
+    MasterSource = dtsListagemClientes
+    MasterFields = 'id'
     Connection = FDConnection
     SQL.Strings = (
       'Select * from tclientes_dependentes;')
-    Left = 584
-    Top = 72
+    Left = 616
+    Top = 246
     object qryCadClientesDependentesid: TIntegerField
       FieldName = 'id'
       Origin = 'id'
@@ -573,14 +584,91 @@ object DMMain: TDMMain
       FieldName = 'telefone'
       Origin = 'telefone'
     end
+    object qryCadClientesDependentesdata_cadastro: TSQLTimeStampField
+      FieldName = 'data_cadastro'
+      Origin = 'data_cadastro'
+      ProviderFlags = [pfInUpdate]
+    end
+  end
+  object dtsListagemClientes: TDataSource
+    DataSet = FDQListagemClientes
+    Left = 616
+    Top = 190
+  end
+  object qryProdutos: TFDQuery
+    ActiveStoredUsage = []
+    CachedUpdates = True
+    Connection = FDConnection
+    SQL.Strings = (
+      'Select * from tprodutos')
+    Left = 448
+    Top = 128
+    object qryProdutosid: TIntegerField
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object qryProdutosativo: TBooleanField
+      FieldName = 'ativo'
+      Origin = 'ativo'
+    end
+    object qryProdutosdescricao: TWideStringField
+      FieldName = 'descricao'
+      Origin = 'descricao'
+      Size = 150
+    end
+    object qryProdutoscodigo: TWideStringField
+      FieldName = 'codigo'
+      Origin = 'codigo'
+    end
+    object qryProdutosdata_cadastro: TSQLTimeStampField
+      FieldName = 'data_cadastro'
+      Origin = 'data_cadastro'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qryProdutosdata_alteracao: TSQLTimeStampField
+      FieldName = 'data_alteracao'
+      Origin = 'data_alteracao'
+      ProviderFlags = [pfInUpdate]
+    end
+    object qryProdutospreco_custo: TBCDField
+      FieldName = 'preco_custo'
+      Origin = 'preco_custo'
+      Precision = 10
+      Size = 2
+    end
+    object qryProdutospreco_venda: TBCDField
+      FieldName = 'preco_venda'
+      Origin = 'preco_venda'
+      Precision = 10
+      Size = 2
+    end
+    object qryProdutosobservacao: TWideMemoField
+      FieldName = 'observacao'
+      Origin = 'observacao'
+      BlobType = ftWideMemo
+    end
+    object qryProdutostunidade_medida_id: TIntegerField
+      FieldName = 'tunidade_medida_id'
+      Origin = 'tunidade_medida_id'
+    end
   end
   object qryCadProdutosComplementos: TFDQuery
     CachedUpdates = True
     Connection = FDConnection
     SQL.Strings = (
-      'Select * from tprodutos_complementos;')
-    Left = 480
-    Top = 72
+      'Select * '
+      'from tprodutos_complementos'
+      'where tprodutos_id = :id')
+    Left = 448
+    Top = 184
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
     object qryCadProdutosComplementosid: TIntegerField
       FieldName = 'id'
       Origin = 'id'

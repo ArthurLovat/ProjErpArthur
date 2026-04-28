@@ -74,6 +74,7 @@ type
     function GetFormularioCadastro: TFormClass; override;
     function GetNomeCampoFiltro: String; override;
     function GetDataSource: TDataSource; override;
+    procedure DoWheninserting; override;
   public
     { Public declarations }
   end;
@@ -81,6 +82,11 @@ implementation
 
 {$R *.dfm}
 
+
+procedure TfrmListagemClientes.DoWheninserting;
+begin
+  inherited
+end;
 
 function TfrmListagemClientes.GetCaptionFormulario: String;
 begin

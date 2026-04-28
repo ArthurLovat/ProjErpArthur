@@ -1,20 +1,23 @@
 inherited frmCadUnidadesMedida: TfrmCadUnidadesMedida
   Caption = 'Cadastro De Unidades De Medida'
+  ClientHeight = 460
   ClientWidth = 788
   Font.Height = -13
+  ExplicitWidth = 800
+  ExplicitHeight = 498
   TextHeight = 17
   inherited lblTitulo: TLabel
     Left = 212
-    Top = 116
+    Top = 143
     Width = 260
     Caption = 'Unidade De Medida'
     ExplicitLeft = 212
-    ExplicitTop = 116
+    ExplicitTop = 143
     ExplicitWidth = 260
   end
   object lblDescricao: TLabel [1]
     Left = 212
-    Top = 176
+    Top = 210
     Width = 81
     Height = 23
     Caption = 'Descricao:'
@@ -27,7 +30,7 @@ inherited frmCadUnidadesMedida: TfrmCadUnidadesMedida
   end
   object lblUnidade: TLabel [2]
     Left = 212
-    Top = 213
+    Top = 247
     Width = 165
     Height = 23
     Caption = 'Unidade De Medida:'
@@ -50,7 +53,7 @@ inherited frmCadUnidadesMedida: TfrmCadUnidadesMedida
   end
   object edtDescricao: TcxDBTextEdit [5]
     Left = 383
-    Top = 178
+    Top = 212
     DataBinding.DataField = 'descricao'
     DataBinding.DataSource = dsCadastro
     TabOrder = 0
@@ -58,15 +61,15 @@ inherited frmCadUnidadesMedida: TfrmCadUnidadesMedida
   end
   object edtUnidadeMedida: TcxDBTextEdit [6]
     Left = 383
-    Top = 215
+    Top = 249
     DataBinding.DataField = 'unidade'
     DataBinding.DataSource = dsCadastro
     TabOrder = 1
     Width = 209
   end
   object dbcbAtivo: TDBCheckBox [7]
-    Left = 533
-    Top = 246
+    Left = 212
+    Top = 187
     Width = 59
     Height = 17
     Caption = 'Ativo'

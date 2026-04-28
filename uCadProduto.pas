@@ -35,7 +35,7 @@ uses
   cxFilter, cxData, cxDataStorage, cxNavigator, dxDateRanges,
   dxScrollbarAnnotations, cxDBData, cxButtonEdit, cxGridLevel,
   cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxClasses,
-  cxGridCustomView, cxGrid, dxGDIPlusClasses;
+  cxGridCustomView, cxGrid, dxGDIPlusClasses, ufrmCadProdutosComplementos;
 
 type
   TFrmCadProduto = class(TfrmModeloCadPadrao)
@@ -67,15 +67,26 @@ type
     lvlListagem: TcxGridLevel;
     dbcbAtivo: TDBCheckBox;
     dsLIstagemProdutosComplementos: TDataSource;
-    tbvListagemid: TcxGridDBColumn;
-    tbvListagemtprodutos_id: TcxGridDBColumn;
     tbvListagemativo: TcxGridDBColumn;
     tbvListagemdescricao: TcxGridDBColumn;
     tbvListagemvalor_adicional: TcxGridDBColumn;
+    tbvListagemid: TcxGridDBColumn;
+    tbvListagemtprodutos_id: TcxGridDBColumn;
+
     procedure btnCadastrarClick(Sender: TObject);
+    procedure btnAdicionarClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure tbvListagemEditarPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure tbvListagemExcluirPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+
   protected
     function GetDataSet: TDataSet; override;
+    function GetFormularioCadastro: TFormClass; override;
+    function GetDataSource: TDataSource; override;
   private
     function BuscarUltimoCodigo: String;
     function VerSeOCodigoInseridoJaExiste: boolean;
@@ -88,28 +99,64 @@ implementation
 
 {$R *.dfm}
 
+procedure TFrmCadProduto.btnAdicionarClick(Sender: TObject);
+begin
+  if (not DMMain.qryCadProdutosComplementos.Active) then
+  begin
+    DMMain.qryCadProdutosComplementos.Open;
+  end;
+  DMMAin.qryCadProdutosComplementos.Append;
+  TUtils.AbrirTela(TfrmCadProdutosComplementos);
+end;
+
+
+//parece que os produtos/clientes com ids muito altos não funciona o cadastro do "Detalhe"
+//Verificar o tratamento a realizar com o ale
+
 procedure TFrmCadProduto.btnCadastrarClick(Sender: TObject);
 begin
   var vValidacao: Tvalidacao := TValidacao.Create;
   try
     vValidacao.RealizarValidacaoBasica(edtDescricao, 'Descrição', edtDescricao.Text);
-    vValidacao.RealizarValidacaoBasica(edtPrecoVenda, 'Preço De Venda', edtPrecoVenda.Text);
-
     if (VerSeOCodigoInseridoJaExiste) then
     begin
       Application.MessageBox('O Codigo inserido já existe!', 'Aviso:', MB_ICONQUESTION + MB_OK);
       TUtils.DarSetFocus(edtCodigo);
       Exit;
     end;
-
-    if (Trim(edtCodigo.Text) = '' ) then
+    if (Trim(edtCodigo.Text) = '') then
     begin
       edtCodigo.Text := BuscarUltimoCodigo;
     end;
 
-    GetDataSet.Post;
-    ModalResult := mrOk;
 
+    if(vValidacao.TemErro = False) then
+    begin
+      try
+        GetDataSet.Post;
+        DMMain.qryProdutos.ApplyUpdates(0);
+
+        var vIdProduto: Integer := DMMain.qryProdutosid.AsInteger;
+
+        DMMain.qryCadProdutosComplementos.First;
+        while (not DMMain.qryCadProdutosComplementos.Eof) do
+        begin
+          DMMain.qryCadProdutosComplementos.Edit;
+          DMMain.qryCadProdutosComplementostprodutos_id.AsInteger := vIdProduto;
+          DMMain.qryCadProdutosComplementos.Post;
+          DMMain.qryCadProdutosComplementos.Next;
+        end;
+        DMMain.qryCadProdutosComplementos.ApplyUpdates(0);
+        DMMain.qryCadProdutosComplementos.CommitUpdates;
+
+        ModalResult := mrOK;
+      except
+        on E: Exception do
+        begin
+          ShowMessage('Erro ao salvar: ' + E.Message);
+        end;
+      end;
+    end;
   finally
     vValidacao.Free;
   end;
@@ -117,19 +164,27 @@ end;
 
 function TFrmCadProduto.GetDataSet: TDataSet;
 begin
-  Result := DMMain.FDTProdutos;
+  Result := DMMain.qryProdutos;
+end;
+
+function TFrmCadProduto.GetDataSource: TDataSource;
+begin
+  Result := dsLIstagemProdutosComplementos;
+end;
+
+function TFrmCadProduto.GetFormularioCadastro: TFormClass;
+begin
+  Result := TfrmCadProdutosComplementos;
 end;
 
 function TFrmCadProduto.BuscarUltimoCodigo: String;
 begin
   try
-
     DMMain.qryAux.Close;
     DMMain.qryAux.SQL.Text := 'SELECT COALESCE(MAX(str_to_int_def(codigo)), 0) + 1 as maior_num FROM Tprodutos;';
     DMMain.qryAux.Open;
     Result := DMMain.qryAux.FieldByName('maior_num').AsInteger.ToString;
     DMMain.qryAux.Close;
-
   except
     on Exception: Exception do
     begin
@@ -141,6 +196,20 @@ begin
 end;
 
 procedure TFrmCadProduto.FormCreate(Sender: TObject);
+begin
+  inherited;
+  DMMain.qryCadProdutosComplementos.ParamByName('id').AsInteger := DMMain.qryProdutosid.AsInteger;
+  DMMain.qryCadProdutosComplementos.Open;
+end;
+
+procedure TFrmCadProduto.FormDestroy(Sender: TObject);
+begin
+  inherited;
+  DMMain.qryCadProdutosComplementos.Close;
+  DMMain.FDTUnidadesMedida.Close;
+end;
+
+procedure TFrmCadProduto.FormShow(Sender: TObject);
 begin
   inherited;
   DMMain.FDTUnidadesMedida.Open;
@@ -168,6 +237,20 @@ begin
 
 end;
 
+procedure TFrmCadProduto.tbvListagemEditarPropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+begin
+  inherited;
+  NovoOuEditar(True);
+end;
+
+procedure TFrmCadProduto.tbvListagemExcluirPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  inherited;
+  tbvListagem.DataController.DeleteFocused;
+end;
+
 function TFrmCadProduto.VerSeOCodigoInseridoJaExiste: boolean;
 begin
   try
@@ -179,7 +262,7 @@ begin
     DMMain.qryAux.Close;
     DMMain.qryAux.SQL.Text := 'SELECT codigo FROM Tprodutos WHERE codigo = :ACodigo and id <> :AId;';
     DMMain.qryAux.ParamByName('ACodigo').AsString := edtCodigo.Text;
-    DMMain.qryAux.ParamByName('AId').AsInteger := DMMain.FDTProdutos.FieldByName('id').AsInteger;
+    DMMain.qryAux.ParamByName('AId').AsInteger := DMMain.qryProdutos.FieldByName('id').AsInteger;
     DMMain.qryAux.Open;
 
     Result := not DMMain.qryAux.IsEmpty;

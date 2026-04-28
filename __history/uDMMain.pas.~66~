@@ -1,0 +1,155 @@
+unit uDMMain;
+
+interface
+
+uses
+  System.SysUtils,
+  System.Classes,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Error,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.Intf,
+  FireDAC.Stan.Def,
+  FireDAC.Stan.Pool,
+  FireDAC.Stan.Async,
+  FireDAC.Phys,
+  FireDAC.VCLUI.Wait,
+  FireDAC.Stan.Param,
+  FireDAC.DatS,
+  FireDAC.DApt.Intf,
+  FireDAC.DApt,
+  FireDAC.Phys.PGDef,
+  FireDAC.Phys.PG,
+  Data.DB,
+  FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, FireDAC.Comp.UI;
+
+type
+  TDMMain = class(TDataModule)
+    FDConnection: TFDConnection;
+    FDTUnidadesMedida: TFDTable;
+    FDPhysPgDriverLink1: TFDPhysPgDriverLink;
+    FDTUnidadesMedidaid: TIntegerField;
+    FDTUnidadesMedidaativo: TBooleanField;
+    FDTUnidadesMedidadescricao: TWideStringField;
+    FDTUnidadesMedidaunidade: TWideStringField;
+    FDTProdutos: TFDTable;
+    FDTEstados: TFDTable;
+    FDTCidades: TFDTable;
+    FDTBairros: TFDTable;
+    FDTClientes: TFDTable;
+    qryAux: TFDQuery;
+    FDTUsuarios: TFDTable;
+    FDTRelProdutos: TFDTable;
+    FDQRelProdutos: TFDQuery;
+    FDQRelProdutosativo: TBooleanField;
+    FDQRelProdutoscodigo: TWideStringField;
+    FDQRelProdutosdescricao: TWideStringField;
+    FDQRelProdutosunidade: TWideStringField;
+    FDQRelClientes: TFDQuery;
+    FDQRelClientesativo: TBooleanField;
+    FDQRelClientesnome_fantasia: TWideStringField;
+    FDQRelClientesrazao_social: TWideStringField;
+    FDQRelClientescpf_cnpj: TWideStringField;
+    FDQRelClientesdata_cadastro: TSQLTimeStampField;
+    FDQRelClientesdata_alteracao: TSQLTimeStampField;
+    FDQRelClientesendereco: TWideStringField;
+    FDQRelClientesnumero_endereco: TWideStringField;
+    FDQRelClientescomplemento_endereco: TWideStringField;
+    FDQRelClientesnome_bairro: TWideStringField;
+    FDQRelClientesnome_cidade: TWideStringField;
+    FDQRelClientesuf: TWideStringField;
+    FDQRelEstados: TFDQuery;
+    FDQRelEstadosid: TIntegerField;
+    FDQRelEstadosnome_estado: TWideStringField;
+    FDQRelEstadosuf: TWideStringField;
+    FDQRelUnidade: TFDQuery;
+    FDQRelUnidadeid: TIntegerField;
+    FDQRelUnidadeativo: TBooleanField;
+    FDQRelUnidadedescricao: TWideStringField;
+    FDQRelUnidadeunidade: TWideStringField;
+    FDGUIxWaitCursor1: TFDGUIxWaitCursor;
+    FDQListagemClientes: TFDQuery;
+    FDQListagemClientesid: TIntegerField;
+    FDQListagemClientesativo: TBooleanField;
+    FDQListagemClientesnome_fantasia: TWideStringField;
+    FDQListagemClientesrazao_social: TWideStringField;
+    FDQListagemClientescpf_cnpj: TWideStringField;
+    FDQListagemClientesdata_cadastro: TSQLTimeStampField;
+    FDQListagemClientesdata_alteracao: TSQLTimeStampField;
+    FDQListagemClientesendereco: TWideStringField;
+    FDQListagemClientesnumero_endereco: TWideStringField;
+    FDQListagemClientescomplemento_endereco: TWideStringField;
+    FDQListagemClientesponto_referencia: TWideStringField;
+    FDQListagemClientescep: TWideStringField;
+    FDQListagemClientestcidades_id: TIntegerField;
+    FDQListagemClientestbairros_id: TIntegerField;
+    FDQRelAmostragemLucro: TFDQuery;
+    FDQRelAmostragemLucroativo: TBooleanField;
+    FDQRelAmostragemLucrocodigo: TWideStringField;
+    FDQRelAmostragemLucrodescricao: TWideStringField;
+    FDQRelAmostragemLucropreco_custo: TBCDField;
+    FDQRelAmostragemLucropercentual_lucro: TBCDField;
+    FDQRelAmostragemLucropreco_venda: TBCDField;
+    FDQRelClientesDesatualizados: TFDQuery;
+    qryRelMargemLucro: TFDQuery;
+    qryRelMargemLucrocodigo: TWideStringField;
+    qryRelMargemLucrodescricao: TWideStringField;
+    qryRelMargemLucropreco_custo: TBCDField;
+    qryRelMargemLucropreco_venda: TBCDField;
+    qryRelMargemLucrolucro: TFMTBCDField;
+    qryRelMargemLucromargem_lucro: TFMTBCDField;
+    FDQRelClientesDesatualizadosnome_fantasia: TWideStringField;
+    FDQRelClientesDesatualizadosrazao_social: TWideStringField;
+    FDQRelClientesDesatualizadostelefone: TWideStringField;
+    FDQRelClientesDesatualizadosdata_alteracao: TSQLTimeStampField;
+    FDQRelClientesDesatualizadosdias_sem_atualizar: TIntegerField;
+    qryRelNovosClientes: TFDQuery;
+    qryRelNovosClientesnome_fantasia: TWideStringField;
+    qryRelNovosClientesrazao_social: TWideStringField;
+    qryRelNovosClientestelefone: TWideStringField;
+    qryRelNovosClientesdata_cadastro: TSQLTimeStampField;
+    qryRelNovosClientesdias_cadastro: TIntegerField;
+    qryCadClientesDependentes: TFDQuery;
+    qryCadClientesDependentesid: TIntegerField;
+    qryCadClientesDependentestclientes_id: TIntegerField;
+    qryCadClientesDependentesativo: TBooleanField;
+    qryCadClientesDependentesnome: TWideStringField;
+    qryCadClientesDependentescpf_cnpj: TWideStringField;
+    qryCadClientesDependentestelefone: TWideStringField;
+    dtsListagemClientes: TDataSource;
+    qryProdutos: TFDQuery;
+    qryProdutosid: TIntegerField;
+    qryProdutosativo: TBooleanField;
+    qryProdutosdescricao: TWideStringField;
+    qryProdutoscodigo: TWideStringField;
+    qryProdutosdata_cadastro: TSQLTimeStampField;
+    qryProdutosdata_alteracao: TSQLTimeStampField;
+    qryProdutospreco_custo: TBCDField;
+    qryProdutospreco_venda: TBCDField;
+    qryProdutosobservacao: TWideMemoField;
+    qryProdutostunidade_medida_id: TIntegerField;
+    qryCadProdutosComplementos: TFDQuery;
+    qryCadProdutosComplementosid: TIntegerField;
+    qryCadProdutosComplementostprodutos_id: TIntegerField;
+    qryCadProdutosComplementosativo: TBooleanField;
+    qryCadProdutosComplementosdescricao: TWideStringField;
+    qryCadProdutosComplementosvalor_adicional: TBCDField;
+    //procedure DataModuleCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DMMain: TDMMain;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

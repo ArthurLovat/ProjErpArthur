@@ -1,0 +1,212 @@
+unit ufrmModeloListagemPadrao;
+
+interface
+
+uses
+  Winapi.Windows,
+  Winapi.Messages,
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  cxGraphics,
+  cxControls,
+  cxLookAndFeels,
+  cxLookAndFeelPainters,
+  cxStyles,
+  cxCustomData,
+  cxFilter,
+  cxData,
+  cxDataStorage,
+  cxEdit,
+  cxNavigator,
+  dxDateRanges,
+  dxScrollbarAnnotations,
+  Data.DB,
+  cxDBData,
+  cxButtonEdit,
+  Vcl.Menus,
+  Vcl.StdCtrls,
+  cxButtons,
+  cxGridLevel,
+  cxGridCustomTableView,
+  cxGridTableView,
+  cxGridDBTableView,
+  cxClasses,
+  cxGridCustomView,
+  cxGrid;
+
+type
+  TfrmModeloListagemPadrao = class(TForm)
+    lblTitulo: TLabel;
+    cxbtnNovo: TcxButton;
+    cxBtnPesquisar: TcxButton;
+    edtPesquisar: TEdit;
+    dsListagem: TDataSource;
+    grdListagem: TcxGrid;
+    tbvListagem: TcxGridDBTableView;
+    tbvListagemExcluir: TcxGridDBColumn;
+    tbvListagemEditar: TcxGridDBColumn;
+    lvlListagem: TcxGridLevel;
+
+
+    procedure cxBtnPesquisarClick(Sender: TObject);
+    procedure edtPesquisarKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure cxbtnNovoClick(Sender: TObject);
+    procedure tbvListagemCellDblClick(Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo; AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+    procedure tbvListagemExcluirPropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
+    procedure tbvListagemEditarPropertiesButtonClick(Sender: TObject; AButtonIndex: Integer);
+    procedure FormDestroy(Sender: TObject);
+
+
+  protected
+    procedure AplicarFiltro; virtual;
+    function GetNomeCampoFiltro: String; virtual;
+    function GetDataSet: TDataSet; virtual;
+    function GetCaptionFormulario: String; virtual;
+    function GetTituloFormulario: String; virtual;
+    procedure NovoOueditar(AEditar: boolean); virtual;
+    function GetFormularioCadastro: TFormClass; virtual;
+    procedure doWhenEditing; virtual;
+    procedure DoWheninserting; virtual;
+    function GetDataSource: TDataSource; virtual;
+  public
+    procedure AfterConstruction; override;
+  end;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmModeloListagemPadrao.AfterConstruction;
+begin
+  inherited;
+  dsListagem.DataSet := GetDataSet;
+  Self.Caption := GetCaptionFormulario;
+  lblTitulo.Caption := GetTituloFormulario;
+end;
+
+procedure TfrmModeloListagemPadrao.AplicarFiltro;
+begin
+
+  if(edtPesquisar.Text <> '') then
+  begin
+    dsListagem.DataSet.Filter := 'upper(' + GetNomeCampoFiltro + ') like(''%' +
+    UpperCase(StringReplace(edtPesquisar.Text, ' ', '%', [rfReplaceAll])) + '%'')';
+  end;
+  dsListagem.DataSet.Filtered := edtPesquisar.Text <> '';
+
+end;
+
+procedure TfrmModeloListagemPadrao.cxbtnNovoClick(Sender: TObject);
+begin
+  GetDataSet.Open;
+  NovoOuEditar(False);
+end;
+
+procedure TfrmModeloListagemPadrao.cxBtnPesquisarClick(Sender: TObject);
+begin
+  GetDataSet.Open;
+  AplicarFiltro;
+end;
+
+procedure TfrmModeloListagemPadrao.doWhenEditing;
+begin
+  //override if wish
+end;
+
+procedure TfrmModeloListagemPadrao.DoWheninserting;
+begin
+  //override if wish
+end;
+
+procedure TfrmModeloListagemPadrao.edtPesquisarKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  if (Key = vk_return) then
+  begin
+    AplicarFiltro;
+  end;
+end;
+
+procedure TfrmModeloListagemPadrao.FormDestroy(Sender: TObject);
+begin
+  GetDataSet.Close;
+  GetDataSource.DataSet.Close;
+end;
+
+function TfrmModeloListagemPadrao.GetCaptionFormulario: String;
+begin
+  raise Exception.Create('Metodo GetCaptionFormulario não sobresscrito na classe ' + Self.ClassName);
+end;
+
+function TfrmModeloListagemPadrao.GetDataSet: TDataSet;
+begin
+  raise Exception.Create('Metodo GetDataSet não sobresscrito na classe ' + Self.ClassName);
+end;
+
+function TfrmModeloListagemPadrao.GetDataSource: TDataSource;
+begin
+  raise Exception.Create('Metodo GetDataSouce não sobrescrito na classe: ' + self.ClassName);
+end;
+
+function TfrmModeloListagemPadrao.GetFormularioCadastro: TFormClass;
+begin
+  raise Exception.Create('Metodo GetFormularioCadastro não sobresscrito na classe ' + Self.ClassName);
+end;
+
+function TfrmModeloListagemPadrao.GetNomeCampoFiltro: String;
+begin
+  raise Exception.Create('Metodo GetNomeCampoFiltro não sobresscrito na classe ' + Self.ClassName);
+end;
+
+function TfrmModeloListagemPadrao.GetTituloFormulario: String;
+begin
+  Result := GetCaptionFormulario;
+end;
+
+procedure TfrmModeloListagemPadrao.NovoOueditar(AEditar: boolean);
+begin
+  var vForm: TForm := GetFormularioCadastro.Create(nil);
+  try
+    if (AEditar) then
+    begin
+      GetDataSource.DataSet.Edit;
+      DoWhenEditing;
+    end
+    else
+    begin
+      GetDataSource.DataSet.Append;
+      DoWhenInserting;
+    end;
+    if (vForm.ShowModal = mrOk ) then
+    begin
+      Application.MessageBox('Cadastro realizado com sucesso!', 'Aviso:', MB_ICONQUESTION + MB_OK);
+    end;
+  finally
+    vForm.Free;
+  end;
+end;
+
+procedure TfrmModeloListagemPadrao.tbvListagemCellDblClick(
+  Sender: TcxCustomGridTableView; ACellViewInfo: TcxGridTableDataCellViewInfo;
+  AButton: TMouseButton; AShift: TShiftState; var AHandled: Boolean);
+begin
+  NovoOuEditar(True);
+end;
+
+procedure TfrmModeloListagemPadrao.tbvListagemEditarPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  NovoOuEditar(True);
+end;
+
+procedure TfrmModeloListagemPadrao.tbvListagemExcluirPropertiesButtonClick(
+  Sender: TObject; AButtonIndex: Integer);
+begin
+  tbvListagem.DataController.DeleteFocused;
+end;
+end.

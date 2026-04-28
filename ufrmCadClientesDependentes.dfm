@@ -1,9 +1,5 @@
 inherited frmCadClientesDependentes: TfrmCadClientesDependentes
   Caption = 'Cadastro De Dependentes'
-  ClientWidth = 780
-  OnCreate = FormCreate
-  OnDestroy = FormDestroy
-  ExplicitWidth = 792
   TextHeight = 15
   inherited lblTitulo: TLabel
     Width = 160
@@ -25,7 +21,7 @@ inherited frmCadClientesDependentes: TfrmCadClientesDependentes
   end
   object lblCpfCnpj: TLabel [2]
     Left = 228
-    Top = 215
+    Top = 213
     Width = 78
     Height = 21
     Caption = 'CPF/CNPJ:'
@@ -49,15 +45,30 @@ inherited frmCadClientesDependentes: TfrmCadClientesDependentes
     Font.Style = [fsBold]
     ParentFont = False
   end
+  object lblDtCad: TLabel [4]
+    Left = 228
+    Top = 271
+    Width = 134
+    Height = 21
+    Caption = 'Data de Cadastro:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   inherited btnCadastrar: TcxButton
-    Top = 288
-    ExplicitTop = 288
+    Top = 302
+    TabOrder = 4
+    ExplicitTop = 302
   end
   inherited btnCancelar: TcxButton
-    Top = 288
-    ExplicitTop = 288
+    Top = 302
+    TabOrder = 5
+    ExplicitTop = 302
   end
-  object DBCheckBox1: TDBCheckBox [6]
+  object DBCheckBox1: TDBCheckBox [7]
     Left = 228
     Top = 161
     Width = 59
@@ -71,33 +82,41 @@ inherited frmCadClientesDependentes: TfrmCadClientesDependentes
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
-    TabOrder = 2
+    TabOrder = 0
     ValueUnchecked = 'F'
   end
-  object edtNomeFantasia: TcxDBTextEdit [7]
+  object edtNomeFantasia: TcxDBTextEdit [8]
     Left = 383
     Top = 186
     DataBinding.DataField = 'nome'
     DataBinding.DataSource = dsCadastro
-    TabOrder = 3
+    TabOrder = 1
     Width = 209
   end
-  object mkedtTelefone: TcxDBMaskEdit [8]
+  object mkedtTelefone: TcxDBMaskEdit [9]
     Left = 383
     Top = 244
     DataBinding.DataField = 'telefone'
     DataBinding.DataSource = dsCadastro
     Properties.EditMask = '!\(99\)00000-0000;1;_'
-    TabOrder = 4
+    TabOrder = 3
     Width = 209
   end
-  object mkedtCpfCnpj: TcxDBMaskEdit [9]
+  object mkedtCpfCnpj: TcxDBMaskEdit [10]
     Left = 383
     Top = 215
     DataBinding.DataField = 'cpf_cnpj'
     DataBinding.DataSource = dsCadastro
     Properties.OnChange = mkedtCpfCnpjPropertiesChange
-    TabOrder = 5
+    TabOrder = 2
+    Width = 209
+  end
+  object dptDataCadastro: TcxDBDateEdit [11]
+    Left = 383
+    Top = 273
+    DataBinding.DataField = 'data_cadastro'
+    DataBinding.DataSource = dsCadastro
+    TabOrder = 6
     Width = 209
   end
   inherited dsCadastro: TDataSource

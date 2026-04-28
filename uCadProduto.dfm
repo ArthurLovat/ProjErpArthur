@@ -1,7 +1,13 @@
 inherited FrmCadProduto: TFrmCadProduto
   Caption = 'Cadastro De Produtos'
+  ClientHeight = 461
+  ClientWidth = 776
   Font.Height = -13
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  ExplicitWidth = 792
+  ExplicitHeight = 500
   TextHeight = 17
   inherited lblTitulo: TLabel
     Left = 8
@@ -21,6 +27,7 @@ inherited FrmCadProduto: TFrmCadProduto
   inherited btnCancelar: TcxButton
     Left = 480
     Top = 424
+    TabOrder = 2
     ExplicitLeft = 480
     ExplicitTop = 424
   end
@@ -29,8 +36,8 @@ inherited FrmCadProduto: TFrmCadProduto
     Top = 115
     Width = 768
     Height = 307
-    TabOrder = 2
-    Properties.ActivePage = cxTabSheet2
+    TabOrder = 1
+    Properties.ActivePage = cxTabSheet1
     Properties.CustomButtons.Buttons = <>
     ClientRectBottom = 303
     ClientRectLeft = 4
@@ -39,8 +46,6 @@ inherited FrmCadProduto: TFrmCadProduto
     object cxTabSheet1: TcxTabSheet
       Caption = 'Produto'
       ImageIndex = 0
-      ExplicitLeft = 3
-      ExplicitTop = 116
       object lblDescricao: TLabel
         Left = 13
         Top = 70
@@ -137,7 +142,7 @@ inherited FrmCadProduto: TFrmCadProduto
         Top = 70
         DataBinding.DataField = 'descricao'
         DataBinding.DataSource = dsCadastro
-        TabOrder = 0
+        TabOrder = 2
         Width = 616
       end
       object edtPrecoCusto: TcxDBTextEdit
@@ -145,7 +150,7 @@ inherited FrmCadProduto: TFrmCadProduto
         Top = 104
         DataBinding.DataField = 'preco_custo'
         DataBinding.DataSource = dsCadastro
-        TabOrder = 1
+        TabOrder = 4
         Width = 209
       end
       object edtCodigo: TcxDBTextEdit
@@ -153,7 +158,7 @@ inherited FrmCadProduto: TFrmCadProduto
         Top = 36
         DataBinding.DataField = 'codigo'
         DataBinding.DataSource = dsCadastro
-        TabOrder = 2
+        TabOrder = 0
         Width = 209
       end
       object edtPrecoVenda: TcxDBTextEdit
@@ -161,7 +166,7 @@ inherited FrmCadProduto: TFrmCadProduto
         Top = 104
         DataBinding.DataField = 'preco_venda'
         DataBinding.DataSource = dsCadastro
-        TabOrder = 3
+        TabOrder = 5
         Width = 209
       end
       object cxDBMmoObservacao: TcxDBMemo
@@ -169,7 +174,7 @@ inherited FrmCadProduto: TFrmCadProduto
         Top = 151
         DataBinding.DataField = 'observacao'
         DataBinding.DataSource = dsCadastro
-        TabOrder = 4
+        TabOrder = 6
         Height = 106
         Width = 209
       end
@@ -183,7 +188,7 @@ inherited FrmCadProduto: TFrmCadProduto
         KeyField = 'id'
         ListField = 'descricao'
         ListSource = dsListagemUnidadeMedida
-        TabOrder = 5
+        TabOrder = 1
       end
       object Panel1: TPanel
         Left = 456
@@ -191,7 +196,7 @@ inherited FrmCadProduto: TFrmCadProduto
         Width = 294
         Height = 106
         Caption = 'Funcionalidade em breve...'
-        TabOrder = 6
+        TabOrder = 3
       end
       object dbcbAtivo: TDBCheckBox
         Left = 13
@@ -214,6 +219,10 @@ inherited FrmCadProduto: TFrmCadProduto
     object cxTabSheet2: TcxTabSheet
       Caption = 'Complemento'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object lblComplementos: TLabel
         Left = 41
         Top = 4
@@ -358,10 +367,11 @@ inherited FrmCadProduto: TFrmCadProduto
           EED6EF43A9AB2331008603ABCEFF019D3AAD15CCD8D2E00000000049454E44AE
           426082}
         TabOrder = 0
+        OnClick = btnAdicionarClick
       end
       object grdListagem: TcxGrid
         Left = 3
-        Top = 40
+        Top = 43
         Width = 754
         Height = 232
         Font.Charset = DEFAULT_CHARSET
@@ -376,7 +386,6 @@ inherited FrmCadProduto: TFrmCadProduto
           OptionsData.CancelOnExit = False
           OptionsData.Deleting = False
           OptionsData.DeletingConfirmation = False
-          OptionsData.Editing = False
           OptionsData.Inserting = False
           object tbvListagemExcluir: TcxGridDBColumn
             Caption = 'Excluir'
@@ -411,6 +420,7 @@ inherited FrmCadProduto: TFrmCadProduto
                 Kind = bkGlyph
               end>
             Properties.ViewStyle = vsButtonsOnly
+            Properties.OnButtonClick = tbvListagemExcluirPropertiesButtonClick
             Options.Filtering = False
             Options.FilteringAddValueItems = False
             Options.ShowEditButtons = isebAlways
@@ -435,6 +445,7 @@ inherited FrmCadProduto: TFrmCadProduto
               end>
             Properties.MaxLength = 0
             Properties.ViewStyle = vsButtonsOnly
+            Properties.OnButtonClick = tbvListagemEditarPropertiesButtonClick
             Options.Filtering = False
             Options.FilteringAddValueItems = False
             Options.ShowEditButtons = isebAlways
@@ -443,25 +454,26 @@ inherited FrmCadProduto: TFrmCadProduto
           object tbvListagemativo: TcxGridDBColumn
             Caption = 'Ativo'
             DataBinding.FieldName = 'ativo'
-            Width = 42
-          end
-          object tbvListagemid: TcxGridDBColumn
-            Caption = 'ID'
-            DataBinding.FieldName = 'id'
-          end
-          object tbvListagemtprodutos_id: TcxGridDBColumn
-            Caption = 'ID Produto'
-            DataBinding.FieldName = 'tprodutos_id'
+            Options.Editing = False
+            Width = 52
           end
           object tbvListagemdescricao: TcxGridDBColumn
             Caption = 'Descri'#231#227'o'
             DataBinding.FieldName = 'descricao'
-            Width = 338
+            Options.Editing = False
+            Width = 472
           end
           object tbvListagemvalor_adicional: TcxGridDBColumn
             Caption = 'Valor Adicional'
             DataBinding.FieldName = 'valor_adicional'
+            Options.Editing = False
             Width = 96
+          end
+          object tbvListagemid: TcxGridDBColumn
+            DataBinding.FieldName = 'id'
+          end
+          object tbvListagemtprodutos_id: TcxGridDBColumn
+            DataBinding.FieldName = 'tprodutos_id'
           end
         end
         object lvlListagem: TcxGridLevel
@@ -471,7 +483,7 @@ inherited FrmCadProduto: TFrmCadProduto
     end
   end
   inherited dsCadastro: TDataSource
-    DataSet = DMMain.FDTProdutos
+    DataSet = DMMain.qryProdutos
     Left = 8
     Top = 8
   end
@@ -482,7 +494,7 @@ inherited FrmCadProduto: TFrmCadProduto
   end
   object dsLIstagemProdutosComplementos: TDataSource
     DataSet = DMMain.qryCadProdutosComplementos
-    Left = 208
-    Top = 8
+    Left = 272
+    Top = 16
   end
 end

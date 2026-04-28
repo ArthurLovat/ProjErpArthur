@@ -1,0 +1,56 @@
+unit ufrmCadProdutosComplementos;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uFrmModeloCadPadrao, cxGraphics,
+  cxLookAndFeels, cxLookAndFeelPainters, Vcl.Menus, Data.DB, Vcl.StdCtrls,
+  cxButtons, cxControls, cxContainer, cxEdit, cxMaskEdit, cxDBEdit, cxTextEdit,
+  Vcl.DBCtrls, uDMMain, Vcl.Samples.Spin, uValidacao;
+
+type
+  TfrmCadProdutosComplementos = class(TfrmModeloCadPadrao)
+    lblCpfCnpj: TLabel;
+    lblNome: TLabel;
+    DBCheckBox1: TDBCheckBox;
+    edtDescricao: TcxDBTextEdit;
+    spedtValorAdicional: TSpinEdit;
+    procedure btnCadastrarClick(Sender: TObject); override;
+
+  private
+    { Private declarations }
+  protected
+    function GetDataSet: TDataSet; override;
+  public
+    { Public declarations }
+  end;
+
+implementation
+
+{$R *.dfm}
+
+{ TfrmModeloCadPadrao1 }
+
+procedure TfrmCadProdutosComplementos.btnCadastrarClick(Sender: TObject);
+begin
+  var vValidacao: TValidacao := TValidacao.Create;
+  try
+    vValidacao.RealizarValidacaoBasica(edtDescricao, 'Descrição', edtDescricao.Text);
+    vValidacao.ExibirMensagens;
+    if (vValidacao.TemErro = False) then
+    begin
+      GetDataSet.Post;
+      ModalResult := mrOk;
+    end;
+  finally
+    vValidacao.Free;
+  end;
+end;
+
+function TfrmCadProdutosComplementos.GetDataSet: TDataSet;
+begin
+  Result := DMMain.qryCadProdutosComplementos;
+end;
+
+end.

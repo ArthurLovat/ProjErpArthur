@@ -1,0 +1,32 @@
+unit ufrmCadProdutosComplementos;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uFrmModeloCadPadrao, cxGraphics,
+  cxLookAndFeels, cxLookAndFeelPainters, Vcl.Menus, Data.DB, Vcl.StdCtrls,
+  cxButtons, cxControls, cxContainer, cxEdit, cxMaskEdit, cxDBEdit, cxTextEdit,
+  Vcl.DBCtrls, uDMMain;
+
+type
+  TfrmModeloCadPadrao1 = class(TfrmModeloCadPadrao)
+    lblCpfCnpj: TLabel;
+    lblNome: TLabel;
+    DBCheckBox1: TDBCheckBox;
+    edtDescricao: TcxDBTextEdit;
+    mkedtValorAdicional: TcxDBMaskEdit;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmModeloCadPadrao1: TfrmModeloCadPadrao1;
+
+implementation
+
+{$R *.dfm}
+
+end.
